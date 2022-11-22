@@ -12,7 +12,8 @@
 /public/documents
 /public/js
 /dist
-/storage
+/storage/app/public/*
+/storage/app/views/*
 Homestead.json
 Homestead.yaml
 npm-debug.log
