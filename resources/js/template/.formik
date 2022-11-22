@@ -1,0 +1,39 @@
+<FormikInputLabel
+  name="number_of_children"
+  type="text"
+  size="small"
+  title="Number of children"
+/>;
+
+<FormikSelect
+  title="Social status"
+  setFieldValue={setFieldValue}
+  name="social_status"
+  options={store.getState().mange_list.lists.social_status || []}
+/>;
+
+<FormikMultiSelect
+  name="diseases"
+  type="text"
+  size="small"
+  title="Diseases"
+  setFieldValue={setFieldValue}
+  rightAdd={
+    <IconButton onClick={() => dialogAddNewKey.onOpen('diseases')}>
+      <AddIcon />
+    </IconButton>
+  }
+  options={store.getState().mange_list.lists.diseases || []}
+/>;
+
+<FormikCheckBox
+    name="work_permit"
+    type="text"
+    size="small"
+    setFieldValue={setFieldValue}
+    title="Work permit"
+    options={[
+        { text: 'Yes', value: 'yes' },
+        { text: 'No', value: 'no' },
+    ]}
+/>;

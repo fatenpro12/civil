@@ -1,0 +1,243 @@
+<template>
+    <v-container grid-list-md>
+        <AddAgency ref="agencyadded" @fillAgencyData="getAgenctData($event)"></AddAgency>
+        <v-layout row>
+            <v-flex xs12 sm12>
+                <v-card class="elevation-3">
+                    <v-card-title primary-title xs8 sm8>
+                        <div>
+                            <div class="headline">
+                                {{ trans('data.customer_info') }}
+                            </div>
+                        </div>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-form ref="form">
+                                <!--<v-layout row wrap v-for="(input, k) in inputs" :key="k">-->
+                               <v-layout row wrap>
+                                  <v-flex xs12 md4>
+                                         <v-text-field
+                                            v-model="getCurrentUser().name"
+                                            :label="trans('messages.name')"
+                                            readonly
+                                        ></v-text-field>
+                                 
+                                    </v-flex>
+                                   <v-flex xs12 md4>
+                                        <v-text-field
+                                            v-model="getCurrentUser().id_card_number"
+                                            :label="trans('data.id_card_number')"
+                                           readonly
+                                        ></v-text-field>
+                                    </v-flex>
+                                  
+                                   
+                                    <v-flex xs12 md4>
+                                        <v-text-field
+                                            :label="trans('messages.email')"
+                                            v-model="getCurrentUser().email"
+                                            readonly
+                                
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 md4>
+                                        <v-text-field
+                                            v-model="getCurrentUser().mobile"
+                                            type="number"
+                                            :label="trans('messages.mobile')"
+                                            readonly
+                                            :disabled="isEdit"
+                                        ></v-text-field>
+                                    </v-flex>
+                                 <v-flex xs12 md4>
+                                        <v-btn  
+                                        @click="userBtns=true"
+                                            style="background-color: #06706d; color: white"
+                                        >
+                                            {{trans('data.add')}}
+                                        </v-btn>
+                                          </v-flex>
+                                <v-flex md3 v-if="userBtns">
+                                    <v-btn
+                                        @click="newCustomer = true"
+                                        large
+                                        dark
+                                        v-show="!isEdit"
+                                        style="background-color: #06706d; color: white"
+                                    >
+                                        {{trans('data.new customer')}}
+                                        <!-- //<v-icon>add</v-icon> -->
+                                    </v-btn>
+                                    <v-btn
+                                        @click="newAgency = true"
+                                        large
+                                        dark
+                                        v-show="!isEdit"
+                                        style="background-color: #06706d; color: white"
+                                    >
+                                        {{trans('data.Agency')}}
+                                        <!-- //<v-icon>add</v-icon> -->
+                                    </v-btn>
+                                   </v-flex>
+                        
+                                </v-layout>
+                            </v-form>
+                         <dd v-if="inputs.length>1" class="mt-1 border-2 pa-2 text-md text-gray-900 sm:col-span-2 sm:mt-0">
+                         <h3 class="text-gray-500 bold">{{trans('data.other_owners')}}</h3>   
+                         <NewCustomer  v-for="(owner,index) in inputs.slice(1)" :user="owner" :key="index" @remove="removeOwner(owner.id)"/> 
+                        </dd>
+                         <NewCustomer  v-if="newCustomer" @remove="newCustomer = false" :customers="customers"  @addCustomer="addCustomer" :card_label="trans('data.id_card_number_for_owner')"/>
+                         <dd v-if="agency" class="mt-1 border-2 pa-2 text-md text-gray-900 sm:col-span-2 sm:mt-0">
+                         <h3  class="text-gray-500 bold">{{trans('data.Agency')}}</h3>   
+                         <NewCustomer @remove="agency = null" :user="agency" />
+                         </dd>
+                         <NewCustomer v-if="newAgency" @remove="newAgency = false;" :customers="agencies" @addCustomer="addAgency" :card_label="trans('data.id_card_number_for_agency')"/>
+                         
+                        </v-container>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
+</template>
+<script>
+import AddAgency from './AddAgency.vue';
+import NewCustomer from './NewCustomer.vue'
+export default {
+    components: {
+        AddAgency,
+        NewCustomer
+    },
+    props: ['customerId'],
+    data() {
+        return {
+            isEdit: false,
+            userBtns: false,
+            newCustomer: false,
+            newAgency: false,
+            inputs: [this.getCurrentUser()],
+            input:{
+                        name:'',
+                    id_card_number: '',
+                    email: '',
+                    mobile: '',
+            },
+            agency_inputs: [],
+            customers: [],
+            agencies: [],
+            isAgency: false,
+            agency: null
+        };
+    },
+    created() {
+        const self = this;
+        self.getCustomers();
+        self.getAgencies()
+    },
+    methods: {
+ removeOwner(id){
+    this.inputs = this.inputs.filter(x => x.id !== id)
+    this.$forceUpdate()
+ },
+        getAgenctData(data) {
+            const self = this;
+            if (self.agency_inputs.length == 1 && !self.isAgency) {
+                self.agency_inputs[0] = data;
+                self.isAgency = true;
+            } else {
+                self.agency_inputs.push(data);
+            }
+        },
+        addCustomer(event){
+            if(this.inputs.find(x=>x.id_card_number === event.id_card_number))
+            this.$store.commit('showSnackbar', {
+                        message: this.trans('data.owner_added_before'),
+                        color: '#4CAF50',
+                    });
+                    else{
+         this.inputs.push(event)
+         console.log(this.inputs)
+                  this.$store.commit('showSnackbar', {
+                        message: this.trans('data.owner_added'),
+                        color: '#4CAF50',
+                    });
+                    }
+        },
+        addAgency(event){
+         this.agency = event
+              this.$store.commit('showSnackbar', {
+                        message: this.trans('data.agency_added'),
+                        color: '#4CAF50',
+                    });
+        },
+       
+        getCustomers() {
+            const self = this;
+                axios
+                    .get('/customers')
+                    .then(function (response) {
+                        self.customers = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+        },
+getAgencies(){
+    const self = this;
+  axios
+                    .get('/customers')  //get-my-agencies
+                    .then(function (response) {
+                        self.agencies = response.data;
+                        console.log(self.agencies)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+},
+        getAgenciesData(value) {
+            const self = this;
+            axios
+                .get('/get-agencies/' + value)
+                .then(function (response) {
+                    self.agencies = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        nextStep() {
+            const self = this;
+            var data = {
+                customers: self.inputs,
+                agency_id: self.agency?.id//_inputs?.id,
+            };
+            console.log(data)
+             self.$validator.validateAll().then((result) => {
+                 if (result == true) {
+                     this.$emit('next', data);
+                 }
+             });
+        },
+
+        fillEditData(data, agency, isEdit) {
+            const self = this;
+            self.input = data;
+            if(data)
+            self.inputs = data
+            self.agency = agency;
+            if (agency != null) {
+                self.isAgency = true;
+                self.agency_inputs[0] = agency;
+            }
+
+            self.isEdit = isEdit;
+        },
+        createAgency() {
+            const self = this;
+            this.$refs.agencyadded.create();
+        },
+    },
+};
+</script>

@@ -1,0 +1,52 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+div[aria-required=true].v-input .v-label::after {
+    content: " *";
+    color: red;
+  }
+  .v-label  > .required.sign {
+    color: rgb(248, 14, 14);
+    font-weight: bold;
+    margin-left: .25em;
+}
+div[aria-required=true].v-autocomplete .v-label::after {
+  content: " *";
+  color: red;
+}
+
+.content-sign  .v-label::after {
+  content: " *";
+  color: red;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
+.v-time-picker-title__time{
+  direction: ltr;
+}
+
+.v-time-picker-title {
+  color: #fff;
+  display: flex;
+  line-height: 1;
+  justify-content: center;
+}
+.v-tabs__container--centered>.v-tabs__div:last-child, .v-tabs__container--fixed-tabs>.v-tabs__div:last-child {
+margin-right: '';
+}
