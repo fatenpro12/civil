@@ -200,6 +200,14 @@
                                     type="number"
                                     v-model="form_fields.mobile"
                                     :label="trans('messages.mobile')"
+                                    v-validate="'require'"
+                                      :rules="[
+                                        (v) =>
+                                            !!v ||
+                                            trans('messages.required', {
+                                                name: trans('messages.mobile'),
+                                            }),
+                                    ]"
                                     :data-vv-as="trans('messages.mobile')"
                                     :error-messages="errors.collect('mobile')"
                                     required

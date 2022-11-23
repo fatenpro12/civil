@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ManageRolesController;
+use App\Http\Controllers\EnginneringOffice\ManageRolesController as EnginneringOfficeManageRolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,7 +110,8 @@ Route::middleware(['auth'])
         Route::resource('media', 'MediaController');
         
         Route::get('getRequestsCount','CommonController@getRequestsCount');
-        
+        Route::resource('enginner_office/roles', EnginneringOfficeManageRolesController::class);
+
         Route::post('confirm-design', 'DesignRequestController@confirmDesign');
         Route::get('edit-user/{id}','CommonController@editUser');
 
@@ -380,7 +382,7 @@ Route::prefix('estate_owner')
 
             Route::resource('request', 'RequestTypeController');
             Route::post('accept-request-by-enginner','RequestTypeController@acceptRequestByEnginner');
-            Route::resource('roles', 'ManageRolesController');
+            
 
             Route::get('project-tasks/mark-completed', 'ProjectTaskController@markAsCompleted');
 

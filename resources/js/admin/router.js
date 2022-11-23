@@ -121,7 +121,7 @@ import visit_request_list from '../common/tickets/List'
 import surveydecisions from './main/components/SurveyDecisions'
 import requests_role_view from './requests_role/View'
 import create_project from '../common/tickets/CreateProjectRequest1'
-import create_project2 from './main/components/superadmin/CreateProject'
+//import create_project2 from './main/components/superadmin/CreateProject'
 import requestsRole from './requests_role/RequestsRole'
 import requestsRoleCommon from '../common/requests_role/RequestsRole'
 import requests_role_list from './requests_role/List'
@@ -135,7 +135,7 @@ import Archives from '../common/archives/ArchivesData'
 Vue.use(Router);
 
 const router = new Router({
-  //  mode: 'history',
+    //mode: 'history',
     //hash: false,
     routes: [
         {
@@ -902,11 +902,11 @@ const router = new Router({
             name: 'create_project',
             component: create_project,
         },
-        {
+        /*{
             path: '/test',
             name: 'create_project',
             component: create_project2,
-        },
+        },*/
         //request role
         {
             path: '/requests-role',

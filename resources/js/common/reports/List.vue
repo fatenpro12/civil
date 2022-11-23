@@ -111,7 +111,7 @@ export default {
                 },
                 {
                     text: self.trans('data.owner'),
-                    value: 'customer.name',
+                    value: 'project.customer.name',
                     align: 'center',
                     sortable: true,
                 },

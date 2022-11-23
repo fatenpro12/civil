@@ -73,6 +73,20 @@
           <v-list-tile-title>{{ trans('data.customer_info') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+       <v-list-tile
+        @click="projectAgency"
+      >
+        <v-list-tile-action>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#617BFF" class="w-5 h-5">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+        </v-list-tile-action>
+
+        <v-list-tile-content>
+          <v-list-tile-title>{{ trans('data.agency_info') }}</v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
           <v-list-tile
         @click="projectActivities"
       >
@@ -137,17 +151,24 @@
                     <v-card-text>
                         <ProjectDataOverview ref="projectData" v-show="currentCard === 'projectInfo'" :projectData="resultData?resultData.data.data.project:null" />
                         <LocationDataView ref="locationInfo" :location="resultData?resultData.data.data.project.location:null" v-show="currentCard === 'locationInfo'" />
-                          <h5 class="mb-3 flex justify-center text-base font-semibold text-slate-600 md:text-xl dark:text-white">
-             {{ trans('data.customer_info') }}
-        </h5>
+        <div  v-if="resultData && resultData.data">
                          <UserDataOverview
-                           v-if="resultData"
                            v-for="owner in resultData.data.data.project.owners"
                            :key="owner.id"
                            v-show="currentCard === 'customerInfo'"
                            :ownerData="owner"
                             ref="customerInfo"
-                        />
+                        ><template #title> <h5 class="mb-3 flex justify-center text-base font-semibold text-slate-600 md:text-xl dark:text-white">
+             {{ trans('data.customer_info') + owner.name }}
+        </h5></template></UserDataOverview></div>
+                                <div  v-if="resultData && resultData.data">
+                        <UserDataOverview
+                           v-show="currentCard === 'agencyInfo'"
+                           :ownerData="resultData.data.data.project.agency"
+                            ref="agencyInfo"
+                          ><template #title>            <h5 class="mb-3 flex justify-center text-base font-semibold text-slate-600 md:text-xl dark:text-white">
+             {{ trans('data.agency_info') }}
+        </h5></template></UserDataOverview></div>
                         <ProjectActivity ref="projectActivity"
                         v-show="currentCard === 'projectActivity'"
                         > </ProjectActivity>
@@ -257,11 +278,11 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
         projectCustomer() {
             const self = this;
             self.currentCard = 'customerInfo'
-             /* self.$refs.customerInfo.fillEditData(
-                        self.resultData.data.data.project.customer,
-                        self.resultData.data.data.project.agency,
-                        true
-                    );*/
+
+        },
+           projectAgency() {
+            const self = this;
+            self.currentCard = 'agencyInfo'
         },
         projectActivities() {
             const self = this;

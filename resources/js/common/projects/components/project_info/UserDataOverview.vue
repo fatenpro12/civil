@@ -2,6 +2,8 @@
     <div
     :class="$vuetify.breakpoint.xsOnly?'w-full mt-2':'w-3/5 border-2 rounded-lg shadow-lg'" 
    class="p-4 mx-auto bg-white sm:p-6 dark:bg-gray-800 dark:border-gray-700" v-if="ownerData">
+   <slot name="title">
+   </slot>
         <ul  :class="$vuetify.breakpoint.xsOnly?'my-1':'my-4'" class="space-y-3">
 
             <li>

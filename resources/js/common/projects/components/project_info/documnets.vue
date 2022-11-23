@@ -333,13 +333,14 @@ console.log(this.tempMedia)
             }
             if (type === 'files') {
                 this.filterMedia = this.tempMedia.filter(val =>
-                    val ? /\.(pdf|doc?x|txt|csv|xlsx|ppt?x)$/i.test(val.full_url ? val.full_url : val.original_url) : ''
-                );
+                val && !/\.(jpe?g|png|gif|mp4|wav|mov|wmv|flv|swf)$/i.test(val.full_url ? val.full_url : val.original_url)
+                  //  /\.(pdf|doc?x|txt|csv|xlsx|ppt?x)$/i.test(val.full_url ? val.full_url : val.original_url) : ''
+            );
                 this.type = 'file';
             }
             if (type === 'videos') {
                 this.filterMedia = this.tempMedia.filter(val =>
-                    val ? /\.(mp4|wav)$/i.test(val.full_url ? val.full_url : val.original_url) : ''
+                    val ? /\.(mp4|wav|mov|wmv|flv|swf)$/i.test(val.full_url ? val.full_url : val.original_url) : ''
                 );
                 this.type = 'video';
             }
