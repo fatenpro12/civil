@@ -22,7 +22,7 @@
                                                 name: trans('data.project_name'),
                                             }),
                                     ]"
-                                    @change="(event) => updateEmployee(event, k)"
+                                    @change="(event) => updateEmployee(event)"
                                     required
                                 ></v-autocomplete>
                             </v-flex>
@@ -113,11 +113,7 @@
                                     :error-messages="errors.collect('enginnering_type')"
                                     required
                                 >
-                                    <!-- <Popover
-                                    slot="append"
-                                    :helptext="trans('messages.project_member_tooltip')"
-                                >
-                                </Popover> -->
+                         
                                 </v-autocomplete>
                             </v-flex>
                         </v-layout>
@@ -415,7 +411,7 @@ export default {
 
             //self.reset();
         },
-        updateEmployee(value, key) {
+        updateEmployee(value) {
             const self = this;
             axios
                 .get('get-customer-project/' + value)

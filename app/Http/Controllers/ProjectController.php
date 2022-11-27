@@ -1270,9 +1270,15 @@ public function getProjectsOffice(Request $request)
         $project=Project::findOrFail($project_data['id']);
 
         $project->status =$project_data['status'];
-        $project->owners()->detach();
-        foreach($customers_data as $customer)
-        $project->owners()->attach($customer['id']);
+        $owner_ids=[];
+        
+        foreach($customers_data as $customer){
+            array_push($owner_ids,$customer['id']);
+            if(count($project->owners->where('id',$customer['id']))==0)
+            $project->owners()->attach($customer['id']);
+        }
+       // dd($owner_ids,$project->owners->whereNotIn('id',$owner_ids));
+        $project->owners()->detach($project->owners->whereNotIn('id',$owner_ids));
         $project-> agency_id =$agency_id;
         $project->name=$project_data['name'];
 

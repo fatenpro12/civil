@@ -16,10 +16,10 @@
                         <v-container grid-list-md>
                             <v-form ref="form">
                                 <!--<v-layout row wrap v-for="(input, k) in inputs" :key="k">-->
-                               <v-layout row wrap>
+                               <v-layout row wrap v-if="getCurrentUser().user_type_log === 'ESTATE_OWNER'">
                                   <v-flex xs12 md4>
                                          <v-text-field
-                                            v-model="getCurrentUser().name"
+                                            v-model="input.name"
                                             :label="trans('messages.name')"
                                             readonly
                                         ></v-text-field>
@@ -27,7 +27,7 @@
                                     </v-flex>
                                    <v-flex xs12 md4>
                                         <v-text-field
-                                            v-model="getCurrentUser().id_card_number"
+                                            v-model="input.id_card_number"
                                             :label="trans('data.id_card_number')"
                                            readonly
                                         ></v-text-field>
@@ -37,14 +37,14 @@
                                     <v-flex xs12 md4>
                                         <v-text-field
                                             :label="trans('messages.email')"
-                                            v-model="getCurrentUser().email"
+                                            v-model="input.email"
                                             readonly
                                 
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 md4>
                                         <v-text-field
-                                            v-model="getCurrentUser().mobile"
+                                            v-model="input.mobile"
                                             type="number"
                                             :label="trans('messages.mobile')"
                                             readonly
@@ -83,6 +83,88 @@
                                    </v-flex>
                         
                                 </v-layout>
+                                   <v-layout row wrap v-else>
+                                   <v-flex xs12 md4>
+                                        <v-text-field
+                                            v-model="input.id_card_number"
+                                            type="number"
+                                            :label="trans('data.id_card_number')"
+                                             :rules="[
+                                        (v) =>
+                                            !!v ||
+                                            trans('messages.required', {
+                                                name: trans('data.id_card_number'),
+                                            }),
+                                    ]"
+                                    v-validate="'required'"
+                         data-vv-name="id_card_number"
+                                            :data-vv-as="trans('data.id_card_number')"
+                                            :error-messages="errors.collect('id_card_number')"
+                                    required
+                                            :disabled="isEdit"
+                                                 append-icon="search"
+                                            @click:append="findCustomer(input.id_card_number)"
+                                            
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 md4>
+                                         <v-text-field
+                                            v-model="input.name"
+                                            :label="trans('messages.name')"
+                                            readonly
+                                            :disabled="isEdit"
+                                        ></v-text-field>
+                                 
+                                    </v-flex>
+                                   
+                                    <v-flex xs12 md4>
+                                        <v-text-field
+                                            :label="trans('messages.email')"
+                                            v-model="input.email"
+                                            readonly
+                                            :disabled="isEdit"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 md4>
+                                        <v-text-field
+                                            v-model="input.mobile"
+                                            type="number"
+                                            :label="trans('messages.mobile')"
+                                            readonly
+                                            :disabled="isEdit"
+                                        ></v-text-field>
+                                    </v-flex>
+                                       <v-flex xs12 md4>
+                                        <v-btn  
+                                        @click="userBtns=true"
+                                            style="background-color: #06706d; color: white"
+                                        >
+                                            {{trans('data.add')}}
+                                        </v-btn>
+                                          </v-flex>
+                                <v-flex md3 v-if="userBtns">
+                                    <v-btn
+                                        @click="newCustomer = true"
+                                        large
+                                        dark
+                                        v-show="!isEdit"
+                                        style="background-color: #06706d; color: white"
+                                    >
+                                        {{trans('data.new customer')}}
+                                        <!-- //<v-icon>add</v-icon> -->
+                                    </v-btn>
+                                    <v-btn
+                                        @click="newAgency = true"
+                                        large
+                                        dark
+                                        v-show="!isEdit"
+                                        style="background-color: #06706d; color: white"
+                                    >
+                                        {{trans('data.Agency')}}
+                                        <!-- //<v-icon>add</v-icon> -->
+                                    </v-btn>
+                                   </v-flex>
+                                </v-layout>
                             </v-form>
                          <dd v-if="inputs.length>1" class="mt-1 border-2 pa-2 text-md text-gray-900 sm:col-span-2 sm:mt-0">
                          <h3 class="text-gray-500 bold">{{trans('data.other_owners')}}</h3>   
@@ -117,10 +199,10 @@ export default {
             userBtns: false,
             newCustomer: false,
             newAgency: false,
-            inputs: [this.getCurrentUser()],
+            inputs: [],
             input:{
-                        name:'',
-                    id_card_number: '',
+                        name:null,
+                    id_card_number: null,
                     email: '',
                     mobile: '',
             },
@@ -131,16 +213,45 @@ export default {
             agency: null
         };
     },
-    created() {
+    mounted() {
         const self = this;
         self.getCustomers();
         self.getAgencies()
+       if(self.getCurrentUser().user_type_log === 'ESTATE_OWNER'){
+        self.input = self.getCurrentUser()
+        self.inputs.push(self.input)
+       }
     },
     methods: {
  removeOwner(id){
     this.inputs = this.inputs.filter(x => x.id !== id)
     this.$forceUpdate()
  },
+     findCustomer(event){
+
+       // this.input=this.customers.find(val => val.id_card_number == event)
+        
+        if(this.customers.find(val => val.id_card_number == event)){
+            this.input=this.customers.find(val => val.id_card_number == event)
+            if(!this.inputs.find(x => x.id == this.input.id))
+            this.inputs[0] = this.input
+            else
+            this.$store.commit('showSnackbar', {
+                        message: this.trans('data.owner_added_before'),
+                        color: '#4CAF50',
+                    });
+            console.log(this.customers,this.inputs[0],event)
+            this.$forceUpdate()
+        }
+          else{
+                        this.$store.commit('showSnackbar', {
+                        message: this.trans('data.not_found'),
+                        color: '#FF5252',
+                    });
+                    this.input.id_card_number = null
+                    this.input.name = null
+                     }
+      },
         getAgenctData(data) {
             const self = this;
             if (self.agency_inputs.length == 1 && !self.isAgency) {
@@ -215,15 +326,20 @@ getAgencies(){
             };
             console.log(data)
              self.$validator.validateAll().then((result) => {
-                 if (result == true) {
+                 if (result && this.input.name) {
                      this.$emit('next', data);
                  }
+                 else 
+                  this.$store.commit('showSnackbar', {
+                        message: this.trans('data.not_found'),
+                        color: '#FF5252',
+                    });
              });
         },
 
         fillEditData(data, agency, isEdit) {
             const self = this;
-            self.input = data;
+            self.input = data[0];
             if(data)
             self.inputs = data
             self.agency = agency;

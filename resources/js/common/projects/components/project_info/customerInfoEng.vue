@@ -236,12 +236,12 @@ export default {
             console.log(this.customers,this.inputs[k],event)
             this.$forceUpdate()
         }
-        /*  else{
+          else{
                         this.$store.commit('showSnackbar', {
                         message: this.trans('data.not_found'),
                         color: '#FF5252',
                     });
-                     }*/
+                     }
       },
       findAgency(event){
        if(this.agencies.find(val => val.id_card_number == event))

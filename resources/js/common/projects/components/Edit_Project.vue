@@ -22,24 +22,23 @@
 <v-form ref="form">
                 <v-stepper-items>
                     <v-stepper-content step="1">
-                         <CustomerInfoEng
+                         <!--<CustomerInfoEng
                          v-if="getCurrentUser().user_type_log === 'ENGINEERING_OFFICE_MANAGER'"
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
-                        />
+                        />-->
                          <CustomerInfoOwner
-                            v-else-if="getCurrentUser().user_type_log === 'ESTATE_OWNER'"
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
                         />
-                        <CustomerInfo
+                        <!--<CustomerInfo
                         v-else
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
-                        />
+                        />-->
                         <v-layout row justify-center>
                             <v-btn color="teal" small outline @click="$router.go(-1)">
                                 {{ trans('messages.back') }}

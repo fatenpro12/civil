@@ -160,7 +160,6 @@ export default {
                 .get('/enginner_office/roles')
                 .then(function(response) {
                     self.roles = response.data.data;
-                    console.log(response.data.data)
                 })
                 .catch(function(error) {
                     console.log(error);

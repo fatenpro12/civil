@@ -28,24 +28,23 @@
 <v-form ref="form">
                 <v-stepper-items>
                     <v-stepper-content step="1">
-                        <CustomerInfoEng
+                        <!--<CustomerInfoEng
                         v-if="getCurrentUser().user_type_log === 'ENGINEERING_OFFICE_MANAGER'"
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
-                        />
+                        />-->
                             <CustomerInfoOwner
-                            v-else-if="getCurrentUser().user_type_log === 'ESTATE_OWNER'"
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
                         />
-                            <CustomerInfo
+                           <!-- <CustomerInfo
                             v-else
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
-                        />
+                        />-->
                        
                         <v-layout row justify-center>
                             <v-btn color="teal" small outline @click="$router.go(-1)">
@@ -129,8 +128,6 @@
 
 <script>
 
-import CustomerInfo from './project_info/customerInfo.vue';
-import CustomerInfoEng from './project_info/customerInfoEng.vue';
 import CustomerInfoOwner from './project_info/customerInfoEstate.vue';
 import LocationInfo from './project_info/locationInfo.vue';
 import ProjectInfo from './project_info/ProjectInfo.vue';
@@ -139,11 +136,9 @@ import Document from './project_info/documnets.vue';
 
 export default {
     components: {
-        CustomerInfo,
         LocationInfo,
         ProjectInfo,
         Document,
-        CustomerInfoEng,
         Popover,
         CustomerInfoOwner
     },
