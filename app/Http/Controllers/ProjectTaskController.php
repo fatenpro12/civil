@@ -38,7 +38,7 @@ class ProjectTaskController extends Controller
     public function index(Request $request)
     {
         $project_id = request()->get('project_id', false);
-
+        
         $rowsPerPage = ($request->get('rowsPerPage') > 0) ? $request->get('rowsPerPage') : 0;
         $sort_by = $request->get('sort_by');
         $descending = $request->get('descending');
@@ -69,9 +69,9 @@ class ProjectTaskController extends Controller
         $tasks = ProjectTask::with('taskCreator', 'project', 'taskMembers', 'taskMembers.media', 'category', 'notes')->where('show_to_customer',1);
 
 
-        if (!empty(request()->input('project_id'))) {
+        if (!empty($project_id)) {
            
-            $tasks = $tasks->where('project_id', request()->input('project_id'));
+            $tasks = $tasks->where('project_id', $project_id);
         }
         else{
             $tasks = $tasks->whereIn('project_id', $project_ids);

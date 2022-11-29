@@ -3,13 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia;
 
 class Note extends Model implements HasMedia
 {
-    use LogsActivity, HasMediaTrait;
+    use LogsActivity , InteractsWithMedia;
 
     /**
     * The attributes that aren't mass assignable.
@@ -28,7 +29,10 @@ class Note extends Model implements HasMedia
         return $this->morphTo();
     }
 
-
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
     
     /**
      * User who created the note

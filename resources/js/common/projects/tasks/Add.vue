@@ -43,28 +43,33 @@
                                 >
                                 </v-text-field>
                             </v-flex>
-                        </v-layout>
-                        <v-layout row wrap>
+        
                             <v-flex xs12 sm12 md12>
                                 {{ trans('messages.description') }}
                                 <quill-editor v-model="task.description"> </quill-editor>
                             </v-flex>
-                        </v-layout>
-                        <v-layout row wrap>
-                            <v-flex xs12 md4>
+                      
+                            <v-flex xs12 md4 class="mt-5">
                                 <div class="v-input v-text-field theme--light">
                                     <div class="v-input__control">
                                         <div class="v-input__slot">
                                             <div class="v-text-field__slot">
                                                 <label
                                                     aria-hidden="true"
-                                                    class="v-label v-label--active theme--light flat_picker_label"
+                                                    class="v-label
+                                                        theme--light
+                                                        
+                                                        text-start
+                                                        flat_picker_label"
+                                                          :class="label_active"
+                                                    style="left:auto"
                                                 >
                                                     {{ trans('messages.start_date') }}
                                                 </label>
                                                 <flat-pickr
                                                     v-model="start_date"
                                                     name="start_date"
+                                                    @input="label_active = 'v-label--active'"
                                                     required
                                                     :config="flatPickerDateTime()"
                                                 ></flat-pickr>
@@ -74,19 +79,27 @@
                                 </div>
                             </v-flex>
 
-                            <v-flex xs12 md4>
+                            <v-flex xs12 md4 class="mt-5">
+
                                 <div class="v-input v-text-field theme--light">
                                     <div class="v-input__control">
                                         <div class="v-input__slot">
                                             <div class="v-text-field__slot">
                                                 <label
                                                     aria-hidden="true"
-                                                    class="v-label v-label--active theme--light flat_picker_label"
+                                                   class="v-label
+                                                        theme--light
+                                                        
+                                                        text-start
+                                                        flat_picker_label"
+                                                          :class="label_active_due"
+                                                    style="left:auto"
                                                 >
                                                     {{ trans('messages.due_date') }}
                                                 </label>
                                                 <flat-pickr
                                                     v-model="due_date"
+                                                      @input="label_active_due = 'v-label--active'"
                                                     name="due_date"
                                                     required
                                                     :config="flatPickerDateTime()"
@@ -97,7 +110,7 @@
                                 </div>
                             </v-flex>
 
-                            <v-flex xs12 md4>
+                            <v-flex xs12 md4 class="mt-5">
                                 <v-select
                                     item-text="value"
                                     item-value="key"
@@ -192,6 +205,8 @@ export default {
             categories: [],
             category_id: null,
             loading: false,
+            label_active:"",
+            label_active_due:""
         };
     },
     mounted() {

@@ -3,6 +3,7 @@
 <template>
     <div class="component-wrap">
         <TaskShow ref="taskShow"></TaskShow>
+         <TaskFormAdd ref="taskAdd"></TaskFormAdd>
         <v-flex xs12 sm8>
             <v-card>
                 <v-list>
@@ -58,11 +59,16 @@
 
         <v-card class="mt-3">
             <v-card-title>
-                <div>
-                    <div class="headline">
+                    <div>
                         {{ trans('data.tasks') }}
                     </div>
-                </div>
+                    <v-spacer></v-spacer>
+                                <v-btn style="color: #06706d" 
+                       v-if="$can('task.create')"
+                                                            
+                                                                    @click="createTask">
+                {{ trans('data.add_task') }}
+            </v-btn>
             </v-card-title>
             <v-divider></v-divider>
             <v-data-table
@@ -136,10 +142,12 @@
 <script>
 import TaskShow from './Show';
 import _ from 'lodash';
+import TaskFormAdd from '../tasks/Add';
 
 export default {
     components: {
         TaskShow,
+        TaskFormAdd
     },
     props:{
 backBtn: true
@@ -233,22 +241,22 @@ backBtn: true
         'pagination.page': function () {
             const self = this;
             self.url = 'project-tasks';
-            self.getTaskList();
+            self.getTaskList(self.projectId);
         },
         'pagination.rowsPerPage': function () {
             const self = this;
             self.url = 'project-tasks';
-            self.getTaskList();
+            self.getTaskList(self.projectId);
         },
         'filters.project_id': _.debounce(() => {
             const self = this;
             self.url = 'project-tasks';
-            self.getTaskList();
+            self.getTaskList(self.projectId);
         }, 700),
         'filters.status': _.debounce(() => {
             const self = this;
             self.url = 'project-tasks';
-            self.getTaskList();
+            self.getTaskList(self.projectId);
         }, 700),
     },
     created() {
@@ -256,10 +264,8 @@ backBtn: true
         self.filters.status = '';
         self.url = 'project-tasks';
         self.getProjects();
-
-        self.getTaskList();
-        self.getFilterData();
         self.$eventBus.$on('updateTaskTable', (data) => {
+            console.log(data)
             self.url = 'project-tasks';
             self.taskLists = [];
              self.projects=self.projects.filter(x=>x.id==data);
@@ -272,15 +278,14 @@ backBtn: true
     },
 
     methods: {
-        create() {
-            const self = this;
-            //  self.$refs.taskAdd.create(self.projectId);
+   createTask() {
+            this.$refs.taskAdd.create(this.projectId);
         },
+
         getTaskList(projectId) {
             const self = this;
+ self.projectId = projectId
 
-            // if (self.ShowAllTask === true || self.$can('project.' + projectId + '.task.view')) {
-            //if (self.ShowAllTask === true) {
 
             let params = {
                 page: self.pagination.page,
@@ -303,11 +308,9 @@ backBtn: true
                 .get(self.url, { params: params })
                 .then(function (response) {
                     var tasks = [];
-                    //  if (self.view_style == 'grid') {
+                   console.log(response)
                     tasks = response.data.tasks;
-                    //} else {
-                    //   tasks = response.data.tasks.data;
-                    // }
+                 
                     self.items = response.data.tasks.data;
                     self.totalItems = response.data.tasks.total;
                     self.pagination.totalItems = response.data.tasks.total;

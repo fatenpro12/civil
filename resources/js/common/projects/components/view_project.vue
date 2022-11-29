@@ -172,7 +172,7 @@
                         <ProjectActivity ref="projectActivity"
                         v-show="currentCard === 'projectActivity'"
                         > </ProjectActivity>
-                        <TaskLists v-show="currentCard === 'taskLists'" :backBtn="false"></TaskLists>
+                        <TaskLists v-show="currentCard === 'taskLists'" ref="taskLists" :backBtn="false"></TaskLists>
                         <visitRequests v-show="currentCard === 'visitRequests'" :backBtn="false" :id="projectId" ></visitRequests>
                          <visitInvoices :backBtn="false" :id="projectId" v-show="currentCard === 'visitInvoices'"></visitInvoices>
                          <Document ref="documentsInfo" v-show="currentCard === 'document'"> </Document>
@@ -292,6 +292,8 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
         tasks() {
             const self = this;
             self.currentCard = 'taskLists'
+           
+            self.$refs.taskLists.getTaskList(self.projectId)
             self.$eventBus.$emit('updateTaskTable', self.propProjectId);
         },
  

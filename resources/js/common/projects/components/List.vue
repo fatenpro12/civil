@@ -4,6 +4,7 @@
         <ProjectFormAdd ref="projectAdd"></ProjectFormAdd>
         <!-- Edit project -->
         <ProjectFormEdit ref="projectEdit"></ProjectFormEdit>
+        <TaskFormAdd ref="taskAdd"></TaskFormAdd>
         <v-container grid-list-md>
             <v-layout row pt-3>
                 <v-flex xs12 sm12>
@@ -80,6 +81,19 @@
                                                                     <v-list-tile-title>
                                                                         {{
                                                                             trans('messages.reject_project')
+                                                                        }}
+                                                                    </v-list-tile-title>
+                                                                </v-list-tile>
+                                                                   <v-list-tile
+                                                                  
+                                                                    :disabled="!checkActive()"
+                                                                    @click="createTask(props.item.id)"
+                                                                >
+                                                                    <v-list-tile-title>
+                                                                        {{
+                                                                            trans(
+                                                                                'data.add_task'
+                                                                            )
                                                                         }}
                                                                     </v-list-tile-title>
                                                                 </v-list-tile>
@@ -336,12 +350,14 @@
 import ProjectFormAdd from '../components/Add';
 import ProjectFormEdit from '../components/Edit';
 import avatar from '../components/Avatar';
+import TaskFormAdd from '../tasks/Add';
 
 export default {
     components: {
         ProjectFormAdd,
         ProjectFormEdit,
         avatar,
+        TaskFormAdd
     },
     data() {
         const self = this;
@@ -438,6 +454,9 @@ export default {
         self.$eventBus.$off('updateProjectTable');
     },
     methods: {
+            createTask(projectId) {
+            this.$refs.taskAdd.create(projectId);
+        },
         acceptProject(id){
         axios.post('accept-project',{project_id: id})
         .then((response=>{  
