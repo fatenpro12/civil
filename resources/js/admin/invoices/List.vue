@@ -118,9 +118,9 @@
         <v-card class="mt-3">
             <v-card-title>
                 <div>
-                    <div class="headline">
+
                         {{ trans('messages.all_invoices') }}
-                    </div>
+
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn

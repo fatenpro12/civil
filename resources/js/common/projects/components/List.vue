@@ -227,7 +227,12 @@
 
                                                                 <v-list-tile
                                                                     :disabled="!checkActive()"
-                                                                    @click="$router.push({})"
+                                                                    @click="$router.push({
+                                                                        name: 'invoices.list',
+                                                                        params: {
+                                                                        project_id: props.item.id
+                                                                        }
+                                                                    })"
                                                                 >
                                                                     <v-list-tile-title>
                                                                         {{

@@ -723,7 +723,7 @@ const router = new Router({
             component: Invoices,
             children: [
                 {
-                    path: '/invoice',
+                    path: '/invoice/:project_id?',
                     name: 'invoices.list',
                     component: invoices_list,
                 },

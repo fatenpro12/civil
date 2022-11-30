@@ -174,7 +174,7 @@
                         > </ProjectActivity>
                         <TaskLists v-show="currentCard === 'taskLists'" ref="taskLists" :backBtn="false"></TaskLists>
                         <visitRequests v-show="currentCard === 'visitRequests'" :backBtn="false" :id="projectId" ></visitRequests>
-                         <visitInvoices :backBtn="false" :id="projectId" v-show="currentCard === 'visitInvoices'"></visitInvoices>
+                         <visitInvoices :backBtn="false" :id="projectId" ref="visitInvoices" v-show="currentCard === 'visitInvoices'"></visitInvoices>
                          <Document ref="documentsInfo" v-show="currentCard === 'document'"> </Document>
                     </v-card-text>
                          <v-card-actions jusi>
@@ -294,7 +294,7 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
             self.currentCard = 'taskLists'
            
             self.$refs.taskLists.getTaskList(self.projectId)
-            self.$eventBus.$emit('updateTaskTable', self.propProjectId);
+           self.$eventBus.$emit('updateTaskTable', self.propProjectId);
         },
  
         milestones() {
@@ -303,7 +303,7 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
         },
         invoice() {
             const self = this;
-            self.$refs.invoice.getInvoiceFromApi();
+            self.$refs.invoice.getInvoiceFromApi(self.projectId);
         },
         getProject(project_id) {
             const self = this;

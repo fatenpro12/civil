@@ -99,10 +99,9 @@
         <v-card class="mt-3">
             <v-card-title>
                 <div>
-                    <div class="headline">
                         {{ trans('messages.all_invoices') }}
-                    </div>
                 </div>
+             
                 <v-spacer></v-spacer>
                 <v-btn
                     v-if="$can('project.' + projectId + '.invoice.create')"
@@ -371,8 +370,10 @@ backBtn: true
         },
     },
     methods: {
-        getInvoiceFromApi() {
+        getInvoiceFromApi(data=null) {
             const self = this;
+            if(data)
+            self.projectId = data
            // if (self.$can('project.' + self.projectId + '.invoice.view')) {
                 self.loading = true;
                 const { sortBy, descending, page, rowsPerPage } = self.pagination;

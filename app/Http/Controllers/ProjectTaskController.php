@@ -98,13 +98,13 @@ class ProjectTaskController extends Controller
         // }
 
         if (!empty(request()->input('status'))) {
-            if ('completed' == request()->input('status')) {
-                $tasks->where('is_completed', 1);
+            if (request()->input('status') === 'completed') {
+                $tasks = $tasks->where('is_completed', 1);
             } elseif ('over_due' == request()->input('status')) {
-                $tasks->where('is_completed', 0)
+                $tasks = $tasks->where('is_completed', 0)
                 ->where('due_date', '<', \Carbon::now());
             } elseif ('incompleted' == request()->input('status')) {
-                $tasks->where('is_completed', 0);
+                $tasks = $tasks->where('is_completed', 0);
             }
         }
       

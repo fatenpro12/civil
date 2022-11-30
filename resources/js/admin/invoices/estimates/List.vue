@@ -56,9 +56,7 @@
         <v-card>
             <v-card-title>
                 <div>
-                    <div class="headline">
                         {{ trans('messages.all_estimates') }}
-                    </div>
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn

@@ -291,6 +291,7 @@ export default {
 
                             if (response.data.success === true) {
                                 self.$eventBus.$emit('updateTaskTable', response.data.task);
+                                self.$emit('savedNewTask')
                             }
 
                             if (self.create_task_from_dashboard === true) {

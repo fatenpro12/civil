@@ -3,7 +3,7 @@
 <template>
     <div class="component-wrap">
         <TaskShow ref="taskShow"></TaskShow>
-         <TaskFormAdd ref="taskAdd"></TaskFormAdd>
+         <TaskFormAdd ref="taskAdd" @savedNewTask="getTaskList(projectId)"></TaskFormAdd>
         <v-flex xs12 sm8>
             <v-card>
                 <v-list>
@@ -240,24 +240,21 @@ backBtn: true
     watch: {
         'pagination.page': function () {
             const self = this;
-            self.url = 'project-tasks';
+          //  self.url = 'project-tasks';
             self.getTaskList(self.projectId);
         },
         'pagination.rowsPerPage': function () {
             const self = this;
-            self.url = 'project-tasks';
             self.getTaskList(self.projectId);
         },
-        'filters.project_id': _.debounce(() => {
-            const self = this;
-            self.url = 'project-tasks';
+        'filters.project_id': function () {
+              const self = this;
             self.getTaskList(self.projectId);
-        }, 700),
-        'filters.status': _.debounce(() => {
-            const self = this;
-            self.url = 'project-tasks';
+        },
+        'filters.status': function() {
+      const self = this;
             self.getTaskList(self.projectId);
-        }, 700),
+        },
     },
     created() {
         const self = this;
@@ -265,11 +262,10 @@ backBtn: true
         self.url = 'project-tasks';
         self.getProjects();
         self.$eventBus.$on('updateTaskTable', (data) => {
-            console.log(data)
             self.url = 'project-tasks';
             self.taskLists = [];
              self.projects=self.projects.filter(x=>x.id==data);
-            self.getTaskList(data);
+            self.getTaskList(self.projectId);
         });
     },
     beforeDestroy() {
@@ -298,19 +294,19 @@ backBtn: true
             if (self.filters.status) {
                 params['status'] = self.filters.status;
             }
-            if (projectId != undefined || projectId != null) {
+            if (projectId) {
                 params['project_id'] = projectId;
             }
             else{
                 params['project_id'] = self.filters.project_id;
             }
+            console.log(params)
             axios
                 .get(self.url, { params: params })
                 .then(function (response) {
                     var tasks = [];
-                   console.log(response)
                     tasks = response.data.tasks;
-                 
+           
                     self.items = response.data.tasks.data;
                     self.totalItems = response.data.tasks.total;
                     self.pagination.totalItems = response.data.tasks.total;
