@@ -214,6 +214,7 @@ Route::middleware(['auth'])
         Route::get('visit-request-type/{id}','ProjectController@getVisitRequestType');
         
         Route::get('invoice-statistics', 'InvoiceController@getStatistics');
+        Route::get('invoices/create','InvoiceController@create');
         Route::post('invoices/post-invoice-reminder', 'InvoiceController@postInvoiceReminder');
         Route::get('invoices/get-invoice-reminder', 'InvoiceController@getInvoiceReminder');
         Route::get('invoices/{id}/convert-to-invoice', 'InvoiceController@ConvertToInvoice');

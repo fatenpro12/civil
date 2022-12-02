@@ -59,10 +59,10 @@ class InvoiceController extends Controller
             $sort_by = 'id';
         }
 
-        $transactions = Transaction::OfTransaction('invoice')
-            ->leftjoin('customers', 'transactions.customer_id', '=', 'customers.id')
+        $transactions = Transaction::where('transactions.type', 'invoice')
+            ->leftjoin('users', 'transactions.customer_id', '=', 'users.id')
             ->leftjoin('projects', 'transactions.project_id', '=', 'projects.id')
-            ->select('ref_no as invoice_number', 'title', 'transaction_date as invoice_date', 'due_date', 'customers.company as customer', 'total', 'transactions.id as id', 'payment_status', 'project_id', 'projects.name as project', 'transactions.status as type');
+          ->select('ref_no as invoice_number', 'transactions.title', 'transaction_date as invoice_date', 'due_date', 'total', 'transactions.id as id', 'payment_status','users.name as customer', 'project_id', 'projects.name as project', 'transactions.status as type');
 
         if (!empty($project_id)) {
             $transactions->where('project_id', $project_id);
@@ -82,7 +82,7 @@ class InvoiceController extends Controller
             $transactions->where('transactions.status', '!=', 'estimate');
         }
 
-        $transactions = $transactions->orderBy($sort_by, $orderby)
+        $transactions = $transactions//->orderBy($sort_by, $orderby)
                         ->paginate($rowsPerPage);
 
         foreach ($transactions as $transaction) {
@@ -91,11 +91,7 @@ class InvoiceController extends Controller
 
         $data = ['transactions' => $transactions];
 
-        if (!empty($project_id)) {
-          //  $project = Project::with('customer.currency')->find($project_id);
-          //  $currency = !empty($project->customer) ? $project->customer->currency : System::getBusinessCurrency('currency_id');
-          //  $data['currency'] = $currency;
-        }
+     
 
         return $this->respond($data);
     }
@@ -114,7 +110,7 @@ class InvoiceController extends Controller
         }
 
         $project = Project::find($project_id);
-        $customers = Customer::getCustomersForDropDown();
+        $customers = User::getCustomers();//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
         $invoice_schemes = InvoiceScheme::forDropDown();

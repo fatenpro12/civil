@@ -38,7 +38,7 @@
                         </v-flex>
                         <v-flex xs12 md4>
                             <v-autocomplete
-                                item-text="company"
+                                item-text="name"
                                 item-value="id"
                                 :items="customers"
                                 v-model="customer_id"
@@ -435,6 +435,7 @@ export default {
             axios
                 .get('/invoices/create', { params: { project_id: projectId } })
                 .then(function(response) {
+                
                     self.customers = response.data.customers;
                     self.discountType = response.data.discount_type;
                     self.invoice_types = response.data.invoice_type;

@@ -35,7 +35,7 @@
                                 <quill-editor v-model="task.description"> </quill-editor>
                             </v-flex>
                         </v-layout>
-                        <v-layout row wrap>
+                        <v-layout row wrap class="mt-5">
                             <v-flex xs12 md4>
                                 <div class="v-input v-text-field theme--light">
                                     <div class="v-input__control">
@@ -211,7 +211,9 @@ export default {
                     self.priority = response.data.priority;
                     self.projectMembers = response.data.project.members;
                     self.categories = response.data.categories;
+                  
                     self.dialog = true;
+                    
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -248,6 +250,7 @@ export default {
                             if (response.data.success === true) {
                                 self.$eventBus.$emit('updateTaskTable', response.data.task);
                                 self.$eventBus.$emit('updateDashboard', response.data.task);
+                                  self.$emit('savedTask')
                             }
                         })
                         .catch(function(error) {

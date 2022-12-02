@@ -480,7 +480,6 @@ class UserController extends AdminController
         ->orderBy('name')
         ->get()
         ->toArray();
-     // dd($customers);
         return $customers;
    }
     public function getAllOffices()

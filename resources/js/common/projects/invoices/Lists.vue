@@ -103,11 +103,12 @@
                 </div>
              
                 <v-spacer></v-spacer>
+                <!--v-if="$can('project.' + projectId + '.invoice.create')" -->
                 <v-btn
-                    v-if="$can('project.' + projectId + '.invoice.create')"
+                    
                     class="primary lighten-1"
                     dark
-                    @click="$router.push({ name: 'invoices.create', params: { id: projectId } })"
+                    @click="$router.push({ name: 'sales.invoices.create', params: { id: projectId } })"
                 >
                     {{ trans('messages.new_invoice') }}
                     <v-icon right dark>add</v-icon>
@@ -393,6 +394,7 @@ backBtn: true
                         params: params,
                     })
                     .then((response) => {
+                        console.log(response)
                         self.total_items = response.data.transactions.total;
                         self.items = response.data.transactions.data;
                         self.currency = response.data.currency;

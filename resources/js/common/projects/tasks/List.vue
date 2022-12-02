@@ -3,7 +3,8 @@
 <template>
     <div class="component-wrap">
         <TaskShow ref="taskShow"></TaskShow>
-         <TaskFormAdd ref="taskAdd" @savedNewTask="getTaskList(projectId)"></TaskFormAdd>
+         <TaskFormAdd ref="taskAdd"></TaskFormAdd>
+         <TaskFormEdit ref="taskEdit"></TaskFormEdit>
         <v-flex xs12 sm8>
             <v-card>
                 <v-list>
@@ -91,6 +92,18 @@
                                             {{ trans('messages.view') }}
                                         </v-list-tile-title>
                                     </v-list-tile>
+                                      <v-list-tile @click="editTask(props.item)">
+                                        <v-list-tile-title>
+                                            <v-icon small class="mr-2"> edit </v-icon>
+                                            {{ trans('messages.edit') }}
+                                        </v-list-tile-title>
+                                    </v-list-tile>
+                                    <v-list-tile @click="deleteTask(props.item.id)">
+                                        <v-list-tile-title>
+                                            <v-icon small class="mr-2"> delete </v-icon>
+                                            {{ trans('messages.delete') }}
+                                        </v-list-tile-title>
+                                    </v-list-tile>
                                 </v-list>
                             </v-menu>
                         </div>
@@ -143,11 +156,13 @@
 import TaskShow from './Show';
 import _ from 'lodash';
 import TaskFormAdd from '../tasks/Add';
+import TaskFormEdit from '../tasks/Edit';
 
 export default {
     components: {
         TaskShow,
-        TaskFormAdd
+        TaskFormAdd,
+        TaskFormEdit
     },
     props:{
 backBtn: true
@@ -277,7 +292,41 @@ backBtn: true
    createTask() {
             this.$refs.taskAdd.create(this.projectId);
         },
+   editTask(task) {
+            this.$refs.taskEdit.edit({project_id:this.projectId,task_id:task.id});
+        },
+           deleteTask(id) {
+            const self = this;
 
+            self.$store.commit('showDialog', {
+                type: 'confirm',
+                icon: 'warning',
+                title: self.trans('messages.are_you_sure'),
+                message: self.trans('messages.you_cant_restore_it'),
+                okCb: () => {
+                    axios
+                        .delete('project-tasks/' + id)
+                        .then(function (response) {
+                            self.$store.commit('showSnackbar', {
+                                message: response.data.msg,
+                                color: response.data.success,
+                            });
+
+                            if (response.data.success === true) {
+                             // self.getTaskList(self.projectId)
+                               self.$eventBus.$emit('updateTaskTable', response.data.task);
+                            }
+                            
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                cancelCb: () => {
+                    console.log('CANCEL');
+                },
+            });
+        },
         getTaskList(projectId) {
             const self = this;
  self.projectId = projectId

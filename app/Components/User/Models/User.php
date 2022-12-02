@@ -570,7 +570,17 @@ class User extends Authenticatable implements HasMedia
         ->toArray();
           return $users;
       }
-  
+      public static function getCustomers(){
+        $customers = User::whereHas(
+            'roles', function($q){
+                $q->where('type', 'ESTATE_OWNER');
+            }
+        )->select('id', 'name','email','id_card_number','mobile','parent_id')
+        ->orderBy('name')
+        ->get()
+        ->toArray();
+        return $customers;
+   }
 
       public static function getAllOffices($append_all = false)
       {

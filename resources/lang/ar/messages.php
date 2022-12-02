@@ -84,7 +84,7 @@ return [
     "something_went_wrong" => "هناك خطأ ما!",
     "updated_successfully" => "تم التحديث بنجاح.",
     "accepted_successfully" => "تمت الموافقة بنجاح.",
-    "deleted_successfully" => "حذف بنجاح.",
+    "deleted_successfully" => "تم الحذف بنجاح.",
     "rejected_successfully" => "تم الرفض  بنجاح.",
 
     "success" => "نجاح",
@@ -411,7 +411,7 @@ return [
     'leave' => 'Leave',
     'leave_answered_notification_text' => 'Updated the leave',
     'applied_date' => 'Applied Date',
-    'edit_task' => 'Edit Task',
+    'edit_task' => 'تعديل المهمة',
     'bank_details' => 'Bank Details',
     'account_holder_name' => 'Account Holder Name',
     'account_no' => 'Account Number',

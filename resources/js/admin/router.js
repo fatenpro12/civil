@@ -622,16 +622,6 @@ const router = new Router({
                     component: view_project,
                     props: route => ({ propProjectId: route.params.id }),
                 },
-
-
-                /*{
-                    path: ':id/invoices/create',
-                    name: 'invoices.create',
-                    component: ('../common/projects/invoices/Add'),
-                    props: route => ({
-                        propProjectId: route.params.id,
-                    }),
-                },*/
                 {
                     path: 'attachments',
                     name: 'project.attachments',
