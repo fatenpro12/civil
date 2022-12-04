@@ -253,7 +253,7 @@
                         ></status-label>
                     </td>
                     <td>{{ props.item.due_date | formatDate }}</td>
-                    <td v-if="currenc">{{ props.item.total | formatMoney(currency.symbol) }}</td>
+                    <td v-if="currency">{{ props.item.total | formatMoney(currency.symbol) }}</td>
                 </template>
             </v-data-table>
             <!-- /dataTable -->
