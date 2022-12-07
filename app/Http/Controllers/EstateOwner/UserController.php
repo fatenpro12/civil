@@ -14,6 +14,10 @@ use Notification;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Responses\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserRequestCreate;
+use App\Http\Requests\User\UserRequestEdit;
+use App\Http\Resources\UserResource;
+
 class UserController extends  Controller
 {
     /**
@@ -75,9 +79,7 @@ class UserController extends  Controller
             $term = $request->get('email');
             $users->where('email', 'like', "%$term%");
         }
-      //     dd($request->all());
-        $users = $users->latest()//->orderBy($sort_by, $orderby)
-        ->simplePaginate($rowsPerPage);
+        $users = UserResource::collection($users->latest()->simplePaginate($rowsPerPage));
 
   
         return $this->respond($users);
@@ -120,29 +122,12 @@ class UserController extends  Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequestCreate $request)
     {
         if (!request()->user()->can('employee.create')) {
             abort(403, 'Unauthorized action.');
         }
 
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'id_card_number' => 'required|unique:users',
-            'password' => 'required',
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-            'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-    );
-
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
-        }
 
         try {
             DB::beginTransaction();
@@ -187,9 +172,7 @@ class UserController extends  Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $user = User::find($id);
-        $user->signature = $user->getFirstMedia('signature')?$user->getFirstMedia('signature')->original_url:'';
-        $user->personal_image = $user->getFirstMedia('personal_image')?$user->getFirstMedia('personal_image')->original_url:'';
+        $user = new UserResource(User::find($id));
         return $this->respond($user);
     }
 
@@ -234,28 +217,9 @@ class UserController extends  Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequestEdit $request, $id)
     {
-      //  if (!request()->user()->can('employee.edit')) {
-        //    abort(403, 'Unauthorized action.');
-        //}
-        //$user=User::findOrFail($id);
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-           // 'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-       
-    );
 
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
-        }
 
         try {
             DB::beginTransaction();
@@ -318,19 +282,7 @@ class UserController extends  Controller
                 $user->clearMediaCollection('signature');
             }
       
-            // $role_ids = $request->input('role');
-            // if (!empty($role_id)) {
-            //     foreach($role_ids as $role_id){
-            //         $role = Role::findOrFail($role_id);
-            //         if(!Auth::user()->hasRole('superadmin') && $role->is_primary  && !$user->hasRole($role->name)){
-            //                     return $this->respondWithError(__('data.not_permiision_to_assign_primary_role'));
-            //         }
-            //         else{
-            //             if(!$user->hasRole($role->name))
-            //                $user->roles()->attach($role);
-            //         }
-            //     }
-            // }
+      
 
             if (!empty($request->input('send_email')) && !empty($payload['password'])) {
                 $this->_sendEmailToEmployee($payload, $user);
@@ -472,42 +424,6 @@ class UserController extends  Controller
        $users = User::getUsersOffice($id);
         return $users;
     }
-
-    // public function askPermissionForUser(Request $request)
-    // {
-    //     $role_id = $request->input('permission');
-    //     $role = Role::find($role_id);
-
-    //     $data = [
-    //     'user_id' => Auth::id(),
-    //     'permission_name' => $role->name,
-    //      ];
-    //    $this->_saveAskedPermissionNotifications(1,$data);
-    //    return Response::respondSuccess();
-    // }
-    // public function uploud(Request $request){
-    //     if ($request->hasFile('files')) {
-    //         $files = array();
-        
-    //         foreach ($request->file('files') as $file) {
-    //             if ($file->isValid()) {
-    //                 $name = time() . str_random(5) . '.' . $file->getClientOriginalExtension();
-    //                 Storage::disk('public')->put($name, $file);
-    //                 $files[] = $name;
-    //             }
-    //         }
-        
-    //         if (count($files) > 0) {
-    //             $response->assets = json_encode($files);
-    //         }
-    //     }
-    // }
-
-    // protected function _saveAskedPermissionNotifications($member, $data)
-    // {
-    //         $notifiable_users = User::find($member);
-    //         Notification::send($notifiable_users, new AskPermissionNotification($data));
-    // }
 
     public function getCustomers(){
    

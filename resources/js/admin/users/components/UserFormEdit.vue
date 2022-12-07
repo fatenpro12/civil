@@ -34,11 +34,20 @@ export default {
                 axios
                     .put('/admin/users/' + self.propUserId, payload )
                     .then(function(response) {
+                        if(response.data.success)
                         self.$store.commit('showSnackbar', {
                             message: response.data.msg,
                             color: response.data.success,
                         });
-
+                          if(!response.data.success) {
+                          let msg=''
+                          if(response.data.data.email) msg+='\n'+ response.data.data.email
+                          if(response.data.data.id_card_number) msg+='\n'+ response.data.data.id_card_number
+                          self.$store.commit('showSnackbar', {
+                            message: msg,
+                            color: "#FF5252",
+                        });
+                          }
                         self.$store.commit('hideLoader');
 
                         if (response.data.success === true) {

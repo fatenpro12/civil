@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::prefix('admin')->
+    namespace('Admin')
+   ->middleware(['auth:api', 'employee'])
+    ->name('admin')
+    ->group(function () {
+      //  Route::apiResource('users', 'UserController');
+    });

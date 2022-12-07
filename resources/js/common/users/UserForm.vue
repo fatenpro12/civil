@@ -38,7 +38,7 @@
                                         (v) =>
                                             !!v ||
                                             trans('messages.required', {
-                                                name: trans('messages.name'),
+                                                name: trans('messages.email'),
                                             }),
                                         (v) => /.+@.+\..+/.test(v) || trans('messages.email_valid'),
                                     ]"
@@ -200,7 +200,7 @@
                                     type="number"
                                     v-model="form_fields.mobile"
                                     :label="trans('messages.mobile')"
-                                    v-validate="'require'"
+                                    v-validate="'required'"
                                       :rules="[
                                         (v) =>
                                             !!v ||
@@ -708,10 +708,7 @@ reg_birth_date: null
                     title: self.form_fields.title,
                     office_id:self.office_id
                 };
-/*Object.keys(payload).forEach(function(key) {
-    if(payload[key])
-  data.append(key, payload[key]);
-})*/
+
   self.$store.commit('showLoader');
 self.$emit('save',payload)
                          /*   self.reset();

@@ -93,8 +93,8 @@
             <v-divider></v-divider>
             <!-- data table -->
        <UsersList
-         @page="$refs.usersData.loadUsers('/admin/users',filters.name,filters.email)" 
-         @rowsPerPage="$refs.usersData.loadUsers('/admin/users',filters.name,filters.email)"
+         @page="$refs.usersData.loadUsers(usersUrl,filters.name,filters.email)" 
+         @rowsPerPage="$refs.usersData.loadUsers(usersUrl,filters.name,filters.email)"
          :headers="headers"
          @trash="trash($event)"
           edit_url="users.edit"
@@ -121,6 +121,7 @@ export default {
         const self = this;
         return {
             loading: false,
+            usersUrl: '',
             headers: [
                 {
                     text: self.trans('messages.action'),
@@ -183,23 +184,24 @@ export default {
     },
     mounted() {
         const self = this;
-         self.$refs.usersData.loadUsers('/admin/users',self.filters.name,self.filters.email)//(() => {})
+         self.usersUrl = '/admin/users'
+         self.$refs.usersData.loadUsers(self.usersUrl,self.filters.name,self.filters.email)//(() => {})
         self.getStatistics();
         self.$eventBus.$on(['USER_ADDED', 'USER_UPDATED', 'USER_DELETED', 'GROUP_ADDED'], () => {
-             self.$refs.usersData.loadUsers('/admin/users',self.filters.name,self.filters.email)//(() => {});
+             self.$refs.usersData.loadUsers(self.usersUrl,self.filters.name,self.filters.email)//(() => {});
         });
     },
     watch: {
         'filters.name': {
             handler(){
             const self = this;
-             self.$refs.usersData.loadUsers('/admin/users',self.filters.name,self.filters.email)//(() => {});
+             self.$refs.usersData.loadUsers(self.usersUrl,self.filters.name,self.filters.email)//(() => {});
             }
         },
         'filters.email': {
             handler(){
             const self = this;
-            self.$refs.usersData.loadUsers('/admin/users',self.filters.name,self.filters.email)//(() => {});
+            self.$refs.usersData.loadUsers(self.usersUrl,self.filters.name,self.filters.email)//(() => {});
             }
         }
     },
@@ -214,7 +216,7 @@ export default {
                 message: self.trans('messages.you_cant_restore_it'),
                 okCb: () => {
                     axios
-                        .delete('/admin/users/' + user.id)
+                        .delete(self.usersUrl + user.id)
                         .then(function(response) {
 
                             self.$store.commit('showSnackbar', {

@@ -14,6 +14,10 @@ use Notification;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Responses\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserRequestCreate;
+use App\Http\Requests\User\UserRequestEdit;
+use App\Http\Resources\UserResource;
+
 class UserController extends  Controller
 {
     /**
@@ -43,26 +47,12 @@ class UserController extends  Controller
 
 
         $rowsPerPage = ($request->get('per_page') > 0) ? $request->get('per_page') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
 
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
-
-        // $roles = Role::where('type', 'employee')
-        //             ->select('name', 'created_at', 'id');
    
-            $users = User::with('roles','specialty','parent','parent.roles')->where('is_emp',1)->where(function ($query) {
+            $users = User::with('roles','specialty','parent','parent.roles')->where('is_emp',1)
+            ->where(function ($query) {
                 $query->where('parent_id',Auth::id());
-                //$query->where('parent_id',Auth::id());
-
-                //$query->orWhere('id', Auth::id());
+    
             });
         if (!empty($request->get('name'))) {
             $term = $request->get('name');
@@ -73,19 +63,11 @@ class UserController extends  Controller
             $users->where('email', 'like', "%$term%");
         }
 
-        $users = $users->latest()//->orderBy($sort_by, $orderby)
-        ->simplePaginate($rowsPerPage);
+        $users = UserResource::collection($users->latest()->simplePaginate($rowsPerPage));
 
   
         return $this->respond($users);
 
-
-    //     $params=request()->all();
-    //     $params['parent_id']=Auth::id();
-       
-    //    $data = $this->userRepository->listUsers($params);
-   
-    //    return $this->respond($data);
     }
 
     /**
@@ -117,38 +99,16 @@ class UserController extends  Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequestCreate $request)
     {
         if (!request()->user()->can('employee.create')) {
             abort(403, 'Unauthorized action.');
         }
 
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'id_card_number' => 'required|unique:users',
-            'password' => 'required',
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-            'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-    );
-
-      
-        if ($validate->fails()) {
-            $data=[
-                'error'=>$validate->errors()->first(),
-                  'user'=>$request->all()
-            ];
-            return $this->respondWithError($validate->errors()->first());
-        }
-
         try {
             DB::beginTransaction();
 
-            $input = $request->only('signature','name','location_data', 'email', 'mobile', 'alternate_num', 'home_address', 'current_address', 'skype', 'linkedin', 'facebook', 'twitter', 'birth_date', 'gender', 'note', 'password','active', 'account_holder_name', 'account_no', 'bank_name', 'bank_identifier_code', 'branch_location', 'tax_payer_id','id_card_number','specialty_id');
+            $input = $request->only('name','location_data', 'email', 'mobile', 'alternate_num', 'home_address', 'current_address', 'skype', 'linkedin', 'facebook', 'twitter', 'birth_date', 'gender', 'note', 'password','active', 'account_holder_name', 'account_no', 'bank_name', 'bank_identifier_code', 'branch_location', 'tax_payer_id','id_card_number','specialty_id');
             $input['parent_id']=Auth::id(); 
             $input['isActive']=1; 
             $input['is_emp']=1; 
@@ -187,29 +147,11 @@ class UserController extends  Controller
 
         return $output;
     }
-    public function addCustomer(Request $request){
+    public function addCustomer(UserRequestCreate $request){
 
 
         if (!request()->user()->can('employee.create')) {
             abort(403, 'Unauthorized action.');
-        }
-
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'id_card_number' => 'required|unique:users',
-            'password' => 'required',
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-            'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-    );
-
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
         }
 
         try {
@@ -253,9 +195,7 @@ class UserController extends  Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $user = User::find($id);
-        $user->signature = $user->getFirstMedia('signature')?$user->getFirstMedia('signature')->original_url:'';
-        $user->personal_image = $user->getFirstMedia('personal_image')?$user->getFirstMedia('personal_image')->original_url:'';
+        $user = new UserResource(User::find($id));
         return $this->respond($user);
     }
 
@@ -268,28 +208,8 @@ class UserController extends  Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequestEdit $request, $id)
     {
-      //  if (!request()->user()->can('employee.edit')) {
-        //    abort(403, 'Unauthorized action.');
-        //}
-        //$user=User::findOrFail($id);
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-           // 'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-       
-    );
-
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
-        }
 
         try {
             DB::beginTransaction();
@@ -539,41 +459,7 @@ return $output;
     }
 
     
-    // public function askPermissionForUser(Request $request)
-    // {
-    //     $role_id = $request->input('permission');
-    //     $role = Role::find($role_id);
-
-    //     $data = [
-    //     'user_id' => Auth::id(),
-    //     'permission_name' => $role->name,
-    //      ];
-    //    $this->_saveAskedPermissionNotifications(1,$data);
-    //    return Response::respondSuccess();
-    // }
-    // public function uploud(Request $request){
-    //     if ($request->hasFile('files')) {
-    //         $files = array();
-        
-    //         foreach ($request->file('files') as $file) {
-    //             if ($file->isValid()) {
-    //                 $name = time() . str_random(5) . '.' . $file->getClientOriginalExtension();
-    //                 Storage::disk('public')->put($name, $file);
-    //                 $files[] = $name;
-    //             }
-    //         }
-        
-    //         if (count($files) > 0) {
-    //             $response->assets = json_encode($files);
-    //         }
-    //     }
-    // }
-
-    // protected function _saveAskedPermissionNotifications($member, $data)
-    // {
-    //         $notifiable_users = User::find($member);
-    //         Notification::send($notifiable_users, new AskPermissionNotification($data));
-    // }
+   
 
    public function getCustomers(){
    

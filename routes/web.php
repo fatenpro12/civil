@@ -458,9 +458,4 @@ Route::get('/js/lang.js', function () {
     exit();
 })->name('assets.lang');
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'LanguageController@switchLang']);
-// Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'LanguageController@switchLang']);
-// Route::get('welcome/{locale}', function ($locale) {
-//     App::setLocale($locale);
 
-//     //
-// });

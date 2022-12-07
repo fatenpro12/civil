@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 use App\Components\Core\Utilities\Helpers;
 use App\Components\User\Models\User;
 use App\Components\User\Repositories\UserRepository;
+use App\Http\Requests\User\UserRequestCreate;
+use App\Http\Requests\User\UserRequestEdit;
+use App\Http\Resources\UserResource;
 use App\Notifications\EmployeeAdded;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,30 +39,16 @@ class UserController extends AdminController
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {     
+    {
         if (!request()->user()->can('employee.view')) {
             abort(403, 'Unauthorized action.');
         }
 
 
         $rowsPerPage = ($request->get('per_page') > 0) ? $request->get('per_page') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
-
-        // $roles = Role::where('type', 'employee')
-        //             ->select('name', 'created_at', 'id');
-        $user=Auth::user();
-       
-             $users = User::with('roles','specialty','parent','parent.roles');
       
+         $users =User::with('roles','specialty','parent','parent.roles');
+    
         if (!empty($request->get('name'))) {
             $term = $request->get('name');
             $users->where('name', 'like', "%$term%");
@@ -68,32 +57,9 @@ class UserController extends AdminController
             $term = $request->get('email');
             $users->where('email', 'like', "%$term%");
         }
-
-        $users = $users->latest()//->orderBy($sort_by, $orderby)
-                    ->simplePaginate($rowsPerPage);
-
-        
+        $users = UserResource::collection($users->latest()->simplePaginate($rowsPerPage));
         return $this->respond($users);
-
-
-    //     $params=request()->all();
-    //     $params['parent_id']=Auth::id();
-       
-    //    $data = $this->userRepository->listUsers($params);
-   
-    //    return $this->respond($data);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
-
-
-
 
  
     /**
@@ -102,36 +68,10 @@ class UserController extends AdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    private function getBase64Content($data)
-{
-    list($type, $data) = explode(';', $data);
-    list(, $data) = explode(',', $data);
-    $data = base64_decode($data);
-
-    return $data;
-}
-    public function store(Request $request)
+    public function store(UserRequestCreate $request)
     {
         if (!request()->user()->can('employee.create')) {
             abort(403, 'Unauthorized action.');
-        }
-
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'id_card_number' => 'required|unique:users',
-            'password' => 'required',
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-            'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-    );
-
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
         }
 
         try {
@@ -180,25 +120,6 @@ class UserController extends AdminController
                 $user->save();
             }
             
-            // $role_id = $request->input('role');
-            // if (!empty($role_id)) {
-            //     $role = Role::findOrFail($role_id);
-            //     // if($role->is_primary){
-            //     //     if(Auth::user()->hasRole('superadmin'))
-            //     //     {
-            //     //         $user->assignRole($role->name);
-            //     //     }
-            //     //     else{
-            //     //        return  $this->respondWentWrong(__('messages.can_not_static_role'));
-            //     //     }
-            //     // }
-            //     // else{
-            //     //     $user->assignRole($role->name);
-            //     // }
-            //     $user->assignRole($role->name);
-            // }
-
-            //send email to employee is send_email is enabled
             if (!empty($request->input('send_email'))) {
                 $this->_sendEmailToEmployee($input, $user);
             }
@@ -225,10 +146,7 @@ class UserController extends AdminController
             abort(403, 'Unauthorized action.');
         }
 
-        $user = User::find($id);
-        $user->signature = $user->getFirstMedia('signature')?$user->getFirstMedia('signature')->original_url:'';
-        $user->logo = $user->getFirstMedia('logo')?$user->getFirstMedia('logo')->original_url:'';
-        $user->personal_image = $user->getFirstMedia('personal_image')?$user->getFirstMedia('personal_image')->original_url:'';
+        $user = new UserResource(User::find($id));
         return $this->respond($user);
     }
 
@@ -239,27 +157,10 @@ class UserController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequestEdit $request, $id)
     {
-      //  if (!request()->user()->can('employee.edit')) {
-        //    abort(403, 'Unauthorized action.');
-        //}
-        //$user=User::findOrFail($id);
-        $validate = validator($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-        ],
-        [
-            'required'  => 'The :attribute field is required.',
-           // 'unique'    =>':attribute is already used',
-            'email'    => ':attribute  not email'
-        ]
-       
-    );
-
-      
-        if ($validate->fails()) {
-            return $this->respondWithError($validate->errors()->first());
+        if (!request()->user()->can('employee.edit')) {
+            abort(403, 'Unauthorized action.');
         }
 
         try {
@@ -267,7 +168,6 @@ class UserController extends AdminController
 
             $payload = $request->
             only(
-                'signature',
                 'name',
                 'mobile',
                 'alternate_num',

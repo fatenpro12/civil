@@ -75,8 +75,8 @@
                   <td> <div align="center">{{ props.item.email }}</div></td>
                   <td v-if="getCurrentUser().user_type_log !== 'ESTATE_OWNER'">
                         <div align="center">
-                        <span v-for="(role,index) in props.item.roles" :key="index">
-                            {{ roleName(role) }}
+                        <span v-for="(rol,index) in props.item.role" :key="index">
+                            {{  rol }}
                         </span>
                         </div>
                     </td>
@@ -134,10 +134,7 @@ watch:{
 methods:{
           roleName(role) {
             var name = [];
-
-           // if (role.type == 'employee' || role.type == null) {
                 name.push(role.name[0].toUpperCase() + role.name.slice(1));
-           // }
 
             return name.join();
         },
@@ -150,9 +147,9 @@ methods:{
                 page: self.pagination.page,
                 per_page: self.pagination.rowsPerPage,
             };
-
+         
             axios.get(url, { params: params }).then(function(response) {
-                self.items = response.data.data;
+                self.items = response.data//.data;
                 self.totalItems = response.data.total;
                 self.pagination.totalItems = response.data.total;
             });
