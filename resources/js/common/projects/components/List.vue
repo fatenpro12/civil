@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- create project -->
-        <ProjectFormAdd ref="projectAdd"></ProjectFormAdd>
+        <!--<ProjectFormAdd ref="projectAdd"></ProjectFormAdd>-->
         <!-- Edit project -->
-        <ProjectFormEdit ref="projectEdit"></ProjectFormEdit>
+        <!--<ProjectFormEdit ref="projectEdit"></ProjectFormEdit>-->
         <TaskFormAdd ref="taskAdd"></TaskFormAdd>
         <v-container grid-list-md>
             <v-layout row pt-3>
@@ -352,15 +352,11 @@
 </template>
 
 <script>
-import ProjectFormAdd from '../components/Add';
-import ProjectFormEdit from '../components/Edit';
 import avatar from '../components/Avatar';
 import TaskFormAdd from '../tasks/Add';
 
 export default {
     components: {
-        ProjectFormAdd,
-        ProjectFormEdit,
         avatar,
         TaskFormAdd
     },
@@ -490,10 +486,10 @@ export default {
          this.$forceUpdate()
         }))
         },
-        create() {
+        /*create() {
             const self = this;
             self.$refs.projectAdd.create();
-        },
+        },*/
         getDataFromApi() {
             const self = this;
             self.loading = true;
@@ -516,8 +512,8 @@ export default {
                 })
                 .then(function (response) {
                     self.loading = false;
-                    
-                    self.projectData = response.data.projects.data//_.concat(self.projectData, response.data.projects.data);
+                 
+                    self.projectData = response.data.projects//_.concat(self.projectData, response.data.projects.data);
                     self.statuses = response.data.status;
                 //    self.url = _.get(response, 'data.projects.next_page_url', null);
                     self.getStatistics();

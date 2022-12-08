@@ -394,7 +394,7 @@ backBtn: true
                         params: params,
                     })
                     .then((response) => {
-                        console.log(response)
+                       
                         self.total_items = response.data.transactions.total;
                         self.items = response.data.transactions.data;
                         self.currency = response.data.currency;

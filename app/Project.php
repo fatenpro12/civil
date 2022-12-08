@@ -59,14 +59,6 @@ class Project extends Model implements HasMedia
         return $this->belongsTo('App\Components\User\Models\User', 'lead_id');
     }
   
-  
-    /**
-     * Get the customer for the project.
-     */
-    public function customer()
-    {
-        return $this->belongsTo('App\Components\User\Models\User');
-    }
 
         /**
      * Get the location for the project.

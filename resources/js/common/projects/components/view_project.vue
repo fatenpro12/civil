@@ -247,6 +247,7 @@ import Popover from '../../../admin/popover/Popover';
             const self = this;
            axios.get('projects/' + self.propProjectId).then(function (response) {
                 if (!response.data.error_code) {
+                  console.log(response)
                   self.resultData = response
                    self.$forceUpdate()
                    //self.$refs.projectData.fillEditData(response.data.data.project, true);

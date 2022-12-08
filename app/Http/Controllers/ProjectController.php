@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ProjectRequest;
 use App\VisitRequest;
 use App\Agency;
+use App\Http\Resources\ProjectResource;
 use App\Location;
 use App\Http\Responses\Response;
 use App\Notifications\AcceptProjectFromOwner;
@@ -57,21 +58,18 @@ class ProjectController extends Controller
         $user = $request->user();
 
 
-        $projects = Project::with('customer', 'categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type');
-        $customer_id=$user->id;
+        $projects = Project::with('categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type');
         $reports = []; 
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
         
         if(Auth::user()->user_type_log=='ENGINEERING_OFFICE_MANAGER') {
-            $projects = $projects->whereHas('members', function ($q) use ($customer_id,$childrens) {
-              //  $q->where('user_id', $customer_id);
+            $projects = $projects->whereHas('members', function ($q) use ($childrens) {
                 $q->WhereIn('user_id', $childrens);
             });
         }
         else if(Auth::user()->user_type_log=='ESTATE_OWNER'){
-            $projects = $projects->whereHas('members', function ($q) use ($customer_id,$childrens) {
-              //  $q->where('user_id', $customer_id);
+            $projects = $projects->whereHas('members', function ($q) use ($childrens) {
                 $q->WhereIn('user_id', $childrens);
             });
              $projects = $projects->orWhereHas('owners', function ($q) use ($user) {
@@ -110,19 +108,18 @@ class ProjectController extends Controller
                 $q->where('user_id', $user_id);
             });
         }
-        $result = $projects->latest()
-                    ->simplePaginate(10);
-
+        $result = $projects->latest()->simplePaginate(10);
+      
         //Append is_favorited to each project and avatar
         foreach ($result as $key => $val) {
             $result[$key] = $val->append('is_favorited');
-            if($val->reports !=null)
-            array_push($reports, $val->reports);
+      //      if($val->reports !=null)
+         //   array_push($reports, $val->reports);
         }
         
         $status = Project::getStatusForProject();
 
-        $data = ['status' => $status, 'projects' => $result, 'reports' => $reports];
+        $data = ['status' => $status, 'projects' => ProjectResource::collection($result)];
 
         return $data;
     }
@@ -220,7 +217,7 @@ class ProjectController extends Controller
                     
         $status = Project::getStatusForProject();
 
-        $data = ['status' => $status, 'projects' => $result, 'reports'=> $reports];
+        $data = ['status' => $status, 'projects' => ProjectResource::collection($result), 'reports'=> $reports];
      
 
         return $data;
@@ -398,7 +395,7 @@ public function getProjectsOffice(Request $request)
             return Response::respondError('هذا الفعل غير مسموح');
         }
 
-        $project = Project::with('customer', 'lead','location','media','location.municipalitey','agency','owners', 'lead.media', 'tasks', 'categories', 'members', 'members.media')
+        $project = Project::with('location','media','location.municipalitey','agency','owners', 'lead.media', 'tasks', 'categories', 'members', 'members.media')
                             ->withCount(['tasks',
                                 'tasks as completed_task' => function ($query) {
                                     $query->where('is_completed', 1);
@@ -408,55 +405,19 @@ public function getProjectsOffice(Request $request)
                             $data->size1 = $data->size;
                             return $data;
                        });
-                            $project->projectTypes = Project::getProjectTypes();
+                         //   $project->projectTypes = Project::getProjectTypes();
                             $project->statuss = Project::getStatusForProject();
                             $project->categories = Category::forDropdown('projects');
                     
-                            $project->buildingTypes = Project::getBuildingTypes();
-                            $project->buildUsing = Project::getBuildingUsing();
+                          //  $project->buildingTypes = Project::getBuildingTypes();
+                         //   $project->buildUsing = Project::getBuildingUsing();
 
 
-        /*    $project_documents = Media::where('model_id', $id)
-            ->where('model_type', 'App\Project')
-                //  ->with(['media'])
-                ->latest()
-                ->get();*/
-
-
-        // $task_count = ProjectTask::where('project_id', $id)
-        //                 ->where('is_completed', 0)
-        //                 ->count();
-
-        // $milestone_count = ProjectMilestone::where('project_id', $id)
-        //                                     ->count();
-
-        // $invoice_count = Transaction::OfTransaction('invoice')
-        //                         ->where('project_id', $id)
-        //                         ->where('status', 'final')
-        //                         ->count();
-        //chart data
-        // $project_task = ProjectTask::where('project_id', $id)
-        //             ->where('created_at', '>=', Carbon::now()->startOfMonth())
-        //             ->where('created_at', '<=', Carbon::now()->endOfMonth())
-        //             ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(id) as task'))
-        //             ->groupBy('date')
-        //             ->get();
-
-        // $x_axis = [];
-        // $y_axis = [];
-        // foreach ($project_task as $task) {
-        //     $x_axis[] = $task->date;
-        //     $y_axis[] = $task->task;
-        // }
+       
 
         $project_overview = [
-                             'project' => $project,
-                            //  'media' => $project_documents
-                            //  'task' => $task_count,
-                            //  'x_axis' => $x_axis,
-                            //  'y_axis' => $y_axis,
-                            //  'milestone' => $milestone_count,
-                            //  'invoice' => $invoice_count,
+                             'project' => new ProjectResource($project),
+                            
                             ];
          return Response::respondSuccess($project_overview);
         
@@ -1203,11 +1164,11 @@ public function getProjectsOffice(Request $request)
 
 
 
-        if (!empty($project_data['customer_id'])) {
+       /* if (!empty($project_data['customer_id'])) {
             $contacts = User::find($project_data['customer_id'])
                             ->contacts;
         
-        }
+        }*/
 
             DB::commit();
             if(!in_array($project_data['created_by'],$project_members)){
@@ -1218,8 +1179,6 @@ public function getProjectsOffice(Request $request)
             $this->_saveProjectCreatedNotifications($customer_ids, $project->id);
 
             $output = $this->respondSuccess(__('messages.saved_successfully'));
-
-        $output = $this->respondSuccess(__('messages.saved_successfully'));
         DB::commit();
     } catch (\Exception $e) {
         DB::rollBack();
@@ -1244,8 +1203,6 @@ public function getProjectsOffice(Request $request)
    try {
         //TODO: optimise the process.
         DB::beginTransaction();
-
-
         $location=Location::find($location_data['id']);
        
         $location->update([
@@ -1277,7 +1234,7 @@ public function getProjectsOffice(Request $request)
             if(count($project->owners->where('id',$customer['id']))==0)
             $project->owners()->attach($customer['id']);
         }
-       // dd($owner_ids,$project->owners->whereNotIn('id',$owner_ids));
+
         $project->owners()->detach($project->owners->whereNotIn('id',$owner_ids));
         $project-> agency_id =$agency_id;
         $project->name=$project_data['name'];
@@ -1301,9 +1258,7 @@ public function getProjectsOffice(Request $request)
         $project->update();
 
         if (!empty($request->medias)) {
-           
-        //   dd(collect($request->medias)->pluck('id'),$project->media->whereNotIn('id',collect($request->medias)->pluck('id')));
-           // $project->clearMediaCollection('project_documents');
+
             foreach($project->media->whereNotIn('id',collect($request->medias)->pluck('id'))as $file){
                 $file->delete();
             }
@@ -1317,8 +1272,7 @@ public function getProjectsOffice(Request $request)
      
         ProjectMember::where('project_id',$project_data['id'])->delete();
         $project_members = $request['users_id'];
-       // if($request['users_id'])
-       // array_push($project_members);
+
 
          $data=[
                'project_id'=> $project->id,

@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- create project -->
-        <ProjectFormAdd ref="projectAdd"></ProjectFormAdd>
+        <!--<ProjectFormAdd ref="projectAdd"></ProjectFormAdd>
         <!-- Edit project -->
-        <ProjectFormEdit ref="projectEdit"></ProjectFormEdit>
+        <!--<ProjectFormEdit ref="projectEdit"></ProjectFormEdit>-->
         <v-container grid-list-md>
             <v-layout row pt-3>
                 <v-flex xs12 sm12>
@@ -275,14 +275,14 @@
 
 
 <script>
-import ProjectFormAdd from '../components/Add';
-import ProjectFormEdit from '../components/Edit';
+//import ProjectFormAdd from '../components/Add';
+//import ProjectFormEdit from '../components/Edit';
 import avatar from '../components/Avatar';
 
 export default {
     components: {
-        ProjectFormAdd,
-        ProjectFormEdit,
+      //  ProjectFormAdd,
+      //  ProjectFormEdit,
         avatar,
     },
     data() {
@@ -371,10 +371,10 @@ export default {
         self.$eventBus.$off('updateProjectTable');
     },
     methods: {
-        create() {
+       /* create() {
             const self = this;
             self.$refs.projectAdd.create();
-        },
+        },*/
         getDataFromApi() {
             const self = this;
             self.loading = true;
@@ -396,10 +396,10 @@ export default {
                     console.log(error);
                 });
         },
-        edit(id) {
+       /* edit(id) {
             const self = this;
             self.$refs.projectEdit.edit(id);
-        },
+        },*/
         deleteProject(id) {
             const self = this;
 
