@@ -58,8 +58,7 @@ class ProjectController extends Controller
         $user = $request->user();
 
 
-        $projects = Project::with('categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type');
-        $reports = []; 
+        $projects = Project::with('categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type'); 
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
         
@@ -405,15 +404,10 @@ public function getProjectsOffice(Request $request)
                             $data->size1 = $data->size;
                             return $data;
                        });
-                         //   $project->projectTypes = Project::getProjectTypes();
                             $project->statuss = Project::getStatusForProject();
-                            $project->categories = Category::forDropdown('projects');
+                        //    $project->categories = Category::forDropdown('projects');
                     
-                          //  $project->buildingTypes = Project::getBuildingTypes();
-                         //   $project->buildUsing = Project::getBuildingUsing();
 
-
-       
 
         $project_overview = [
                              'project' => new ProjectResource($project),
@@ -1140,6 +1134,10 @@ public function getProjectsOffice(Request $request)
         
     //$customer->id ?? Auth::id();
         $project_data['created_by'] = $request->user()->id;
+        
+        $project_data['buiding_type']=$project_data['buiding_type']?$project_data['buiding_type']['key']:null;
+        $project_data['project_type']=$project_data['project_type']?$project_data['project_type']['key']:null;
+        $project_data['using']=$project_data['using']?$project_data['using']['key']:null;
         $project = Project::create($project_data);
 
         //Add members
@@ -1239,13 +1237,13 @@ public function getProjectsOffice(Request $request)
         $project-> agency_id =$agency_id;
         $project->name=$project_data['name'];
 
-        $project->buiding_type=$project_data['buiding_type'];
+        $project->buiding_type=$project_data['buiding_type']?$project_data['buiding_type']['key']:null;
+        $project->project_type=$project_data['project_type']?$project_data['project_type']['key']:null;
+        $project->using=$project_data['using']?$project_data['using']['key']:null;
         $project->role_number=$project_data['role_number'];
         $project->unit_number=$project_data['unit_number'];
         $project->build_rate=$project_data['build_rate'];
-        $project->using=$project_data['using'];
         $project->name=$project_data['name'];
-        $project->project_type=$project_data['project_type'];
         $project->total_rate=$project_data['total_rate'];
         $project->authorization_request_number=$project_data['authorization_request_number'];
         $project->license_number=$project_data['license_number'];
@@ -1255,6 +1253,7 @@ public function getProjectsOffice(Request $request)
         $project->end_date=$project_data['end_date'] ;
         $project->description= $project_data['description'] ;
         $project->status=$project_data['status'] ;
+        //dd($project_data['buiding_type']['value']);
         $project->update();
 
         if (!empty($request->medias)) {

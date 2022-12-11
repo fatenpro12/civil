@@ -166,11 +166,7 @@
                                                 :helptext="trans('messages.project_member_tooltip')"
                                             >
                                             </Popover>
-                                            <!-- <Popover
-                                    slot="append"
-                                    :helptext="trans('messages.project_member_tooltip')"
-                                >
-                                </Popover> -->
+                                        
                                         </v-autocomplete>
 
                                      
@@ -206,20 +202,7 @@
                                         >
                                         </v-text-field>
                                     </v-flex>
-                                    <!-- 
-                                    <v-flex xs12 md4>
-                                        <v-text-field
-                                            v-model="project.type_of_request"
-                                            :label="trans('data.type_of_request')"
-                                            
-                                            data-vv-name="Authorization Request Number"
-                                            :data-vv-as="trans('data.type_of_request')"
-                                            :error-messages="errors.collect('type_of_request')"
-                                            required
-                                        >
-                                        </v-text-field>
-                                    </v-flex> -->
-
+                                   
                                     <v-flex xs12 md4>
                                         <v-text-field
                                             v-model="project.cadastral_decision_number"
@@ -238,6 +221,7 @@
                                             :items="buiding_types"
                                             v-model="project.buiding_type"
                                             :label="trans('data.buiding_type')"
+                                            return-object
                                         >
                                         </v-autocomplete>
                                     </v-flex>
@@ -267,7 +251,7 @@
                                             :items="project_types"
                                             v-model="project.project_type"
                                             :label="trans('data.project_type')"
-                                           
+                                           return-object
                                         ></v-autocomplete>
                                     </v-flex>
                                     <v-flex md4>
@@ -289,6 +273,7 @@
                                             :items="using_types"
                                             v-model="project.using"
                                             :label="trans('data.using')"
+                                            return-object
                                         >
                                         </v-autocomplete>
                                     </v-flex>
@@ -417,6 +402,7 @@ label_active2:"",
             const self = this;
             self.project = data;
             self.isEdit = isEdit;
+            self.users= self.project.members
             self.project.users_id = data.members.map(({ id }) => id);
             
         },

@@ -22,23 +22,13 @@
 <v-form ref="form">
                 <v-stepper-items>
                     <v-stepper-content step="1">
-                         <!--<CustomerInfoEng
-                         v-if="getCurrentUser().user_type_log === 'ENGINEERING_OFFICE_MANAGER'"
-                            @next="getCustomerData($event)"
-                            ref="customerInfo"
-                            @click="getCustomerInfo"
-                        />-->
+                   
                          <CustomerInfoOwner
                             @next="getCustomerData($event)"
                             ref="customerInfo"
                             @click="getCustomerInfo"
                         />
-                        <!--<CustomerInfo
-                        v-else
-                            @next="getCustomerData($event)"
-                            ref="customerInfo"
-                            @click="getCustomerInfo"
-                        />-->
+                      
                         <v-layout row justify-center>
                             <v-btn color="teal" small outline @click="$router.go(-1)">
                                 {{ trans('messages.back') }}
@@ -146,6 +136,7 @@ export default {
         loadProject() {
             const self = this;
             axios.get('projects/' + self.propProjectId).then(function (response) {
+                console.log(response.data.data.project)
                 if (!response.data.error_code) {
                     self.$refs.customerInfo.fillEditData(
                         response.data.data.project.owners,

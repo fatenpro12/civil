@@ -322,7 +322,6 @@ export default {
         getMedia(type) {
             this.currentSrc = null;
             this.filterMedia = this.tempMedia;
-console.log(this.tempMedia)
             if (type === 'images') {
                 this.filterMedia = this.tempMedia.filter(val =>
                     val

@@ -30,19 +30,24 @@ class ProjectResource extends JsonResource
             'build_rate'=>$this->build_rate,
             'role_number'=>$this->role_number,
             'location'=>$this->location,
-            'media'=>$this->media,
+            'media'=>$this->getMedia('project_documents')->toArray(),
+            'total_rate'=>$this->total_rate,
+            'description'=>$this->description,
             'agency' => new OwnerResource($this->agency),
-            'buildingTypes' => array_filter(Project::getBuildingTypes(), function($x) {
-               return $x['key'] == $this->buiding_type;
-            }),
-            'projectTypes'=>array_filter(Project::getProjectTypes(), function($x) {
-                return $x['key'] == $this->project_type;
-             }),
-            'buildUsing'=> array_filter(Project::getBuildingUsing(), function($x) {
-                return $x['key'] == $this->using;
-             }),
+            'buiding_type' => $this->getFilterData(Project::getBuildingTypes(),$this->buiding_type),
+            'project_type'=>$this->getFilterData(Project::getProjectTypes(),$this->project_type),
+            'using'=> $this->getFilterData(Project::getBuildingUsing(),$this->using),
             'owners' => OwnerResource::collection($this->owners),
             'members' =>OwnerResource::collection($this->members)
         ];
     }
+    public function getFilterData($array ,$data){
+        $res = array_filter ($array, function($x) use ($data) {
+            return $x['key'] == $data;
+         });
+         $item=array_pop($res); 
+         return $item;
+        // if($item!==null) return $item['value'];
+    }
 }
+

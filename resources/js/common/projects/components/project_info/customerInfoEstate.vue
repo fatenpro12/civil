@@ -339,9 +339,11 @@ getAgencies(){
 
         fillEditData(data, agency, isEdit) {
             const self = this;
+            
+            if(data.length>0){
             self.input = data[0];
-            if(data)
             self.inputs = data
+            }
             self.agency = agency;
             if (agency != null) {
                 self.isAgency = true;
