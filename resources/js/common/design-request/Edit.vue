@@ -17,10 +17,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12 sm6 md6>
                                     <v-autocomplete
+                                    v-if="design.project"
                                         item-text="name"
                                         item-value="id"
                                         :items="projects"
-                                        v-model="design.project_id"
+                                        v-model="design.project.projectId"
                                         :label="trans('data.project_name')"
                                         :rules="[
                                             (v) =>
@@ -29,7 +30,7 @@
                                                     name: trans('data.project_name'),
                                                 }),
                                         ]"
-                                        @change="(event) => updateEmployee(event, k)"
+                                        @change="(event) => updateEmployee(event)"
                                         required
                                     ></v-autocomplete>
                                 </v-flex>
@@ -54,12 +55,14 @@
                             </v-layout>
                             <v-layout row>
                                 <v-flex xs12 sm12 md12>
-                                    <v-autocomplete
+                                          <v-autocomplete
                                         item-text="name"
                                         item-value="id"
-                                        :items="engennering_offices"
-                                        v-model="design.office_id"
+                                        :items="engneering_offices"
+                                        v-model="design.offices"
                                         :label="trans('data.enginnering_office_name')"
+                                        @change="allOffices($event)"
+                                        clearable
                                         :rules="[
                                             (v) =>
                                                 !!v ||
@@ -67,8 +70,10 @@
                                                     name: trans('data.enginnering_office_name'),
                                                 }),
                                         ]"
+                                        multiple
                                         required
-                                    ></v-autocomplete>
+                                    >
+                                    </v-autocomplete>
                                 </v-flex>
                             </v-layout>
                             <v-layout row>
@@ -110,23 +115,19 @@ export default {
             design: {
                 customer_id: null,
             },
-            engennering_offices: [],
+            engneering_offices: [],
             customers: [],
             projects: [],
+            project:null,
             loading: false,
         };
     },
-    mounted() {
-        const self = this;
-    },
+
     created() {
         const self = this;
         self.getCustomerProject();
         self.getCustomers();
-        self.getOffices();
-    },
-    beforeDestroy() {
-        const self = this;
+       
     },
     filters: {
         filterCategories: function (categories, project_id) {
@@ -150,10 +151,18 @@ export default {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
         },
+        allOffices(event){
+if(event.find(val => val === 'all_offices')){
+    this.design.offices = this.engneering_offices.map(val => val.id)
+    this.design.offices = this.design.offices.filter(x => x!=='all_offices')
+}
+},
         create(data) {
             const self = this;
             self.design =data 
+            console.log(data)
             self.dialog = true;
+            self.getOffices();
         },
         reset() {
             this.$refs.form.reset();
@@ -166,8 +175,8 @@ export default {
             let data = {
                
                    customer_id : self.design.customer_id,
-                   project_id : self.design.project_id,
-                   office_id: self.design.office_id,
+                   project_id : self.design.project.projectId,
+                   office_id: self.design.offices,
                     note: self.design.note
 
             }
@@ -203,12 +212,18 @@ export default {
         },
 
         //////get data/////
-        updateEmployee(value, key) {
+        updateEmployee(value) {
             const self = this;
+             self.getProject(value)
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
                     self.design.customer_id = response.data.id;
+                   
+                          self.design.project = self.project 
+                     self.design.offices=[]
+                     self.getOffices();
+                     
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -241,8 +256,11 @@ export default {
             axios
                 .get('/get-offices')
                 .then(function (response) {
-                    self.engennering_offices = response.data;
-                })
+             
+                    self.engneering_offices=response.data//.filter(val => val.id==='all_offices' ||val.location_data == self.design.project?.location?.province_municipality);
+       
+              console.log(self.engneering_offices,self.design.project)
+              })
                 .catch(function (error) {
                     console.log(error);
                 });

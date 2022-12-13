@@ -250,12 +250,18 @@ public function createUser()
     $childrens=$user->childrenIds($user->id);
     array_push($childrens,$user->id);
     $countDesignRequest = DesignRequest::where('request_type','design_request')->whereIn('customer_id', $childrens)->where('status','sent')->count();
+    $countDesignRequestEng = DesignRequest::where('request_type','design_request')
+    ->whereHas('offices',function($q) use ($user){
+        $q->where('office_id', $user->id)->orWhere('office_id', $user->parent_id);
+     })->orWhereHas('designEnginners', function ($q) use ($user) {
+           $q->where('enginner_id', $user->id)->where('is_active', 1);
+       })->where('status','sent')->count();
     $countContractorRequest = DesignRequest::where('request_type','contractor_request')->whereIn('customer_id', $childrens)->where('status','sent')->count();
     $countServicesRequest = DesignRequest::where('request_type','support_service_request')->whereIn('customer_id', $childrens)->where('status','sent')->count(); 
     $countVisitsRequest = VisitRequest::where('request_type','visit_request')->where('status','sent')->count(); 
     $countRolesRequest =RequestRole::where('status','pending')->where('user_id',Auth::id())->count();
     $data = ['countDesignRequest' => $countDesignRequest, 'countContractorRequest' => $countContractorRequest, 'countServicesRequest' => $countServicesRequest
-,'countVisitsRequest' => $countVisitsRequest,'countRolesRequest' => $countRolesRequest];
+,'countVisitsRequest' => $countVisitsRequest,'countRolesRequest' => $countRolesRequest,'countDesignRequestEng'=>$countDesignRequestEng];
 
     return $data;
 

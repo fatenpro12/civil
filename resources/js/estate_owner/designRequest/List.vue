@@ -1,20 +1,16 @@
 <!-- Employees -->
 <template>
-    <div class="component-wrap" :class="$vuetify.breakpoint.xsOnly?'pt-3':''">
+
+    <div>
+     <Edit ref="designEdit"></Edit>
         <Create ref="designAdd"></Create>
-        <Edit ref="designEdit"></Edit>
-        <view1 ref="designView"></view1>
         <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
-    
-        <v-card class="mt-3">
-            <v-card-title>
-                <div>
-                    <div class="headline">
-                        {{ trans('data.design_requests') }}
-                    </div>
-                </div>
-                <v-spacer></v-spacer>
-                <v-btn
+    <DesignRequest url="/estate_owner/request-design" :headers="headers">
+    <template #arrow="{props}">
+        <v-icon @click="props.expanded = !props.expanded">arrow_drop_down</v-icon>
+    </template>
+    <template #addRequest>
+         <v-btn
                     :disabled="!checkActive()"
                     @click="create()"
                     style="background-color: #06706d; color: white"
@@ -23,42 +19,9 @@
                     {{ trans('data.create_design') }}
                     <v-icon right dark>add</v-icon>
                 </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <!-- data table -->
-            <v-data-table
-                v-bind:headers="headers"
-                v-bind:pagination.sync="pagination"
-                ref="designData"
-                :items="items"
-                :total-items="totalItems"
-                :expand="expand"
-                class="elevation-3"
-            >
-                <template slot="headerCell" slot-scope="props">
-                    <span v-if="props.header.value == 'created_by'">
-                        <v-icon small>person</v-icon> {{ props.header.text }}
-                    </span>
-                    <span v-else-if="props.header.value == 'email'">
-                        <v-icon small>email</v-icon> {{ props.header.text }}
-                    </span>
-                    <span v-else-if="props.header.value == 'roles'">
-                        <v-icon small>control_point</v-icon> {{ props.header.text }}
-                    </span>
-                    <span v-else-if="props.header.value == 'created_at'">
-                        <v-icon small>av_timer</v-icon> {{ props.header.text }}
-                    </span>
-                    <span v-else>{{ props.header.text }}</span>
-                </template>
-                <template slot="items" slot-scope="props">
-                     <tr>
-                    <td>
-                        <div  align="center">
-                            <v-icon @click="props.expanded = !props.expanded">arrow_drop_down</v-icon>
-                            <v-btn small fab dark color="success" @click="viewDesign(props.item)">
-                                <v-icon color="white">info</v-icon>
-                            </v-btn>
-                            <v-btn
+    </template>
+    <template #actions="{props}">
+            <v-btn
                                 v-if="props.item.status == 'new'"
                                 :disabled="!checkActive()"
                                 small
@@ -93,60 +56,10 @@
                                 <v-icon color="white">delete</v-icon>
                                 <!-- {{trans('messages.cancel')}}-->
                             </v-btn>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div align="center">{{ props.item.id }}</div>
-                    </td>
-
-                    <td>
-                        <div align="center">
-                            <v-chip
-                                class="ma-2"
-                                :disabled="!checkActive()"
-                                v-if="props.item.status != ''"
-                                :color="getColor(props.item.status)"
-                                text-color="white"
-                            >
-                                {{ props.item.status }}
-                            </v-chip>
-                        </div>
-                    </td>
-                    <td>
-                        <div align="center">
-                            {{ props.item.customer.name }}
-                        </div>
-                    </td>
-                       <!--<td>
-                        <div align="center">
-                            <span v-if="props.item.location">{{ props.item.location.province_municipality+' '+props.item.location.municipality }}</span>
-                        </div>
-                    </td>-->
-                    <td>
-                        <div align="center">
-                            <v-btn
-                                small
-                                fab
-                                dark
-                                color="teal"
-                                @click="viewProject(props.item.project_id)"
-                            >
-                                {{ props.item.project?props.item.project.name:'' }}
-                                <!-- {{trans('messages.add')}}-->
-                            </v-btn>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div align="center">
-                            {{ props.item.created_at ? createdDate(props.item.created_at) : '-' }}
-                        </div>
-                    </td>
-                     </tr>
-                </template>
-                 <template v-slot:expand="props">
-          <v-card flat>
+                        
+    </template>
+      <template #expand="{props}">
+                              <v-card flat>
             <v-card-text>
                 <div align="center" v-for="(office,index) in props.item.offices" :key="office.id">
                     <table>
@@ -167,44 +80,28 @@
                         </div>
             </v-card-text>
           </v-card>
-        </template>
-            </v-data-table>
-        </v-card>
-        <br />
-        <div align="center">
-            <v-btn
-                style="background-color: #06706d; color: white"
-                @click="$router.go(-1)"
-                :loading="loading"
-                :disabled="loading"
-            >
-                {{ trans('messages.back') }}
-            </v-btn>
-        </div>
-        <br />
+                            </template>
+    </DesignRequest>
     </div>
 </template>
 
 <script>
-import Create from './Create';
-import Edit from './Edit';
-import view1 from './view1';
-import _ from 'lodash';
+import DesignRequest from '../../common/design-request/List'
+import Create from '../../common/design-request/Create';
+import Edit from '../../common/design-request/Edit';
 import PricePdf from '../../common/PricePdf.vue'
+
 export default {
     components: {
-        view1,
-        Create,
-        Edit,
-       PricePdf
+      DesignRequest,
+      Edit,
+      Create,
+      PricePdf
     },
-    data() {
-        const self = this;
-        return {
-            expand: true,
-            dialog: false,
-            loading: false,
-            headers: [
+    data(){
+        const self =this
+return {
+        headers: [
                 {
                     text: self.trans('messages.action'),
                     value: false,
@@ -229,15 +126,9 @@ export default {
                     align: 'center',
                     sortable: true,
                 },
-                    /*  {
-                    text: self.trans('data.location_info'),
-                    value: 'name',
-                    align: 'center',
-                    sortable: true,
-                },*/
                 {
                     text: self.trans('data.project_name'),
-                    value: 'project_name',
+                    value: 'project.projectId',
                     align: 'center',
                     sortable: true,
                 },
@@ -248,99 +139,21 @@ export default {
                     sortable: true,
                 },
             ],
-            items: [],
-            totalItems: 0,
-            pagination: {
-                rowsPerPage: 10,
-            },
-
-            tabs: 'tab-1',
-            filters: {
-                name: '',
-            },
-        };
-    },
-    mounted() {
-        const self = this;
-        self.$eventBus.$on(
-            ['DESIGN_ADDED', 'DESIGN__UPDATED', 'DESIGN__DELETED', 'DESIGN__ADDED'],
-            () => {
-                self.loadDesigns(() => {});
-            }
-        );
-    },
-    watch: {
-        'pagination.page': function () {
-            this.loadDesigns(() => {});
-        },
-        'pagination.rowsPerPage': function () {
-            this.loadDesigns(() => {});
-        },
-        'filters.name': _.debounce(() => {
-            const self = this;
-            self.loadDesigns(() => {});
-        }, 700),
-    },
-    methods: {
-        refreshTable(event){
+}
+},
+    methods:{
+          refreshTable(event){
             this.loadDesigns();
         },
-      /*  sendRequest(id) {
-            const self = this;
-            self.$store.commit('showDialog', {
-                type: 'confirm',
-                icon: 'warning',
-                title: self.trans('messages.are_you_sure'),
-                okCb: () => {
-                    axios
-                        .post('/estate_owner/confirm-design', { design_id: id })
-                        .then(function (response) {
-                            if (response.data.success === true) {
-                                self.$eventBus.$emit('DESIGN__UPDATED');
-                                self.$store.commit('showSnackbar', {
-                                    message: response.data.msg,
-                                    color: response.data.success,
-                                });
-                            } else {
-                                self.$store.commit('showSnackbar', {
-                                    message: response.data.msg,
-                                    color: response.data.success,
-                                });
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                cancelCb: () => {
-                    console.log('CANCEL');
-                },
-            });
-        },*/
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
-        viewProject(id) {
-            const self = this;
-            self.$router.push({
-                name: 'view_project',
-                params: { id: id },
-            });
-        },
-        create() {
-            const self = this;
-            self.$refs.designAdd.create();
-        },
-        edit(item) {
+             edit(item) {
             const self = this;
             self.$refs.designEdit.create(item);
         },
-        viewDesign(item) {
+         create() {
             const self = this;
-            self.$refs.designView.create(item);
+            self.$refs.designAdd.create();
         },
-        viewDesignPrice(item){
+               viewDesignPrice(item){
            const self = this;
          let  pdf_data=[
             item,item.design_enginners[0].media[0],
@@ -350,79 +163,7 @@ export default {
            ]
            self.$refs.pdfPrice.openDialog(pdf_data)
         },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
-        trash(id) {
-            const self = this;
-            self.$store.commit('showDialog', {
-                type: 'confirm',
-                icon: 'warning',
-                title: self.trans('messages.are_you_sure'),
-                message: self.trans('messages.you_cant_restore_it'),
-                okCb: () => {
-                    axios
-                        .delete('/estate_owner/request-design/' + id)
-                        .then(function (response) {
-                            if (response.data.success === true) {
-                                self.$eventBus.$emit('DESIGN__DELETED');
-                                self.$store.commit('showSnackbar', {
-                                    message: response.data.msg,
-                                    color: response.data.success,
-                                });
-                            } else {
-                                self.$store.commit('showSnackbar', {
-                                    message: response.data.msg,
-                                    color: response.data.success,
-                                });
-                            }
-                        })
-                        .catch(function (error) {
-                            self.$store.commit('hideLoader');
-
-                            if (error.response) {
-                                self.$store.commit('showSnackbar', {
-                                    message: error.response.data.msg,
-                                    color: response.data.success,
-                                });
-                            } else if (error.request) {
-                                console.log(error.request);
-                            } else {
-                                console.log('Error', error.message);
-                            }
-                        });
-                },
-                cancelCb: () => {
-                    console.log('CANCEL');
-                },
-            });
-        },
-
-        loadDesigns(cb) {
-            const self = this;
-            let params = {
-                page: self.pagination.page,
-                rowsPerPage: self.pagination.rowsPerPage,
-            };
-
-            axios.get('/estate_owner/request-design', { params: params }).then(function (response) {
-                if (response.data.success === true) {
-                    self.items = response.data.msg.data;
-                    self.totalItems = response.data.msg.total;
-                    self.pagination.totalItems = response.data.msg.total;
-                    self.$forceUpdate()
-                } else {
-                    self.$store.commit('showSnackbar', {
-                        message: response.data.msg,
-                        color: response.data.success,
-                    });
-
-                    self.$store.commit('hideLoader');
-                }
-            });
-        },
-    },
+    }
 };
 </script>
 <style scoped>

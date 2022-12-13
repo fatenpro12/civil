@@ -21,6 +21,7 @@ use Notification;
 use App\Http\Controllers\Controller;
 use Lang;
 use App\DesignEnginner;
+use App\Http\Resources\DesignRequestResource;
 use App\Http\Responses\Response;
 use App\Notifications\AskContractorRequestOffer;
 use App\Notifications\AskSupportServiceRequestOffer;
@@ -59,12 +60,9 @@ class DesignRequestController extends  Controller
         ->where('request_type','design_request')
         ->whereIn('customer_id', $childrens);
         
-        $requests = $requests->latest()
-        ->simplePaginate($rowsPerPage);
-
-       return $this->respondSuccess($requests);
+        $requests = DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
         
-      
+        return $this->respondSuccess($requests);
     }
 
     public function acceptDesignRequestOffer(Request $request)
@@ -241,8 +239,17 @@ class DesignRequestController extends  Controller
                 $design->project_id=$request->project_id;
                 $design->note=$request->note;
                 $design->update();
+              $officeIds = [];
+             
+              foreach($request->office_id as $key=>$value){
+                if(isset($value['id']))
+                $officeIds[$key] = $value['id'];
+                else
+                $officeIds[$key] = $value;
+              }
+         
                 $design->offices()->detach();
-                $design->offices()->attach($request->office_id, ['office_status' => 'recieved','request_type' => 'design_request']);
+                $design->offices()->attach($officeIds, ['office_status' => 'recieved','request_type' => 'design_request']);
                 DB::commit();
                 $message = Lang::get('site.success_update');
                 return $this->respondSuccess($message);
@@ -266,8 +273,8 @@ class DesignRequestController extends  Controller
 
     public function show($id)
     {
-        $request = DesignRequest::with('stages','customer','project','project.location','office')->findOrFail($id);
-        $request = DesignRequest::find($id);
+        $request = DesignRequest::with('stages','customer','project','project.location','offices')->findOrFail($id);
+        $request = new DesignRequestResource($request);
         if($request!=  null){
             return $this->respondSuccess($request);
         }

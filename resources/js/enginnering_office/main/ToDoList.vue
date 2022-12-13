@@ -55,7 +55,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.design_requests')+' ('+$store.state.countDedignRequest+')'
+                                                            trans('data.design_requests')+' ('+$store.state.countDesignRequestEng+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>

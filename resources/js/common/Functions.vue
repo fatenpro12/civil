@@ -9,6 +9,10 @@ export default {
             //     _.get(APP.USER_PERMISSIONS, permissionName, false)
             // );
         },
+             createdDate(date) {
+            const current_datetime = new Date(date);
+            return current_datetime.toLocaleDateString('en-US');
+        },
                     sendRequest(id) {
             const self = this;
             console.log(id)

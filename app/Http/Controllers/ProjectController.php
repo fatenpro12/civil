@@ -1321,7 +1321,7 @@ public function getProjectsOffice(Request $request)
    }
 
    public function  getProject ($id){
-    $project=Project::with('customer', 'media','members', 'location','report', 'report.type')->find($id);
+    $project=Project::with('owners', 'media','members', 'location','report', 'report.type')->find($id);
     
     return $project;
    }

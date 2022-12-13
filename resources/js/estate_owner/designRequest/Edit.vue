@@ -17,10 +17,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12 sm6 md6>
                                     <v-autocomplete
+                                    v-if="design.project"
                                         item-text="name"
                                         item-value="id"
                                         :items="projects"
-                                        v-model="design.project_id"
+                                        v-model="design.project.projectId"
                                         :label="trans('data.project_name')"
                                         :rules="[
                                             (v) =>
@@ -155,11 +156,11 @@ if(event.find(val => val === 'all_offices')){
     this.design.offices = this.engneering_offices.map(val => val.id)
     this.design.offices = this.design.offices.filter(x => x!=='all_offices')
 }
-
 },
         create(data) {
             const self = this;
             self.design =data 
+            console.log(data)
             self.dialog = true;
             self.getOffices();
         },
@@ -174,7 +175,7 @@ if(event.find(val => val === 'all_offices')){
             let data = {
                
                    customer_id : self.design.customer_id,
-                   project_id : self.design.project_id,
+                   project_id : self.design.project.projectId,
                    office_id: self.design.offices,
                     note: self.design.note
 
@@ -256,7 +257,7 @@ if(event.find(val => val === 'all_offices')){
                 .get('/get-offices')
                 .then(function (response) {
              
-                    self.engneering_offices=response.data.filter(val => val.id==='all_offices' ||val.location_data == self.design.project?.location?.province_municipality);
+                    self.engneering_offices=response.data//.filter(val => val.id==='all_offices' ||val.location_data == self.design.project?.location?.province_municipality);
        
               console.log(self.engneering_offices,self.design.project)
               })

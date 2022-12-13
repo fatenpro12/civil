@@ -87,7 +87,7 @@ export default {
         openDialog(data){
           this.dialog =true
           this.item = data[0]
-          this.url = data[1].full_url
+          this.url = data[1].full_url?data[1].full_url:data[1].original_url
          this.office_id= data[2]
          this.user_type=data[3]
          this.accept_link =data[4]

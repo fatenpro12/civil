@@ -1,9 +1,7 @@
 <!-- Employees -->
 <template>
-    <div class="component-wrap" :class="$vuetify.breakpoint.xsOnly?'pt-3':''">
-        <Create ref="designAdd"></Create>
-        <Edit ref="designEdit"></Edit>
-        <view1 ref="designView"></view1>
+   <!-- <div class="component-wrap" :class="$vuetify.breakpoint.xsOnly?'pt-3':''">
+
         <AcceptModelDEsignRequest ref="acceptenginneringoffice" />
         <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
 
@@ -37,7 +35,7 @@
                             small fab dark color="success" @click="viewDesign(props.item)">
                                 <v-icon color="white">info</v-icon>
                             </v-btn>
-                            <div  v-if="$hasRole('Engineer')">
+                            <div v-if="$hasRole('Engineer') && props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id)" >
                                  <v-btn
                                     color="primary"
                                     small
@@ -47,7 +45,7 @@
                                     @click="acceptProject(props.item)"
                                 >
                                     <v-icon color="white">check</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                
                                 </v-btn>
                                   <v-btn
                                     color="primary"
@@ -58,7 +56,7 @@
                                     @click="viewPrice(props.item)"
                                 >
                                     <v-icon color="white">visibility</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                   
                                 </v-btn>
                                 </div>
                             <div v-else class="flex justify-center">
@@ -71,7 +69,7 @@
                                     @click="acceptProject(props.item)"
                                 >
                                     <v-icon color="white">check</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                             
                                 </v-btn>
                                   <v-btn
                                     color="secondary"
@@ -82,7 +80,7 @@
                                     @click="rejectProject(props.item)"
                                 >
                                     <v-icon color="white">close</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                   
                                 </v-btn>
                                    <v-btn
                                     color="primary"
@@ -93,7 +91,7 @@
                                     @click="viewPrice(props.item)"
                                 >
                                     <v-icon color="white">visibility</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                               
                                 </v-btn>
                             </div>
 
@@ -117,7 +115,7 @@
                                 @click="createReport(props.item.design_enginners)"
                             >
                                 <v-icon color="white"> list </v-icon>
-                                <!-- {{trans('messages.cancel')}}-->
+                       
                             </v-btn>
                         </div>
                     </td>
@@ -183,7 +181,7 @@
                                 @click="viewProject(props.item.project_id)"
                             >
                                 {{ props.item.project.name }}
-                                <!-- {{trans('messages.add')}}-->
+                           
                             </v-btn>
                         </div>
                     </td>
@@ -208,32 +206,143 @@
             </v-btn>
         </div>
         <br />
+    </div>-->
+    <div>
+           <AcceptModelDEsignRequest ref="acceptenginneringoffice" />
+        <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
+ <DesignRequest url="enginner_office/request-design" :headers="headers">
+ <template #actions="{props}">
+        <div v-if="$hasRole('Engineer') && props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id)" >
+                                 <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id).pivot.office_status =='recieved'"
+                                    :disabled="!checkActive()"
+                                    @click="acceptProject(props.item)"
+                                >
+                                    <v-icon color="white">check</v-icon>
+                                
+                                </v-btn>
+                                  <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id).pivot.office_status =='finished'"
+                                    :disabled="!checkActive()"
+                                    @click="viewPrice(props.item)"
+                                >
+                                    <v-icon color="white">visibility</v-icon>
+                                   
+                                </v-btn>
+                                </div>
+                            <div v-else class="flex justify-center">
+                                <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="props.item.offices.find(val => val.pivot.office_id == getCurrentUser().id).pivot.office_status =='recieved'"
+                                    :disabled="!checkActive()"
+                                    @click="acceptProject(props.item)"
+                                >
+                                    <v-icon color="white">check</v-icon>
+                             
+                                </v-btn>
+                                  <v-btn
+                                    color="secondary"
+                                    small
+                                    fab
+                                    v-if="props.item.offices.find(val => val.pivot.office_id == getCurrentUser().id).pivot.office_status =='recieved'"
+                                    :disabled="!checkActive()"
+                                    @click="rejectProject(props.item)"
+                                >
+                                    <v-icon color="white">close</v-icon>
+                                   
+                                </v-btn>
+                                   <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="props.item.offices.find(val => val.pivot.office_id == getCurrentUser().id).pivot.office_status =='finished'"
+                                    :disabled="!checkActive()"
+                                    @click="viewPrice(props.item)"
+                                >
+                                    <v-icon color="white">visibility</v-icon>
+                               
+                                </v-btn>
+                            </div>
+
+                            <v-btn
+                                color="primary"
+                                v-if="
+                                    props.item.design_enginners != undefined
+                                        ? props.item.design_enginners.filter(
+                                              (x) =>
+                                                  x.is_active == 1 &&
+                                                  x.is_sent==0 &&
+                                                  x.is_agreed == 0 &&
+                                                  x.is_rejected == 0 &&
+                                                  x.enginner_id == getCurrentUser().id
+                                          ).length > 0
+                                        : false
+                                "
+                                small
+                                fab
+                                :disabled="!checkActive() "
+                                @click="createReport(props.item.design_enginners)"
+                            >
+                                <v-icon color="white"> list </v-icon>
+                       
+                            </v-btn>
+                        
+ </template>
+ <template #office="{props}">
+      <td v-if="$hasRole('Engineer')">
+                        <div align="center">
+                            <v-chip
+                                class="ma-2"
+                                :disabled="!checkActive()"
+                                :color="getColor(props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id).pivot.office_status)"
+                                text-color="white"
+                            >
+                                {{ props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id).pivot.office_status }}
+                            </v-chip>
+                        </div>
+                    </td>
+                    <td v-else>
+                          <div align="center">
+                            <v-chip
+                                class="ma-2"
+                                :disabled="!checkActive()"
+                                :color="getColor(props.item.offices.find(val => val.pivot.office_id == getCurrentUser().id).pivot.office_status)"
+                                text-color="white"
+                            >
+                                {{ props.item.offices.find(val => val.pivot.office_id == getCurrentUser().id).pivot.office_status }}
+                            </v-chip>
+                        </div>
+                    </td>
+ </template>
+ </DesignRequest>
     </div>
 </template>
 
 <script>
-import Create from './Create';
-import Edit from './Edit';
-import view1 from './view1';
-import AcceptModelDEsignRequest from './AcceptModelDEsignRequest';
+
+import AcceptModelDEsignRequest from '../../common/design-request/AcceptModelDEsignRequest';
+import DesignRequest from '../../common/design-request/List'
 import _ from 'lodash';
 import PricePdf from '../../common/PricePdf.vue'
 
 export default {
     components: {
-        view1,
-        Create,
-        Edit,
+      DesignRequest,
         AcceptModelDEsignRequest,
         PricePdf
-        // View,
     },
-    data() {
-        const self = this;
-        return {
-            dialog: false,
-            loading: false,
-            headers: [
+data(){
+    const self =this
+return {
+        headers: [
                 {
                     text: self.trans('messages.action'),
                     value: false,
@@ -252,7 +361,7 @@ export default {
                     align: 'center',
                     sortable: true,
                 },
-                     {
+                {
                     text: self.trans('data.office_status'),
                     value: 'office_status',
                     align: 'center',
@@ -265,14 +374,8 @@ export default {
                     sortable: true,
                 },
                 {
-                    text: self.trans('data.created_by'),
-                    value: 'creator.name',
-                    align: 'center',
-                    sortable: true,
-                },
-                {
                     text: self.trans('data.project_name'),
-                    value: 'project_name',
+                    value: 'project.projectId',
                     align: 'center',
                     sortable: true,
                 },
@@ -283,41 +386,16 @@ export default {
                     sortable: true,
                 },
             ],
-            items: [],
-            totalItems: 0,
-            pagination: {
-                rowsPerPage: 10,
-            },
-            filters: {
-                name: '',
-            },
-        };
-    },
-    mounted() {
-        const self = this;
-        self.$eventBus.$on(
-            ['DESIGN_ADDED', 'DESIGN__UPDATED', 'DESIGN__DELETED', 'DESIGN__ADDED'],
-            () => {
-                self.loadDesigns(() => {});
-            }
-        );
-    },
-    watch: {
-        'pagination.page': function () {
-            this.loadDesigns(() => {});
-        },
-        'pagination.rowsPerPage': function () {
-            this.loadDesigns(() => {});
-        },
-        'filters.name': _.debounce(() => {
-            const self = this;
-            self.loadDesigns(() => {});
-        }, 700),
-    },
+}
+},
+
     methods: {
+          refreshTable(event){
+            this.loadDesigns();
+        },
         viewPrice(item){
          const self = this;
-          
+         
           let pdf_data=[
             item,item.design_enginners[0].media[0],
             self.getCurrentUser().parent_id?self.getCurrentUser().parent_id:self.getCurrentUser().id,'office_eng',
@@ -325,26 +403,7 @@ export default {
            ]
             self.$refs.pdfPrice.openDialog(pdf_data)
         },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
-        create() {
-            const self = this;
-            self.$refs.designAdd.create();
-        },
-        edit(item) {
-            const self = this;
-            self.$refs.designEdit.create(item);
-        },
-        viewDesign(item) {
-            const self = this;
-            self.$refs.designView.create(item);
-        },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
+ 
         acceptProject(item) {
             const self = this;
             self.$store.commit('showDialog', {
@@ -425,29 +484,6 @@ export default {
                     console.log('CANCEL');
                 },
             });
-        },
-        loadDesigns(cb) {
-            const self = this;
-            let params = {
-                page: self.pagination.page,
-                rowsPerPage: self.pagination.rowsPerPage,
-            };
-            axios
-                .get('enginner_office/request-design', { params: params })
-                .then(function (response) {
-                    if (response.data.success === true) {
-                        self.items = response.data.msg.data;
-                        self.totalItems = response.data.msg.total;
-                        self.pagination.totalItems = response.data.msg.total;
-                    } else {
-                        self.$store.commit('showSnackbar', {
-                            message: response.data.msg,
-                            color: response.data.success,
-                        });
-
-                        self.$store.commit('hideLoader');
-                    }
-                });
         },
 
         createReport(design_enginners) {

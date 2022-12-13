@@ -20,6 +20,7 @@ export default new Vuex.Store({
         countDedignRequest:0,
         countContractorRequest:0,
         countServiceRequest:0,
+        countDesignRequestEng:0,
         // dialog
         dialogShow: false,
         dialogType: '',
@@ -60,6 +61,7 @@ export default new Vuex.Store({
                  state.countServiceRequest = response.data.countServicesRequest
                  state.countVisitRequest = response.data.countVisitsRequest
                  state.countRoleRequest = response.data.countRolesRequest
+                 state.countDesignRequestEng = response.data.countDesignRequestEng
             });
         },
         // loader

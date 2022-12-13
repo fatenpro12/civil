@@ -20,6 +20,7 @@ use App\Notifications\DesignRequestSendedToEmployees;
 
 use Notification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignRequestResource;
 use App\Notifications\DesignRequestEngineerRejected;
 use Lang;
 class DesignRequestController extends  Controller
@@ -51,13 +52,12 @@ class DesignRequestController extends  Controller
         $requests = DesignRequest::with('stages','customer','creator','project','offices','designEnginners','designEnginners.media')->WhereIn('status',['sent','rejected','pending','accepted','in_progress','completed'])
         ->where('request_type','design_request')
         ->whereHas('offices',function($q) use ($user){
-           $q->where('office_id', $user->id);//->orWhere('office_id', $user->parent_id);
+           $q->where('office_id', $user->id)->orWhere('office_id', $user->parent_id);
         })->orWhereHas('designEnginners', function ($q) use ($user) {
               $q->where('enginner_id', $user->id)->where('is_active', 1);
           });//->get();
-        ;
-        $requests = $requests->latest()
-        ->simplePaginate($rowsPerPage);
+    
+       $requests = DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
 
        return $this->respondSuccess($requests);
         

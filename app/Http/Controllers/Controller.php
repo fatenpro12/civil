@@ -69,7 +69,7 @@ class Controller extends BaseController
     {
         $message = is_null($message) ? __('messages.success') : $message;
         $data = ['success' => true, 'msg' => $message];
-
+        
         if (!empty($additional_data)) {
             $data = array_merge($data, $additional_data);
         }

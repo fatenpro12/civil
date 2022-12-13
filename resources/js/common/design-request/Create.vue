@@ -1,5 +1,6 @@
 <template>
     <v-layout row justify-center>
+        <!--<Location ref="locationInfo" @savedLocation="saveLocation"/>-->
         <v-dialog v-model="dialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
@@ -29,7 +30,7 @@
                                                     name: trans('data.project_name'),
                                                 }),
                                         ]"
-                                        @change="(event) => updateEmployee(event, k)"
+                                        @change="(event) => updateEmployee(event)"
                                         required
                                     ></v-autocomplete>
                                 </v-flex>
@@ -48,6 +49,7 @@
                                                     name: trans('messages.customer'),
                                                 }),
                                         ]"
+                                        
                                         required
                                     ></v-autocomplete>
                                 </v-flex>
@@ -60,6 +62,8 @@
                                         :items="engennering_offices"
                                         v-model="design.office_id"
                                         :label="trans('data.enginnering_office_name')"
+                                        @change="allOffices($event)"
+                                        clearable
                                         :rules="[
                                             (v) =>
                                                 !!v ||
@@ -67,9 +71,21 @@
                                                     name: trans('data.enginnering_office_name'),
                                                 }),
                                         ]"
+                                        multiple
                                         required
-                                    ></v-autocomplete>
+                                    >
+                                    </v-autocomplete>
                                 </v-flex>
+                                 <!-- <v-flex xs12 sm12 md12>
+                                    <v-autocomplete
+                                        item-text="province_municipality"
+                                        item-value="id"
+                                        :items="locations"
+                                        v-model="design.location_id"
+                                        :label="trans('data.location_info')"
+                                      
+                                    ></v-autocomplete>
+                                </v-flex>-->
                             </v-layout>
                             <v-layout row>
                                 <v-flex xs12 sm12 md12>
@@ -82,11 +98,14 @@
                         </v-container>
                     </v-form>
                 </v-card-text>
-                <v-card-actions>
+                <v-card-actions class="flex-wrap">
                     <v-spacer></v-spacer>
                     <v-btn color="green darken-1" flat @click="close">
                         {{ trans('data.cancel') }}
                     </v-btn>
+                      <!--<v-btn color="white darken-1" class="bg-gray-600" flat @click="openLocation">
+                        {{ trans('data.location_info') }}
+                    </v-btn>-->
                     <v-btn
                         :disabled="!valid || !checkActive()"
                         color="success"
@@ -105,7 +124,11 @@
 </template>
 
 <script>
+//import Location from '../locationInfo.vue'
 export default {
+    components:{
+//Location
+    },
     data() {
         return {
             valid: true,
@@ -117,6 +140,9 @@ export default {
             customers: [],
             projects: [],
             loading: false,
+            locations: [],
+            location_id: null,
+            project: null
         };
     },
 
@@ -124,31 +150,32 @@ export default {
         const self = this;
         self.getCustomerProject();
         self.getCustomers();
-        self.getOffices();
-    },
-    mounted() {
-        const self = this;
+       // self.getOffices();
+        self.getLocations();
     },
     computed: {},
     beforeDestroy() {
         const self = this;
         self.$eventBus.$off('DESIGN_ADDED');
     },
-    filters: {
-        /* filterCategories: function (categories, project_id) {
-            var project_id = project_id;
-            var filteredCategories = [];
-
-            _.forEach(categories, function (category) {
-                if (category.project_id == project_id) {
-                    filteredCategories.push(category);
-                }
-            });
-
-            return filteredCategories;
-        },*/
-    },
     methods: {
+        saveLocation(event){
+           this.location_id = event
+        },
+        openLocation(){
+            this.$refs.locationInfo.openLocationDialog()
+        },
+           getLocations(){
+            const self = this;
+ axios
+                .get('/locations')
+                .then(function(response) {
+                    self.locations = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
         close() {
             const self = this;
             self.loading = false;
@@ -156,7 +183,7 @@ export default {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
         },
-        create(data) {
+        create() {
             const self = this;
             self.dialog = true;
         },
@@ -166,11 +193,18 @@ export default {
         resetValidation() {
             this.$refs.form.resetValidation();
         },
+allOffices(event){
+if(event.find(val => val === 'all_offices')){
+    this.design.office_id = this.engennering_offices.map(val => val.id)
+    this.design.office_id = this.design.office_id.filter(x => x!=='all_offices')
+}
 
+},
         store(sent) {
             const self = this;
             let data = self.design;
             data['sent'] = sent;
+            data['location_id'] = self.location_id
             if (this.$refs.form.validate()) {
                 self.loading = true;
                 axios
@@ -202,21 +236,25 @@ export default {
         },
 
         //////get data/////
-        updateEmployee(value, key) {
+        updateEmployee(value) {
             const self = this;
+            self.getProject(value)
+           
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
                     self.design.customer_id = response.data.id;
+                    
+                     self.getOffices();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-           getCustomerProject() {
+        getCustomerProject() {
             const self = this;
             axios
-                .get('enginner_office/projects-request')
+                .get('/projects-customer')
                 .then(function (response) {
                     self.projects = response.data;
                 })
@@ -240,8 +278,10 @@ export default {
             axios
                 .get('/get-offices')
                 .then(function (response) {
-                    self.engennering_offices = response.data;
-                })
+             
+                    self.engennering_offices=response.data.filter(val => val.id==='all_offices' ||val.location_data == self.project?.location?.province_municipality);
+
+              })
                 .catch(function (error) {
                     console.log(error);
                 });
