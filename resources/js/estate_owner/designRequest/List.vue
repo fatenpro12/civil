@@ -4,8 +4,8 @@
     <div>
      <Edit ref="designEdit"></Edit>
         <Create ref="designAdd"></Create>
-        <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
-    <DesignRequest url="/estate_owner/request-design" :headers="headers">
+        <PricePdf ref="pdfPrice" @refreshTable="refreshTable"/>
+    <DesignRequest url="/estate_owner/request-design" :headers="headers" ref="requestList">
     <template #arrow="{props}">
         <v-icon @click="props.expanded = !props.expanded">arrow_drop_down</v-icon>
     </template>
@@ -51,7 +51,7 @@
                                 v-if="props.item.status == 'new' || props.item.status == 'rejected'"
                                 small
                                 fab
-                                @click="trash(props.item.id)"
+                                @click="$refs.requestList.trash(props.item.id)"
                             >
                                 <v-icon color="white">delete</v-icon>
                                 <!-- {{trans('messages.cancel')}}-->
@@ -142,9 +142,9 @@ return {
 }
 },
     methods:{
-          refreshTable(event){
-            this.loadDesigns();
-        },
+   refreshTable(){
+     this.$refs.requestList.loadDesigns()
+   },
              edit(item) {
             const self = this;
             self.$refs.designEdit.create(item);

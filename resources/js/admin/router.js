@@ -27,7 +27,7 @@ import SupportServiceRequestList from '../estate_owner/supportServiceRequest/Lis
 import SupportServiceRequestListEng from '../enginnering_office/supportServiceRequest/List'
 import ContractorRequestListReciving from '../contracing_company/contractorRequest/List';
 import SupportServiceRequestListReciving from '../supportService/supportServiceRequests/List';
-import ShowDesignRequestReport from '../estate_owner/designRequest/showDesignRequestReport';
+import ShowDesignRequestReport from '../common/design-request/showDesignRequestReport';
 import UserFormEdit from '../estate_owner/users/components/UserFormEdit';
 import TicketsList from '../estate_owner/tickets/List';
 import TicketsCreate from '../estate_owner/tickets/Create'
@@ -46,7 +46,7 @@ import UserView from '../common/users/ViewUser';
 import EnginneringOfficeUserFormEdit from '../enginnering_office/users/components/UserFormEdit';
 import CommonTasks from '../common/tasks/Tasks'
 import EnginneringOfficeDesignRequestList from '../enginnering_office/designRequest/List'
-import EnginneringOfficeCreatePriceDesignForENginner from '../enginnering_office/designRequest/CreatePriceDesignForENginner'
+import EnginneringOfficeCreatePriceDesignForENginner from '../common/design-request/CreatePriceDesignForENginner'
 import Users_List from './users/components/UserLists'
 import Users_FormAdd from './users/components/UserFormAdd'
 import Users_FormEdit from './users/components/UserFormEdit'

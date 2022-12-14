@@ -97,9 +97,10 @@ export default {
             const self = this;
             let data = {
                 design_id: self.item.id,
-                office_id: this.office_id
-              //  created_by: self.item.design_enginners[0].created_by
+                office_id: this.office_id,
+                created_by: self.item.design_enginners[0].created_by
             };
+            console.log(data)
                 self.loading = true;
                 axios
                     .post(self.accept_link, data)

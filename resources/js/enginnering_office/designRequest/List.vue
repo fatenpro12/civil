@@ -209,7 +209,7 @@
     </div>-->
     <div>
            <AcceptModelDEsignRequest ref="acceptenginneringoffice" />
-        <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
+        <PricePdf ref="pdfPrice" />
  <DesignRequest url="enginner_office/request-design" :headers="headers">
  <template #actions="{props}">
         <div v-if="$hasRole('Engineer') && props.item.offices.find(val => val.pivot.office_id == getCurrentUser().parent_id)" >
@@ -390,9 +390,7 @@ return {
 },
 
     methods: {
-          refreshTable(event){
-            this.loadDesigns();
-        },
+    
         viewPrice(item){
          const self = this;
          

@@ -67,7 +67,6 @@ class DesignRequestController extends  Controller
 
     public function acceptDesignRequestOffer(Request $request)
     {
-      // dd($request->all());
         try {
             $design_enginners = DesignEnginner::where('created_by',$request->created_by)
             ->where('design_id',$request->design_id)->get();
@@ -77,6 +76,7 @@ class DesignRequestController extends  Controller
                // $design_enginner->price =$request->price;
                $design->status='completed';
                $design->update();
+            
                foreach($design_enginners as $design_enginner) {
                 $design_enginner->is_agreed=1;
                 $design_enginner->is_active=1;
@@ -299,7 +299,7 @@ class DesignRequestController extends  Controller
 
             $request = DesignRequest::find($id);
             if($request!=  null){
-                $request->authors()->detach($request->offices);
+                $request->offices()->detach();
                 $request->delete();
                 return  $this->respondSuccess(__('messages.deleted_successfully'));
             }
@@ -313,12 +313,6 @@ class DesignRequestController extends  Controller
         }
         return $output;
     }
-
-
-
-
-    
-    
 
     public function confirmDesign(Request $request)
     {
@@ -466,6 +460,7 @@ class DesignRequestController extends  Controller
 
     protected function _saveDesignRequestSendedToEmployeesNotifications($member, $data)
     {
+        
             $notifiable_users = User::find($member);
             Notification::send($notifiable_users, new DesignRequestSendedToEmployees($data));
      }
