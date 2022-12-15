@@ -149,15 +149,10 @@
                     </td>
                     <td>
                         <div align="center">
-                            {{ props.item.customer.name }}
+                            {{ props.item.customer }}
                         </div>
                     </td>
-                    <!-- <td>
-                        <div align="center">
-                            {{ getType(props.item.request_type) }}
-                           <{{ props.item.name?props.item.type_of_request:getVisitRequestType(props.item.id) }}-->
-                    <!-- </div>
-                    </td> -->
+                
 
                     <td>
                         <div align="center">
@@ -167,13 +162,13 @@
                                 fab
                                 dark
                                 color="teal"
-                                @click="viewProject(props.item.project_id)"
+                                @click="viewProject(props.item.projectId)"
                             >
-                                {{ props.item.project.name }}
+                                {{ props.item.projectName }}
 
                                 <!-- {{trans('messages.add')}}-->
                             </v-btn>
-                            <span v-else> {{ props.item.project.name }}</span>
+                            <span v-else> {{ props.item.projectName }}</span>
                         </div>
                     </td>
                     <td>
@@ -254,12 +249,7 @@ export default {
                     align: 'center',
                     sortable: true,
                 },
-                // {
-                //     text: self.trans('data.request_type'),
-                //     value: 'request_type',
-                //     align: 'center',
-                //     sortable: true,
-                // },
+           
                 {
                     text: self.trans('data.project_name'),
                     value: 'project_name',
@@ -305,15 +295,11 @@ export default {
     mounted() {
         const self = this;
         self.getCurrentUser();
-        //self.getFilters();
-        // self.getStatistics();
+    
         self.$eventBus.$on('updateTicketsTable', (data) => {
             self.projectRequest = [];
             self.projects = [];
             self.getAllProjectRequest();
-            //  self.getTicketFromApi();
-            // self.getStatistics();
-            //self.getFilters();
         });
     },
     beforeDestroy() {
@@ -410,10 +396,7 @@ export default {
                 });
             return self.type;
         },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
+  
         rejectProject(request_id) {
             const self = this;
             self.$store.commit('showDialog', {
@@ -504,9 +487,9 @@ export default {
             axios
                 .get('enginner_office/get-office-requests', { params: params })
                 .then(function (response) {
-                    self.total_items = response.data.data.length;
+                 //   self.total_items = response.data.data.length;
                     //   self.projectRequests = response.data.data;
-                    self.projects = response.data.data;
+                    self.projects = response.data;
                     self.loading = false;
                 })
                 .catch(function (error) {
@@ -610,8 +593,7 @@ export default {
             self.$router.push({
                 name: 'add_report',
                 params: {
-                    id: item.project.id,
-                    project: item.project,
+                    id: item.projectId,
                     visit_request_id: item.id
                 },
             });
@@ -619,7 +601,7 @@ export default {
             self.$router.push({name: 'edit_report', 
                                    params:{
                                    
-                                    id: item.report.id
+                                    id: item.report
 
                                    }
         });

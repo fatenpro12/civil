@@ -589,7 +589,7 @@ const router = new Router({
             component: ServiceTypes,
         },
         {
-            path: '/add_report/:id?',
+            path: '/add_report/:id?/:visit_request_id?',
             name: 'add_report',
             component: add_report,
             props: route => ({ project: route.params.project }),

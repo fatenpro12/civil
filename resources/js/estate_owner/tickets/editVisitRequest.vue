@@ -148,7 +148,6 @@ export default {
             id: '',
             type: '',
             isView: false,
-            project_id: '',
             projects: [],
             enginnering_types: [],
             visit_request: null,
@@ -213,7 +212,7 @@ export default {
                         : '';
                 self.request_types = tmp.request_types;
                 self.request_type = tmp.request.request_type;
-                self.project_id = tmp.request.project_id;
+                self.project_id = tmp.request.projectId;
                 self.description = tmp.request.description;
                 self.status = tmp.request.status;
                 self.customer_id = tmp.request.customer_id;

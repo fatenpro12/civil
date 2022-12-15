@@ -168,8 +168,9 @@ export default {
             axios
                 .get('/get-project/'+ project_id)
                 .then(function (response) {
-                    self.project  = response.data;
-                    self.reportData.owner= self.project.customer.name
+                    self.project  = response.data.data;
+                    
+                    self.reportData.owner= self.project.owners[0]?.name
                      self.reportData.project= self.project.name
                      
                 })

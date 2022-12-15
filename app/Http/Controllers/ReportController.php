@@ -33,7 +33,7 @@ class ReportController extends Controller
         }
         $user = Auth::user();
        // $ids=Auth::user()->childrenIds(Auth::id());
-        $reports =  Report::with('project','reportCreator','media','project.members','type','project.customer','office','office.roles','office.parent')
+        $reports =  Report::with('project','reportCreator','project.members','type','project.owners','office','office.roles','office.parent')
         ->orderBy($sort_by, $orderby);
            
            if($user->hasRole('Engineering Office Manager')){
@@ -105,13 +105,9 @@ class ReportController extends Controller
 
     public function show($id)
     {
-        //echo 'mehyaaaa';
-    //    die();
         try {
-           // $project_id = request()->get('project_id');
-            $report = Report::with('project','reportCreator','media','project.members','type','project.customer','office','office.roles','office.parent')->find($id);
-                              //  ->
-//where('notable_id', $project_id)
+            $report = Report::with('project','reportCreator','media','project.members','type','office','office.roles','office.parent')->find($id);
+                        
             $output = $this->respond($report);
         } catch (Exception $e) {
             $output = $this->respondWentWrong($e);
@@ -196,7 +192,7 @@ class ReportController extends Controller
              $item->type_name = $item->type_name_en;
              return $item;
         });
-        $projects = Project::with('customer', 'categories', 'members', 'members.media','location','creator','report','report.reportCreator','report.type');
+        $projects = Project::with('owners', 'members','creator','report','report.reportCreator','report.type');
         $user=Auth::user();
         $userId = '';
         if($user->hasRole('Engineering Office Manager'))
@@ -208,7 +204,9 @@ class ReportController extends Controller
            if($user->user_type_log=='ENGINEERING_OFFICE_MANAGER') {
             $projects = $projects->whereHas('members', function ($q) use ($childrens) {
                 $q->WhereIn('user_id', $childrens);
-            })->orWhere('customer_id', $userId)->get();
+            })->orWhere('owners', function ($q) use ($userId) {
+                $q->Where('owner_id', $userId);
+            });
         }
        else
         $projects = $projects->get();

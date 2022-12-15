@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use App\ProjectMember;
 use App\RequestEnginner;
 use App\Components\User\Models\User;
-use App\Notifications\ProjectCreatedNotification;
+use App\Http\Resources\VisitRequestResource;
 use App\Notifications\ProjectRequestCreatedNotification;
 use App\Notifications\AcceptedRequestOfficeNotification;
 use App\Notifications\RejectedRequestOfficeNotification;
@@ -19,7 +19,6 @@ use App\Notifications\RejectedRequestOfficeNotification;
 
 use Notification;
 use App\VisitRequest;
-use App\DefaultEnginnersRequest;
 use App\Http\Responses\Response;
 use App\Notifications\RequestSenderNotification;
 use App\SpecialtyVisitRequest;
@@ -91,13 +90,9 @@ class RequestTypeController extends Controller
                 'project_id'=>$request->project_id,
                 'location_id'=>$request->location_id,
                 'request_type'=>'visit_request',//$request->request_type,
-                'description'=> 'test',//$request->description,
                 'status'=> $status,
-               //  'office_status'=>$request->sent== 1? 'recieved' : '',
                 'dead_line_date'=>$request->dead_line_date,
-               // 'priority'=>$priority,
                 'sent'=>$request->sent,
-                //'office_id'=>$request->office_id,
                 'note'=>$request->note,
                 'created_at'=>Carbon::now()
             ]);
@@ -125,21 +120,9 @@ class RequestTypeController extends Controller
                         'office_id'=>$visit_request->office_id ,//$visit_request->office_id,
                         'request_id'=>$visit_request->id,
                     ];
-                   $this->_saveProjectRequestCreatedNotifications([$item],$data);
+                   $this->_saveProjectRequestCreatedNotifications($item,$data);
                 }
-             
-            //}
-      
-            // if(isset($request->office_id)){
-            //     if(!ProjectMember::where('project_id',$request->project_id)->where('user_id', $request->office_id)->first()){
-
-            //     DB::table('project_members')->insert([
-            //         'user_id'=>$request->office_id,
-            //         'project_id'=>$request->project_id,
-            //         'is_default'=>  0,
-            //     ]);
-            // }
-            // }
+     
             $this->_saveAskSenderDesignRequestNotifications(['request_id'=>$visit_request->id, 'estate_id'=> Auth::id(),'request_type'=>'visit request']);
            DB::commit();
             if($request->sent== 1)
@@ -173,14 +156,11 @@ class RequestTypeController extends Controller
 
     public function show($id)
     {
-        // if (!request()->user()->can('tickets.edit')) {
-        //     abort(403, 'Unauthorized action.');
-        // }
         $request = VisitRequest::with('specialties','offices','location')->findOrFail($id);
-        $enginnering_types=$this->CommonUtil->getEnginneringTypes();
+       
         $request_types=$this->CommonUtil->getRequestsTypes();
         $data = [
-                    'request' => $request,
+                    'request' => new VisitRequestResource($request),
                     'request_types' => $request_types,
                 ];
 
@@ -198,9 +178,8 @@ class RequestTypeController extends Controller
     {
         try{
             if(VisitRequest::find($id)){
+                VisitRequest::find($id)->offices->detach();
                 VisitRequest::destroy($id);
-            }else{
-                ProjectRequest::destroy($id);
             }
             $output = $this->respondSuccess(__('messages.deleted_successfully'));
         }catch(\Exception $e){
@@ -238,15 +217,7 @@ class RequestTypeController extends Controller
             $visitRequest->save();
             $visitRequest->offices()->detach();
             $visitRequest->offices()->attach($request->office_id['id'], ['office_status' => 'recieved','request_type' => 'visit_request']);
-            // if(!ProjectMember::where('project_id',$visitRequest->project_id)->where('user_id',$visitRequest->office_id)->first()){
-            //     if(isset($request->office_id)){
-            //         DB::table('project_members')->insert([
-            //             'user_id'=>$visitRequest->office_id,
-            //             'project_id'=>$visitRequest->project_id,
-            //             'is_default'=>  0,
-            //         ]);
-            //     }
-            // }
+         
           
             DB::commit();
           return   $this->respondSuccess(__('messages.updated_successfully'));
@@ -353,12 +324,7 @@ class RequestTypeController extends Controller
     {
         # code...
         $enginners=RequestEnginner::with('employee')->where('request_id',$requestId)->get()->toArray();
-      /*  $users=[];
-       
-        foreach($enginners as $item){
-            $user=User::find($item['user_id']);
-            array_push($users,$user->name);
-        }*/
+      
         return $enginners;
     }
     public function getPriority(Request $request)
@@ -462,10 +428,9 @@ class RequestTypeController extends Controller
                 $visitRequest->status='sent';
                 $visitRequest->sent=1;
                 $visitRequest->office_status='recieved';
-///
                 $i=0;
               $deafault_members=SpecialtiyRequestProject::where('project_id',$visitRequest->project_id)->get()->toArray();
-            //  echo json_encode($deafault_members);
+           
               foreach($visitRequest->specialties  as $item){
                         $results = array_filter($deafault_members, function($item1) use($item){
                             return ($item1['specialty_id'] === $item->id);
@@ -489,11 +454,6 @@ class RequestTypeController extends Controller
                // $status='accepted';
 
             }
-
-
-              
-
-
                 $visitRequest->save();
 
 
@@ -514,10 +474,7 @@ class RequestTypeController extends Controller
                         ];
                        $this->_saveProjectRequestCreatedNotifications([$item],$data);
                     }
-                 
-                //}
-
-              
+             
 
                 DB::commit();
                 $data=[
@@ -525,7 +482,7 @@ class RequestTypeController extends Controller
                      'office_id'=>Auth::id(),
                      'request_id'=>$visitRequest->id,
                 ];
-               $this->_saveProjectCreatedNotifications([$visitRequest->office_id], $data);
+               $this->_saveProjectCreatedNotifications([$visitRequest->offices[0]->id], $data);
                 return Response::respondSuccess(__('messages.updated_successfully'));
             }
         }
@@ -534,25 +491,25 @@ class RequestTypeController extends Controller
         $project_id = request()->get('projectId', false);
         $user=User::find(request()->user()->id);
         if($user->hasRole('superadmin')){
-         $requests =  VisitRequest::with('customer', 'project','specialties','offices','report','report.media','location')->where('request_type','visit_request');
+         $requests =  VisitRequest::with('customer', 'project','specialties','offices','report')->where('request_type','visit_request');
          if (!empty($project_id)) {
             $requests =$requests->where('project_id',$project_id);
          }
-         $requests=$requests->get()->toArray();
+         $requests=$requests->get();
         }
         else{
          $childrens=$user->childrenIds($user->id);
          array_push($childrens,$user->id);
-         $requests =  VisitRequest::with('customer', 'project','specialties','offices','report','report.media','location')->where('request_type','visit_request')
+         $requests =  VisitRequest::with('customer', 'project','specialties','offices','report')->where('request_type','visit_request')
          ->whereIn('customer_id', $childrens);
          if (!empty($project_id)) {
             $requests =$requests->where('project_id',$project_id);
          }
-         $requests=$requests->get()->toArray();
+         $requests=$requests->get();
         }
  
      
-         return $this->respond($requests);
+         return $this->respond(VisitRequestResource::collection($requests));
     }
   
     public function getRequesStatus()

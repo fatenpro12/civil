@@ -58,7 +58,7 @@
                         </v-menu>
                     </td>
                     <td align="center">{{props.item.id}}</td>
-                    <td align="center">{{ props.item.project.customer.name }}</td>
+                    <td align="center"><span v-for="owner in props.item.project.owners" :key="owner.id">{{ owner.name+' ' }}</span></td>
                     <td align="center">{{ props.item.type?props.item.type.name:null }}</td>
                     <td align="center" >
                         <span v-if="props.item.report_status === 'Acceptable'">{{ trans('data.Acceptable') }}</span>
@@ -202,7 +202,7 @@ export default {
                     self.total_items = response.data.total;
                     self.items = response.data.data;
                     if(self.$route.params.id)
-                    self.items = self.items.filter(x => x.project_id === self.$route.params.id)
+                    self.items = self.items.filter(x => x.project_id == self.$route.params.id)
                     self.loading = false;
                 })
                 .catch(function(error) {

@@ -466,12 +466,6 @@ public function getProjectsOffice(Request $request)
         return $output;
     }
 
-
-
-    public function  getProjectInfo($id){
-        $project = Project::with('customer','media', 'categories', 'members', 'members.media','location','agency')->find($id);
-        return $project;
-    }
     /**
      * Update the specified resource in storage.
      *
@@ -1323,7 +1317,7 @@ public function getProjectsOffice(Request $request)
    public function  getProject ($id){
     $project=Project::with('owners', 'media','members', 'location','report', 'report.type')->find($id);
     
-    return $project;
+    return new ProjectResource($project);
    }
 
 

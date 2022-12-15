@@ -238,7 +238,7 @@ methods:{
             self.reportData.office = self.office
                         self.reportData.type = self.reportType
                       self.reportData.id = self.report_id
-                     self.reportData.owner= self.project?.customer?.name
+                     self.reportData.owner= self.project?.owners[0]?.name
                      self.reportData.project= self.project
                      self.reportData.contractors = self.project?.members?.filter(val => val.user_type_log === 'CONTRACTING_COMPANY')
                     this.$emit('getReportData', this.reportData)

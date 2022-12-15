@@ -22,7 +22,6 @@ class DesignRequestResource extends JsonResource
             'offices'=> OwnerResource::collection($this->offices),
             'note'=>$this->note,
             'created_at'=>$this->created_at,
-            'description'=>$this->description,
             'status'=>$this->status,
             'is_agreed'=>$this->is_agreed,
             'sent'=>$this->sent,

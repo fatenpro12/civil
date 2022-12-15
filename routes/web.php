@@ -153,8 +153,6 @@ Route::middleware(['auth'])
         
         Route::get('projects/update-status', 'ProjectController@updateStatus');
 
-        Route::get('get-project_info/{id}', 'ProjectController@getProjectInfo');
-
 
         Route::get('projects/mark-favorite', 'ProjectController@markAsFavorite');
 

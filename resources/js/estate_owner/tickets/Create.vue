@@ -172,7 +172,6 @@ export default {
             loading: false,
             title: '',
             request_type: '',
-            description: '',
             status: 'new',
             priority: '',
             customer_id: '',
@@ -275,12 +274,10 @@ export default {
             self.title = '';
             self.request_type = '';
             self.project_id = '';
-            self.description = '';
             self.status = '';
             self.priority = '';
             self.customer_id = '';
             self.office_id = '';
-            // self.request_types=[];
         },
 
         getRequestTypes() {
@@ -317,8 +314,6 @@ export default {
                 title: self.title,
                 request_type: self.request_type,
                 project_id: self.project_id,
-                description: self.description,
-                //  status: 'new',
                 priority: self.priority,
                 customer_id: self.customer_id,
                 office_id: self.office_id,

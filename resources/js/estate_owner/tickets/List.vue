@@ -109,7 +109,7 @@
                     </td>
                     <td>
                         <div align="center">
-                            {{ props.item.customer.name }}
+                            {{ props.item.customer }}
                         </div>
                     </td>
 
@@ -120,9 +120,9 @@
                                 fab
                                 dark
                                 color="teal"
-                                @click="viewProject(props.item.project_id)"
+                                @click="viewProject(props.item.projectId)"
                             >
-                                {{ props.item.project.name }}
+                                {{ props.item.projectName }}
                                 <!-- {{trans('messages.add')}}-->
                             </v-btn>
                         </div>
@@ -282,8 +282,8 @@ export default {
         viewReport(item){
             this.$router.push({name: 'edit_report', 
                                    params:{
-                                   
-                                    id: item.report.media[item.report.media.length-1].full_url//.replace('upload','public/upload')
+                                    id: item.id
+                                  //  id: item.report.media[item.report.media.length-1].full_url?item.report.media[item.report.media.length-1].full_url:item.report.media[item.report.media.length-1].original_url
 
                                    }
         });
