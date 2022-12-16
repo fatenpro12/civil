@@ -38,7 +38,8 @@ class ProjectResource extends JsonResource
             'project_type'=>$this->getFilterData(Project::getProjectTypes(),$this->project_type),
             'using'=> $this->getFilterData(Project::getBuildingUsing(),$this->using),
             'owners' => OwnerResource::collection($this->owners),
-            'members' =>OwnerResource::collection($this->members)
+            'members' =>OwnerResource::collection($this->members),
+            
         ];
     }
     public function getFilterData($array ,$data){

@@ -43,14 +43,11 @@ class DashboardController extends Controller
         array_push($childrens,$user->id);
         //projects stats
         $projects = new Project();
-       //if (!$user->hasRole('superadmin')) {
-          //  $projects = $projects->orWhere('projects.lead_id', $user->id)
-            //        ->orWhereIn('projects.id', $project_ids);
-            $projects = $projects->whereHas('members', function ($q) use ($customer_id,$childrens) {
-                //  $q->where('user_id', $customer_id);
+  
+            $projects = $projects->whereHas('members', function ($q) use ($childrens) {
+           
                   $q->WhereIn('user_id', $childrens);
               });
-       // }
 
       
 

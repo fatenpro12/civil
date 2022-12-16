@@ -88,11 +88,7 @@
                                     :error-messages="errors.collect('enginnering_type')"
                                     required
                                 >
-                                    <!-- <Popover
-                                    slot="append"
-                                    :helptext="trans('messages.project_member_tooltip')"
-                                >
-                                </Popover> -->
+                                
                                 </v-autocomplete>
                             </v-flex>
                         </v-layout>
@@ -168,7 +164,6 @@ export default {
             type: '',
             project_id: '',
             projects: [],
-            visit_request: '',
             loading: false,
             title: '',
             request_type: '',
@@ -191,30 +186,20 @@ export default {
         };
     },
     computed: {
-        computedDateFormattedMomentjs() {
-            const self = this;
-            return null; //self.dead_line_date
-            // ? moment(self.location.instrument_date).format('dddd, MMMM Do YYYY')
-            // : '';
-        },
         computedDateFormattedDatefns() {
             const self = this;
             return self.dead_line_date;
-            // ? format(parseISO(self.location.instrument_date), 'EEEE, MMMM do yyyy')
-            //  : '';
         },
     },
     created() {
         const self = this;
         self.reset();
-        self.project_id = self.project_id = self.$route.params.project_id;
-        self.customer_id = self.customer_id = self.$route.params.customer_id;
+        self.project_id = self.$route.params.project_id;
+        self.customer_id  = self.$route.params.customer_id;
         self.request_type = self.$route.params.request_type;
         self.getRequestTypes();
         self.getCustomerProject();
         self.getCustomers();
-        //self.getpriority();
-        self.getOffices();
         self.getEnginneringTypes();
     },
     beforeDestroy() {
@@ -231,7 +216,6 @@ export default {
     methods: {
          saveLocation(event){
            this.location_id = event
-           console.log(event)
         },
          openLocation(){
             this.$refs.locationInfo.openLocationDialog()
@@ -354,13 +338,14 @@ export default {
         },
         updateEmployee(value) {
             const self = this;
-            self.getProject(value)
-           
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
+                    console.log(response)
                     self.customer_id = response.data.id;
+                     self.getProject(value)
                      self.getOffices();
+                 
                 })
                 .catch(function (error) {
                     console.log(error);

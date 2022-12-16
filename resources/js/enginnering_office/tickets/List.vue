@@ -1,12 +1,8 @@
 
 <!-- For customer -->
 <template>
-    <v-container grid-list-md :class="$vuetify.breakpoint.xsOnly?'':''">
-        <AcceptEnginneringOfficeModal
-            ref="acceptenginneringoffice"
-            @next="getAllProjectRequest($event)"
-        />
-        <AcceptingEnginnerModal ref="acceptenginner" @next="getAllProjectRequest($event)" />
+   <!-- <v-container grid-list-md :class="$vuetify.breakpoint.xsOnly?'':''">
+
 <ViewVisitRequest ref="viewVisitRequest"></ViewVisitRequest>
         <v-card class="mt-3">
             <v-card-title primary-title xs8 sm8>
@@ -48,7 +44,7 @@
                                 <v-icon color="white">info</v-icon>
                             </v-btn>
 
-                            <!-- v-if="$can('superadmin')" -->
+                          
                             <div>
                                 <v-btn
                                     color="primary"
@@ -59,7 +55,7 @@
                                     @click="acceptProject(props.item)"
                                 >
                                     <v-icon color="white">check</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                  
                                 </v-btn>
                             </div>
                             <div>
@@ -79,11 +75,11 @@
                                     @click="acceptRequestByEnginner(props.item)"
                                 >
                                     <v-icon color="white">check</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                   
                                 </v-btn>
                             </div>
 
-                            <!-- v-if="!$can('superadmin')" -->
+                      
 
                             <v-btn
                                 color="error"
@@ -94,7 +90,7 @@
                                 @click="rejectProject(props.item.id)"
                             >
                                 <v-icon color="white">cancel</v-icon>
-                                <!-- {{trans('messages.cancel')}}-->
+                              
                             </v-btn>
 
                             <v-btn
@@ -112,7 +108,7 @@
                                 @click="createReport(props.item)"
                             >
                                 <v-icon color="white"> list </v-icon>
-                                <!-- {{trans('messages.cancel')}}-->
+                             
                             </v-btn>
                         </div>
                     </td>
@@ -122,15 +118,7 @@
                         </div>
                     </td>
 
-                    <!-- <td>
-                        <div align="center">
-                            {{
-                                props.item.is_cheaked != undefined
-                                    ? props.item.is_cheaked
-                                    : 'undefined'
-                            }}
-                        </div>
-                    </td> -->
+                    
                     <td>
                         <div align="center">
                             <v-chip
@@ -166,7 +154,7 @@
                             >
                                 {{ props.item.projectName }}
 
-                                <!-- {{trans('messages.add')}}-->
+                             
                             </v-btn>
                             <span v-else> {{ props.item.projectName }}</span>
                         </div>
@@ -196,17 +184,93 @@
             </v-btn>
         </div>
         <br />
-    </v-container>
+    </v-container>-->
+    <div>
+                <AcceptEnginneringOfficeModal
+            ref="acceptenginneringoffice"
+            @next="getAllProjectRequest($event)"
+        />
+        <AcceptingEnginnerModal ref="acceptenginner" @next="getAllProjectRequest($event)" />
+<VisitRequest url="enginner_office/get-office-requests" :params="{'projectId':id}">
+<template #actions="{props}">
+      <div>
+                                <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="props.item.status == 'sent'"
+                                    :disabled="!checkActive()"
+                                    @click="acceptProject(props.item)"
+                                >
+                                    <v-icon color="white">check</v-icon>
+                                  
+                                </v-btn>
+                            </div>
+                            <div>
+                                <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    v-if="
+                                        props.item.request_enginners != undefined
+                                            ? props.item.request_enginners.filter(
+                                                  (x) =>
+                                                      x.user_id == currentUser && x.is_cheaked == 0
+                                              ).length > 0
+                                            : false
+                                    "
+                                    :disabled="!checkActive()"
+                                    @click="acceptRequestByEnginner(props.item)"
+                                >
+                                    <v-icon color="white">check</v-icon>
+                                   
+                                </v-btn>
+                            </div>
+
+                      
+
+                            <v-btn
+                                color="error"
+                                v-if="props.item.status == 'sent'"
+                                small
+                                fab
+                                :disabled="!checkActive()"
+                                @click="rejectProject(props.item.id)"
+                            >
+                                <v-icon color="white">cancel</v-icon>
+                              
+                            </v-btn>
+
+                            <v-btn
+                                color="primary"
+                                v-if="
+                                    props.item.request_enginners != undefined
+                                        ? props.item.request_enginners.filter(
+                                              (x) => x.user_id == currentUser && x.is_cheaked == 1
+                                          ).length > 0
+                                        : false
+                                "
+                                small
+                                fab
+                                :disabled="!checkActive()"
+                                @click="createReport(props.item)"
+                            >
+                                <v-icon color="white"> list </v-icon>
+                             
+                            </v-btn>
+</template>
+</VisitRequest>
+    </div>
 </template>
 <script>
-import AcceptEnginneringOfficeModal from './AcceptEnginneringOfficeModal.vue';
-import AcceptingEnginnerModal from './AcceptingEnginnerModal.vue';
-import ViewVisitRequest from './view_visit_request';
+import AcceptEnginneringOfficeModal from '../../common/visit-request/AcceptEnginneringOfficeModal.vue';
+import AcceptingEnginnerModal from '../../common/visit-request/AcceptingEnginnerModal.vue';
+import VisitRequest from '../../common/visit-request/List'
 export default {
     components: {
         AcceptEnginneringOfficeModal: AcceptEnginneringOfficeModal,
         AcceptingEnginnerModal: AcceptingEnginnerModal,
-        ViewVisitRequest
+        VisitRequest
     },
     props: {
         id: {
@@ -218,185 +282,13 @@ export default {
         return {
             currentUser: '',
             projects: [],
-            total_items: 0,
             loading: false,
-            pagination: { totalItems: 0 },
-            enginnering_types: [],
-            projectRequests: [],
-            request_types: [],
-            headers: [
-                {
-                    text: self.trans('messages.action'),
-                    value: false,
-                    align: 'center',
-                    sortable: false,
-                },
-                {
-                    text: self.trans('data.id'),
-                    value: false,
-                    align: 'center',
-                    sortable: true,
-                },
-                {
-                    text: self.trans('messages.status'),
-                    value: 'status',
-                    align: 'center',
-                    sortable: true,
-                },
-                {
-                    text: self.trans('messages.customer'),
-                    value: 'customer',
-                    align: 'center',
-                    sortable: true,
-                },
-           
-                {
-                    text: self.trans('data.project_name'),
-                    value: 'project_name',
-                    align: 'center',
-                    sortable: true,
-                },
-                {
-                    text: self.trans('data.enginnering_type'),
-                    value: 'enginnering_type',
-                    align: 'center',
-                    sortable: true,
-                },
-
-                {
-                    text: self.trans('messages.created_at'),
-                    value: 'created_at',
-                    align: 'center',
-                    sortable: true,
-                },
-            ],
-            customername: '',
-            items: [],
-            employees: [],
-            ticket_types: [],
-            statuses: [],
-            filters: [],
-            customers: [],
-            priorities: [],
-            tabs: 'tab-1',
-            ticket_stats: [],
-            type: '',
-            project_name: '',
         };
     },
-    watch: {
-        pagination: {
-            handler() {
-                // this.getTicketFromApi();
-                //  this.getAllProjectRequest();
-            },
-        },
-    },
-    mounted() {
-        const self = this;
-        self.getCurrentUser();
-    
-        self.$eventBus.$on('updateTicketsTable', (data) => {
-            self.projectRequest = [];
-            self.projects = [];
-            self.getAllProjectRequest();
-        });
-    },
-    beforeDestroy() {
-        const self = this;
-        self.$eventBus.$off('updateTicketsTable');
-    },
-    created() {
-        const self = this;
-        self.projectRequests = [];
-        self.projects = [];
-        self.getRequestTypes();
-        this.getAllProjectRequest();
-    },
+mounted(){
+ this.currentUser= this.getCurrentUser().id
+},
     methods: {
-
-        getRequestTypes() {
-            const self = this;
-            axios
-                .get('/get-request-types')
-                .then(function (response) {
-                    self.request_types = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        sendRequest(request) {
-            const self = this;
-            self.$store.commit('showDialog', {
-                type: 'confirm',
-                icon: 'warning',
-                title: self.trans('messages.are_you_sure'),
-                okCb: () => {
-                    axios
-                        .post('confirm-send', { request_id: request.id })
-                        .then(function (response) {
-                            self.projectRequest = [];
-                            self.projects = [];
-                            self.$store.commit('showSnackbar', {
-                                message: response.data.data,
-                                color: 'green',
-                            });
-                            self.getAllProjectRequest();
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                cancelCb: () => {
-                    console.log('CANCEL');
-                },
-            });
-        },
-        editRequest(request) {
-            this.$router.push({
-                name: 'edit_visit_request_enginner_office_list',
-                params: { id: request.id },
-            });
-        },
-        viewRequest(request) {
-          /*  this.$router.push({
-                name: 'view_visit_enginner_office_request_list',
-                params: { id: request.id },
-            });*/
-             this.$refs.viewVisitRequest.create(request.id)
-        },
-
-        getType(visit) {
-            const self = this;
-            return self.request_types.find((o) => o.key == visit).value;
-        },
-        getProject(project_id) {
-            const self = this;
-            axios
-                .get('/get-project/' + project_id)
-                .then(function (response) {
-                    self.project_name = response.data.name;
-                    console.log(self.project_name);
-                })
-                .catch(function (error) {
-                    // self.project_name= '-';
-                });
-            return self.project_name;
-        },
-        getVisitRequestType(id) {
-            const self = this;
-            axios
-                .get('/visit-request-type/' + id)
-                .then(function (response) {
-                    self.type = response.data.data;
-                })
-                .catch(function (error) {
-                    self.type = '-';
-                });
-            return self.type;
-        },
-  
         rejectProject(request_id) {
             const self = this;
             self.$store.commit('showDialog', {
@@ -463,127 +355,6 @@ export default {
                 cancelCb: () => {
                     console.log('CANCEL');
                 },
-            });
-        },
-
-        getCustomer(id) {
-            const self = this;
-            axios
-                .get('/get-Customer-name/' + id)
-                .then(function (response) {
-                    self.customername = response.data.data;
-                })
-                .catch(function (error) {
-                    self.customername = '-';
-                });
-            return self.customername;
-        },
-        getAllProjectRequest() {
-            const self = this;
-            self.loading = true;
-                 let params = {};
-            params['projectId'] = self.id;
-         
-            axios
-                .get('enginner_office/get-office-requests', { params: params })
-                .then(function (response) {
-                 //   self.total_items = response.data.data.length;
-                    //   self.projectRequests = response.data.data;
-                    self.projects = response.data;
-                    self.loading = false;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        removeVisitRequest(id) {},
-        getTicketFromApi() {
-            const self = this;
-            self.loading = true;
-            const { sortBy, descending, page, rowsPerPage } = self.pagination;
-            var params = {
-                sort_by: sortBy,
-                descending: descending,
-                page: page,
-                rowsPerPage: rowsPerPage,
-            };
-
-            if (self.filters.assigned_to) {
-                params['assigned_to'] = self.filters.assigned_to;
-            }
-
-            if (self.filters.category_id) {
-                params['category_id'] = self.filters.category_id;
-            }
-
-            if (self.filters.priority) {
-                params['priority'] = self.filters.priority;
-            }
-
-            if (self.filters.status) {
-                params['status'] = self.filters.status;
-            }
-
-            if (self.filters.customer_id) {
-                params['customer_id'] = self.filters.customer_id;
-            }
-
-            axios
-                .get('/tickets', {
-                    params: params,
-                })
-                .then(function (response) {
-                    self.total_items = response.data.total;
-                    self.items = response.data.data;
-                    self.loading = false;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        deleteTicket(ticket) {
-            const self = this;
-            self.$store.commit('showDialog', {
-                type: 'confirm',
-                icon: 'warning',
-                title: self.trans('messages.are_you_sure'),
-                message: self.trans('messages.you_cant_restore_it'),
-                okCb: () => {
-                    axios
-                        .delete('/tickets/' + ticket.id)
-                        .then(function (response) {
-                            self.$store.commit('showSnackbar', {
-                                message: response.data.msg,
-                                color: response.data.success,
-                            });
-                            if (response.data.success === true) {
-                                //   self.getTicketFromApi();
-                                // self.getStatistics();
-                                //self.getFilters();
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                cancelCb: () => {
-                    console.log('CANCEL');
-                },
-            });
-        },
-
-        getCurrentUser() {
-            const self = this;
-            axios.get('/get-current-user', {}).then(function (response) {
-                if (!response.data.error_code) {
-                    self.currentUser = response.data.data.original.id;
-                } else {
-                    self.$store.commit('hideLoader');
-                    self.$store.commit('showSnackbar', {
-                        message: response.data.error_description,
-                        color: 'red',
-                    });
-                }
             });
         },
 

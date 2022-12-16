@@ -147,7 +147,7 @@ export default {
             axios
                 .get('/get-project/'+ project_id)
                 .then(function (response) {
-                    self.project  = response.data;
+                    self.project  = response.data.data;
                 })
                 .catch(function (error) {
                     console.log(error);

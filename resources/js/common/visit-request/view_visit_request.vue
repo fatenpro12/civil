@@ -11,11 +11,11 @@
     <dl>
       <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-md font-medium text-gray-500">{{trans('data.project_name')}}</dt>
-        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ projects.find(x => x.id == project_id)?projects.find(x => x.id == project_id).name:'' }}</dd>
+        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ project_name }}</dd>
       </div>
       <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-md font-medium text-gray-500">{{trans('messages.customer')}}</dt>
-        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ customers.find(x => x.id == customer_id)?customers.find(x => x.id == customer_id).name:'' }}</dd>
+        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ customer }}</dd>
       </div>
       <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-md font-medium text-gray-500">{{ trans('data.visit_datetime') }}</dt>
@@ -30,10 +30,7 @@
         <dt class="text-md font-medium text-gray-500">{{ trans('data.note') }}</dt>
         <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ note }}</dd>
       </div>
-         <!-- <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-md font-medium text-gray-500">{{trans('data.location_info')}}</dt>
-        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0"><span v-if="location">{{ location.province_municipality+'-'+design.location.municipality+'-'+ design.location.category+'-'+ design.location.plan_id}}</span></dd>
-      </div>-->
+
           <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-md font-medium text-gray-500">{{ trans('data.enginnering_office_name') }}</dt>
         <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ offices[0]?offices[0].name:'' }}</dd>
@@ -68,61 +65,20 @@
 export default {
     data() {
         return {
-            type: '',
-            isView: false,
             propRequestId: null,
              dialog: false,
-            project_id: '',
-            projects: [],
-            enginnering_types: [],
-            visit_request: null,
+            project_name: '',
             loading: false,
-            title: '',
             request_type: '',
-            project_id: '',
-            description: '',
-            status: 'new',
-            priority: '',
-            customer_id: '',
-            statuses: [],
-            employees: [],
-            request_types: [],
-            customers: [],
-            priorities: [],
-            request_type: '',
-            engennering_offices: [],
-            office_id: '',
+            customer: '',
             dead_line_date: null,
             note: '', //
             enginnering_type: '',
-            enginnering_request: '',
              request_enginners: [],
              offices:[],
-             location: null
         };
     },
-    created() {
-        const self = this;
-       // self.getEnginners();
-        
-    },
-    beforeDestroy() {
-        const self = this;
-        self.$eventBus.$off('updateCategoryList');
-    },
-    mounted() {
-     /*   const self = this;
 
-        self.getCustomerProject();
-        self.getCustomers();
-        self.getOffices();
-        this.loadRequest(() => {});*/
-
-      //  self.$eventBus.$on('updateRequestTypeList', (data) => {
-            //  self.request_types = [];
-            // self.request_types = data;
-     //   });
-    },
     methods: {
         getEnginners() {
             const self = this;
@@ -135,27 +91,20 @@ export default {
    this.propRequestId =data
            const self = this;
 self.getEnginners();
-        self.getCustomerProject();
-        self.getCustomers();
-        self.getOffices();
         this.loadRequest(() => {});
         },
         loadRequest() {
             const self = this;
             axios.get('request/' + self.propRequestId).then(function (response) {
+              console.log(response.data.msg)
                 if (response.data.success) {
                     var tem = response.data.msg;
-                   self.enginnering_type = tem.request.specialties!= undefined ? tem.request.specialties.map(x=>x.name).join(','):'';
-                    self.request_types = tem.request_types;
+                   self.enginnering_type = tem.request.specialties? tem.request.specialties.map(x=>x.name).join(','):'';
                     self.request_type = tem.request.request_type;
-                    self.project_id = tem.request.project_id;
-                    self.description = tem.request.description;
-                    self.status = tem.request.status;
-                    self.customer_id = tem.request.customer_id;
-                    self.office_id = tem.request.office_id;
+                    self.project_name = tem.request.projectName;
+                    self.customer = tem.request.customer;
                     self.offices = tem.request.offices;
                     self.note = tem.request.note;
-                    self.location =  tem.request.location
                     self.dead_line_date = tem.request.dead_line_date;
                 } else {
                     self.$store.commit('showSnackbar', {
@@ -165,54 +114,7 @@ self.getEnginners();
                 }
             });
         },
-        getCustomers() {
-            const self = this;
-            axios
-                .get('/estate_owner/customers')
-                .then(function (response) {
-                    self.customers = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        getOffices() {
-            const self = this;
-            axios
-                .get('/get-offices')
-                .then(function (response) {
-                    self.engennering_offices = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
 
-        reset() {
-            const self = this;
-            self.title = '';
-            self.request_type = '';
-            self.project_id = '';
-            self.description = '';
-            self.status = '';
-            self.priority = '';
-            self.customer_id = '';
-            self.office_id = '';
-            self.note = ''; //
-            self.enginnering_type = '';
-        },
-
-        getCustomerProject() {
-            const self = this;
-            axios
-                .get('/projects-customer')
-                .then(function (response) {
-                    self.projects = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
     },
 };
 </script>

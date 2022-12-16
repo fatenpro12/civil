@@ -41,14 +41,12 @@ class DashboardController extends Controller
         $customer_id = $user->id;//request()->get('customer_id');
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
-        //projects stats
-        $projects = new Project();
-       //if (!$user->hasRole('superadmin')) {
-          //  $projects = $projects->orWhere('projects.lead_id', $user->id)
-            //        ->orWhereIn('projects.id', $project_ids);
 
-            $projects = $projects->whereHas('members', function ($q) use ($customer_id,$childrens) {
-                //  $q->where('user_id', $customer_id);
+        $projects = new Project();
+
+
+            $projects = $projects->whereHas('members', function ($q) use ($childrens) {
+                
                   $q->WhereIn('user_id', $childrens);
               });
 
@@ -73,7 +71,7 @@ class DashboardController extends Controller
                 ->where('ptm.user_id', $user->id);
         }
         if (!empty($customer_id)) {
-            $task_counts->where('customer_id', $customer_id);
+         //   $task_counts->where('customer_id', $customer_id);
         }
         $task_counts = $task_counts->select(
             DB::raw('COALESCE(SUM(IF(is_completed = 1, 0, 1)), 0) as incompleted'),
@@ -167,23 +165,6 @@ class DashboardController extends Controller
             ->get();
 
 
-        //Ticket Pie Chart
-      /*  $tickets = Ticket::select('status', DB::raw("COUNT(id) as status_count"));
-
-        if ($user->hasRole('employee') && !$user->hasRole('superadmin')) {
-            $tickets->where('tickets.assigned_to', $user->id);
-        }
-        $tickets = $tickets->groupBy('status')
-                            ->get();
-
-        $ticket_pie_chart_label = [];
-        $ticket_pie_chart_dataset = [];
-        foreach ($tickets as $key => $ticket) {
-            $ticket_pie_chart_label[] = __('messages.'.$ticket->status);
-            $ticket_pie_chart_dataset[] = $ticket->status_count;
-        }*/
-
-        //TRANSACTION:invoice paid vs expense pie chart
         $invoice = Transaction::OfTransaction('invoice')
                             ->where('status', 'final')
                             ->leftjoin('transaction_payment_lines as tpl', 'transactions.id', '=', 'tpl.transaction_id')
@@ -213,10 +194,7 @@ class DashboardController extends Controller
                 'business_currency' => $business_currency,
                 'payment_status_count' => $payment_status_count,
                 'sticky_notes' => $user->sticky_notes,
-              //  'ticket_pie_chart_label' => $ticket_pie_chart_label,
-              //  'ticket_pie_chart_dataset' => $ticket_pie_chart_dataset,
-               //// 'transaction_pie_chart_label' => $transaction_pie_chart_label,
-               // 'transaction_pie_chart_datasets' => $transaction_pie_chart_datasets
+           
             ];
 
         return $dashboard_data;

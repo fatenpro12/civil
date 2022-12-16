@@ -875,33 +875,25 @@ public function getProjectsOffice(Request $request)
 
 
 
-    public function getCustomerProject(Request $request)
+    public function getCustomerProject()
     {
         $user=User::find(request()->user()->id);
+        
           $childrens=$user->childrenIds($user->id);
          array_push($childrens,$user->id);
         if (!$user->hasRole('superadmin')) { 
         $projects=Project::select('id', 'name')
-                        ->whereIn('customer_id',$childrens)
-                        ->get()
-                        ->toArray();
-  //      $projectRequest=ProjectRequest::select('id', 'name')
-    //                                   ->where('customer_id',$user->customer_id)
-      //                                 ->get()
-        //                               ->toArray();
+        ->whereHas('owners',function($q) use ($childrens){
+            $q->whereIn('owner_id',$childrens);
+        })->get()
+        ->toArray();
         }else{
             $projects=Project::select('id', 'name')
                         ->get()
                         ->toArray();
-   //         $projectRequest=ProjectRequest::select('id', 'name')
-     //                   ->get()
-       //                 ->toArray();
+  
         }
-    //    return array_merge($projects,$projectRequest);
     
-                // $projects=Project::select('id', 'name')
-                // ->get()
-                // ->toArray();
         return $projects;
     }
 
@@ -1315,7 +1307,7 @@ public function getProjectsOffice(Request $request)
    }
 
    public function  getProject ($id){
-    $project=Project::with('owners', 'media','members', 'location','report', 'report.type')->find($id);
+    $project=Project::with('owners', 'media','members', 'location','report', 'report.type','location')->find($id);
     
     return new ProjectResource($project);
    }

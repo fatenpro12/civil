@@ -17,7 +17,7 @@ import EnginneringOfficeToDoList from '../enginnering_office/main/ToDoList'
 import AddCustomer from '../enginnering_office/users/components/AddCustomer'
 import EnginneringOfficeUserLists from '../enginnering_office/users/components/UserLists'
 import EnginneringOfficeUserFormAdd from '../enginnering_office/users/components/UserFormAdd'
-import ViewVisitRequest from '../estate_owner/tickets/view_visit_request'
+import ViewVisitRequest from '../common/visit-request/view_visit_request'
 import ProjectManagement from '../estate_owner/main/components/ProjectManagement'
 import TasksList from '../common/tasks/List'
 import DesignRequestList from '../estate_owner/designRequest/List'
@@ -30,8 +30,8 @@ import SupportServiceRequestListReciving from '../supportService/supportServiceR
 import ShowDesignRequestReport from '../common/design-request/showDesignRequestReport';
 import UserFormEdit from '../estate_owner/users/components/UserFormEdit';
 import TicketsList from '../estate_owner/tickets/List';
-import TicketsCreate from '../estate_owner/tickets/Create'
-import EditVisitRequest from '../estate_owner/tickets/editVisitRequest';
+import TicketsCreate from '../common/visit-request/Create'
+import EditVisitRequest from '../common/visit-request/editVisitRequest';
 //import EnginneringOfficeProjectList from '../enginnering_office/projects/components/List';
 import EnginneringOfficeProjectManagement from '../enginnering_office/main/components/ProjectManagement';
 import EnginneringOfficeTasksList from '../enginnering_office/tasks/List';

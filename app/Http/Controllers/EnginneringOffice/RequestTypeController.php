@@ -410,38 +410,16 @@ class RequestTypeController extends  Controller
 
     public function getProjectRequests(Request $request)
     {
-        //         $user=User::find(request()->user()->id);
-        //         $childrens=$user->childrenIds($user->id);
-        //        array_push($childrens,$user->id);
-        //       if (!$user->hasRole('superadmin')) { 
-        //       $projects=Project::select('id', 'name')
-        //                       ->whereIn('customer_id',$childrens)
-        //                       ->get()
-        //                       ->toArray();
-        // //      $projectRequest=ProjectRequest::select('id', 'name')
-        //   //                                   ->where('customer_id',$user->customer_id)
-        //     //                                 ->get()
-        //       //                               ->toArray();
-        //       }else{
-        //           $projects=Project::select('id', 'name')
-        //                       ->get()
-        //                       ->toArray();
-        //  //         $projectRequest=ProjectRequest::select('id', 'name')
-        //    //                   ->get()
-        //      //                 ->toArray();
-        //       }
-        //   //    return array_merge($projects,$projectRequest);
-
-        //               // $projects=Project::select('id', 'name')
-        //               // ->get()
-        //               // ->toArray();
+ 
         $user = $request->user();
         $projects = Project::select('id', 'name');
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
             $projects = $projects->whereHas('members', function ($q) use ($childrens) {
                 $q->WhereIn('user_id', $childrens);
-            })->orWhere('customer_id', $user->id);
+            })->orWhereHas('owners', function($q) use ($user){
+                $q->where('owner_id',$user->id);
+            });
         $projects = $projects
             ->get()
             ->toArray();
