@@ -779,20 +779,8 @@ public function getProjectsOffice(Request $request)
         return $projects;
     }
 
-    /**
-     * Get Customer for the
-     * Project.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return $customer_id
-     */
-    public function getCustomerId($id)
-    {
-        $project = Project::find($id);
+ 
 
-        return $project;
-    }
 
     /**
      * get project statistics
@@ -1317,8 +1305,8 @@ public function getProjectsOffice(Request $request)
    public function getCustomer($id){
       
         $project=Project::find($id);
-        $user =User::find($project->customer_id);
-        return $user;
+        $owners = $project->owners;
+        return $owners;
    }
 
 

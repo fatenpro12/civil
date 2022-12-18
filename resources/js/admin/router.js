@@ -36,7 +36,7 @@ import EditVisitRequest from '../common/visit-request/editVisitRequest';
 import EnginneringOfficeProjectManagement from '../enginnering_office/main/components/ProjectManagement';
 import EnginneringOfficeTasksList from '../enginnering_office/tasks/List';
 import EnginneringOfficeTasks from '../enginnering_office/tasks/Tasks';
-import EnginneringOfficeViewVisitRequest from '../enginnering_office/tickets/view_visit_request';
+import EnginneringOfficeViewVisitRequest from '../common/tickets/view_visit_request';
 import EnginneringOfficeTicketsCreate from '../enginnering_office/tickets/Create';
 import EnginneringOfficeTicketsList from '../enginnering_office/tickets/List';
 import EnginneringOfficeRoleEdit from '../enginnering_office/users/components/RoleEdit';

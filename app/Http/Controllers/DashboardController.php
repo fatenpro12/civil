@@ -46,8 +46,8 @@ class DashboardController extends Controller
        //if (!$user->hasRole('superadmin')) {
           //  $projects = $projects->orWhere('projects.lead_id', $user->id)
             //        ->orWhereIn('projects.id', $project_ids);
-            $projects = $projects->whereHas('members', function ($q) use ($customer_id,$childrens) {
-                //  $q->where('user_id', $customer_id);
+            $projects = $projects->whereHas('members', function ($q) use ($childrens) {
+            
                   $q->WhereIn('user_id', $childrens);
               });
        // }
@@ -73,7 +73,7 @@ class DashboardController extends Controller
                 ->where('ptm.user_id', $user->id);
         }
         if (!empty($customer_id)) {
-            $task_counts->where('customer_id', $customer_id);
+         //   $task_counts->where('customer_id', $customer_id);
         }
         $task_counts = $task_counts->select(
             DB::raw('COALESCE(SUM(IF(is_completed = 1, 0, 1)), 0) as incompleted'),

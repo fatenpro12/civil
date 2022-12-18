@@ -188,17 +188,18 @@
     <div>
                 <AcceptEnginneringOfficeModal
             ref="acceptenginneringoffice"
-            @next="getAllProjectRequest($event)"
+            @next="$refs.visitRequest.getAllProjectRequest($event)"
         />
-        <AcceptingEnginnerModal ref="acceptenginner" @next="getAllProjectRequest($event)" />
-<VisitRequest url="enginner_office/get-office-requests" :params="{'projectId':id}">
+        <AcceptingEnginnerModal ref="acceptenginner" @next="$refs.visitRequest.getAllProjectRequest($event)" />
+<VisitRequest ref="visitRequest" url="enginner_office/get-office-requests" :params="{'projectId':id}">
 <template #actions="{props}">
       <div>
                                 <v-btn
                                     color="primary"
                                     small
                                     fab
-                                    v-if="props.item.status == 'sent'"
+                                    v-if="props.item.status == 'sent' &&
+                                     props.item.offices[0].id == currentUser"
                                     :disabled="!checkActive()"
                                     @click="acceptProject(props.item)"
                                 >
@@ -231,7 +232,8 @@
 
                             <v-btn
                                 color="error"
-                                v-if="props.item.status == 'sent'"
+                                v-if="props.item.status == 'sent'&&
+                                     props.item.offices[0].id == currentUser"
                                 small
                                 fab
                                 :disabled="!checkActive()"
@@ -308,7 +310,7 @@ mounted(){
 
                                 self.projectRequest = [];
                                 self.projects = [];
-                                self.getAllProjectRequest();
+                                self.$refs.visitRequest.getAllProjectRequest();
                             }
                         })
                         .catch(function (error) {

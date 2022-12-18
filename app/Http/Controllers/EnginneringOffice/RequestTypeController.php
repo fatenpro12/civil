@@ -53,19 +53,21 @@ class RequestTypeController extends  Controller
         $user = User::find(request()->user()->id);
         $requests = [];
 
-        //if (!$user->is_emp ) 
         if($user->hasRole('Engineering Office Manager')){
+            $childrens=$user->childrenIds($user->id);
+            array_push($childrens,$user->id);
             $requests =  VisitRequest::with('customer', 'project', 'specialties', 'offices','report','report.media')->where('request_type', 'visit_request')
-                ->whereHas('offices', function ($q) use ($user) {
+            ->WhereIn('status', ['new','sent', 'rejected', 'accepted'])
+            ->whereIn('customer_id', $childrens)
+            ->orWhereHas('offices', function ($q) use ($user) {
                     $q->where('office_id', $user->id); //->orWhere('office_id', $user->parent_id);
-                })
-                ->WhereIn('status', ['sent', 'rejected', 'accepted']);
+                });
             if (!empty($project_id)) {
                 $requests = $requests->where('project_id', $project_id);
             }
 
             $requests = $requests->get();
-        } else if ($user->is_emp ) {
+        } else if ($user->is_emp == 1) {
             $id = $user->id;
             $requests = VisitRequest::with('customer', 'project', 'specialties', 'requestEnginners', 'offices','report')->where('request_type', 'visit_request')
             ->whereHas('requestEnginners', function ($q) use ($id) {

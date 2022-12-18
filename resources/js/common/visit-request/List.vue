@@ -46,7 +46,42 @@
                                 <v-icon color="white">info</v-icon>
                             </v-btn>
                             <slot name="actions" :props="props" />
-                          
+                              <v-btn
+                                v-if="props.item.status == 'new'"
+                                :disabled="!checkActive()"
+                                small
+                                fab
+                                color="success"
+                                @click="editRequest(props.item)"
+                            >
+                                <v-icon color="white">edit</v-icon>
+                            </v-btn>
+                     
+                            <div>
+                                <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    :disabled="!checkActive()"
+                                    v-if="props.item.sent == 0 && props.item.status == 'new'"
+                                    @click="sendRequest(props.item)"
+                                >
+                                    <v-icon color="white">mail</v-icon>
+                                    <!--{{trans('data.accept')}}-->
+                                </v-btn>
+                            </div>
+
+                            <v-btn
+                                color="error"
+                                :disabled="!checkActive()"
+                                v-if="props.item.status == 'new' || props.item.status == 'rejected'"
+                                small
+                                fab
+                                @click="removeProject(props.item.id)"
+                            >
+                                <v-icon color="white">delete</v-icon>
+                                <!-- {{trans('messages.cancel')}}-->
+                            </v-btn>
                         </div>
                     </td>
                     <td>
@@ -223,7 +258,13 @@ default: null
                                    }
         });
         },
-        sendRequest(request) {
+              editRequest(request) {
+            this.$router.push({
+                name: 'edit_visit_request_estate_list',
+                params: { id: request.id },
+            });
+        },
+             sendRequest(request) {
             const self = this;
             self.$store.commit('showDialog', {
                 type: 'confirm',
@@ -250,42 +291,7 @@ default: null
                 },
             });
         },
-        editRequest(request) {
-            this.$router.push({
-                name: 'edit_visit_request_estate_list',
-                params: { id: request.id },
-            });
-        },
-        viewRequest(request) {
-     
-            this.$refs.viewVisitRequest.create(request.id)
-        },
-        getProject(project_id) {
-            const self = this;
-            axios
-                .get('/get-project/' + project_id)
-                .then(function (response) {
-                    self.project_name = response.data.name;
-                    console.log(self.project_name);
-                })
-                .catch(function (error) {
-                    // self.project_name= '-';
-                });
-            return self.project_name;
-        },
-        getVisitRequestType(id) {
-            const self = this;
-            axios
-                .get('/visit-request-type/' + id)
-                .then(function (response) {
-                    self.type = response.data.data;
-                })
-                .catch(function (error) {
-                    self.type = '-';
-                });
-            return self.type;
-        },
-        removeProject(id) {
+           removeProject(id) {
             const self = this;
             self.$store.commit('showDialog', {
                 type: 'confirm',
@@ -314,6 +320,24 @@ default: null
                 },
             });
         },
+
+        viewRequest(request) {
+     
+            this.$refs.viewVisitRequest.create(request.id)
+        },
+        getVisitRequestType(id) {
+            const self = this;
+            axios
+                .get('/visit-request-type/' + id)
+                .then(function (response) {
+                    self.type = response.data.data;
+                })
+                .catch(function (error) {
+                    self.type = '-';
+                });
+            return self.type;
+        },
+     
 
         getAllProjectRequest() {
             const self = this;

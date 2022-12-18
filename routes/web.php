@@ -148,7 +148,7 @@ Route::middleware(['auth'])
 
         Route::get('projects-statistics', 'ProjectController@getStatistics');
         Route::get('projects-customer', 'ProjectController@getCustomerProject');
-        Route::get('projects/{id}/customer', 'ProjectController@getCustomerId');
+      
         Route::get('projects/projects-list', 'ProjectController@getProjectsList');
         
         Route::get('projects/update-status', 'ProjectController@updateStatus');

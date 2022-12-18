@@ -70,7 +70,7 @@ class DashboardController extends Controller
                 ->where('ptm.user_id', $user->id);
         }
         if (!empty($customer_id)) {
-            $task_counts->where('customer_id', $customer_id);
+           $task_counts->where('customer_id', $customer_id);
         }
         $task_counts = $task_counts->select(
             DB::raw('COALESCE(SUM(IF(is_completed = 1, 0, 1)), 0) as incompleted'),

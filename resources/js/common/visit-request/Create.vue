@@ -29,7 +29,7 @@
                                     item-text="name"
                                     item-value="id"
                                     :items="customers"
-                                    :readonly="true"
+                                 
                                     v-model="customer_id"
                                     :label="trans('messages.customer')"
                                     :rules="[
@@ -199,7 +199,6 @@ export default {
         self.request_type = self.$route.params.request_type;
         self.getRequestTypes();
         self.getCustomerProject();
-        self.getCustomers();
         self.getEnginneringTypes();
     },
     beforeDestroy() {
@@ -220,7 +219,7 @@ export default {
          openLocation(){
             this.$refs.locationInfo.openLocationDialog()
         },
-        getCustomers() {
+       /* getCustomers() {
             const self = this;
             axios
                 .get('/estate_owner/customers')
@@ -230,9 +229,10 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-        },
+        },*/
         getOffices() {
             const self = this;
+            console.log(self.project)
             axios
                 .get('/get-offices')
                 .then(function (response) {
@@ -341,11 +341,10 @@ export default {
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    console.log(response)
-                    self.customer_id = response.data.id;
-                     self.getProject(value)
-                     self.getOffices();
-                 
+                    self.customer_id = response.data[0].id;
+                    self.getProject(value)
+                    self.customers = response.data
+                    self.getOffices();
                 })
                 .catch(function (error) {
                     console.log(error);

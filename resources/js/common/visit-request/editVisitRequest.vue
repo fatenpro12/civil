@@ -147,7 +147,6 @@ export default {
             valid: true,
             id: '',
             type: '',
-            isView: false,
             projects: [],
             enginnering_types: [],
             visit_request: null,
@@ -213,7 +212,6 @@ export default {
                 self.request_types = tmp.request_types;
                 self.request_type = tmp.request.request_type;
                 self.project_id = tmp.request.projectId;
-                self.description = tmp.request.description;
                 self.status = tmp.request.status;
                 self.customer_id = tmp.request.customer_id;
                 self.office_id =tmp.request.offices[0];
@@ -223,8 +221,13 @@ export default {
         },
         getCustomers() {
             const self = this;
+            let link = ''
+            if(self.getCurrentUser().user_type_log == 'ESTATE_OWNER')
+             link = '/estate_owner/customers'
+             else if(self.getCurrentUser().user_type_log == 'ENGINEERING_OFFICE_MANAGER')
+             link ='/enginner_office/customers' 
             axios
-                .get('/estate_owner/customers')
+                .get(link)
                 .then(function (response) {
                     self.customers = response.data;
                 })
@@ -278,7 +281,8 @@ export default {
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.customer_id = response.data.id;
+                    self.customer_id = response.data[0].id;
+                 //   self.customers = response.data
                 })
                 .catch(function (error) {
                     console.log(error);

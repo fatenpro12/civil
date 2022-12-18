@@ -238,13 +238,13 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
-            self.getProject(value)
+            
            
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.design.customer_id = response.data.id;
-                    
+                    self.design.customer_id = response.data[0].id;
+                    self.getProject(value)
                      self.getOffices();
                 })
                 .catch(function (error) {
