@@ -160,7 +160,7 @@ if(event.find(val => val === 'all_offices')){
         create(data) {
             const self = this;
             self.design =data 
-            console.log(data)
+           
             self.dialog = true;
             self.getOffices();
         },

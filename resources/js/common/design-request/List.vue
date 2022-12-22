@@ -10,7 +10,7 @@
             <v-card-title>
                 <div>
                     <div class="headline">
-                        {{ trans('data.design_requests') }}
+                        {{ title }}
                     </div>
                 </div>
                 <v-spacer></v-spacer>
@@ -134,6 +134,9 @@ export default {
       url:{
         type: String,
         default: null
+      },
+      title:{
+        type: String   
       },
       headers:{
         type:Array

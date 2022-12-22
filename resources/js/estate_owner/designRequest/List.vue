@@ -5,7 +5,7 @@
      <Edit ref="designEdit"></Edit>
         <Create ref="designAdd"></Create>
         <PricePdf ref="pdfPrice" @refreshTable="refreshTable"/>
-    <DesignRequest url="/estate_owner/request-design" :headers="headers" ref="requestList">
+    <DesignRequest url="/estate_owner/request-design" :headers="headers" ref="requestList" :title="trans('data.design_requests') ">
     <template #arrow="{props}">
         <v-icon @click="props.expanded = !props.expanded">arrow_drop_down</v-icon>
     </template>

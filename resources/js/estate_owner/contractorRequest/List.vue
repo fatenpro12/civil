@@ -1,12 +1,11 @@
 <!-- Employees -->
 <template>
-    <div class="component-wrap" :class="$vuetify.breakpoint.xsOnly?'pt-3':''">
+    <div>
         <Create ref="designAdd"></Create>
         <Edit ref="designEdit"></Edit>
-        <view1 ref="designView"></view1>
         <PricePdf ref="pdfPrice" @refreshTable="refreshTable($event)" />
 
-        <v-card class="mt-3">
+       <!-- <v-card class="mt-3">
             <v-card-title>
                 <div>
                     <div class="headline">
@@ -25,7 +24,7 @@
                 </v-btn>
             </v-card-title>
             <v-divider></v-divider>
-            <!-- data table -->
+           
             <v-data-table
                 v-bind:headers="headers"
                 v-bind:pagination.sync="pagination"
@@ -78,7 +77,7 @@
                                     @click="sendRequest(props.item.id)"
                                 >
                                     <v-icon color="white">mail</v-icon>
-                                    <!--{{trans('data.accept')}}-->
+                                 
                                 </v-btn>
                             </div>
 
@@ -91,7 +90,7 @@
                                 @click="trash(props.item.id)"
                             >
                                 <v-icon color="white">delete</v-icon>
-                                <!-- {{trans('messages.cancel')}}-->
+                              
                             </v-btn>
                         </div>
                     </td>
@@ -128,7 +127,7 @@
                                 @click="viewProject(props.item.project_id)"
                             >
                                 {{ props.item.project?props.item.project.name:'' }}
-                                <!-- {{trans('messages.add')}}-->
+                           
                             </v-btn>
                         </div>
                     </td>
@@ -177,19 +176,97 @@
             </v-btn>
         </div>
         <br />
+    </div>-->
+     <DesignRequest url="/estate_owner/request-contractor" :headers="headers" ref="requestList" :title="trans('data.contractor_requests')">
+    <template #arrow="{props}">
+        <v-icon @click="props.expanded = !props.expanded">arrow_drop_down</v-icon>
+    </template>
+    <template #addRequest>
+         <v-btn
+                    :disabled="!checkActive()"
+                    @click="create()"
+                    style="background-color: #06706d; color: white"
+                    class="lighten-1"
+                >
+                    {{ trans('data.create_contractor_request') }}
+                    <v-icon right dark>add</v-icon>
+                </v-btn>
+    </template>
+    <template #actions="{props}">
+            <v-btn
+                                v-if="props.item.status == 'new'"
+                                :disabled="!checkActive()"
+                                small
+                                fab
+                                color="success"
+                                @click="edit(props.item)"
+                            >
+                                <v-icon color="white">edit</v-icon>
+                            </v-btn>
+                            <div>
+                                <v-btn
+                                    color="primary"
+                                    small
+                                    fab
+                                    :disabled="!checkActive()"
+                                    v-if="props.item.sent == 0 && props.item.status == 'new'"
+                                    @click="sendRequest(props.item.id)"
+                                >
+                                    <v-icon color="white">mail</v-icon>
+                                    <!--{{trans('data.accept')}}-->
+                                </v-btn>
+                            </div>
+
+                            <v-btn
+                                color="error"
+                                :disabled="!checkActive()"
+                                v-if="props.item.status == 'new' || props.item.status == 'rejected'"
+                                small
+                                fab
+                                @click="$refs.requestList.trash(props.item.id)"
+                            >
+                                <v-icon color="white">delete</v-icon>
+                                <!-- {{trans('messages.cancel')}}-->
+                            </v-btn>
+                        
+    </template>
+      <template #expand="{props}">
+                              <v-card flat>
+            <v-card-text>
+                <div align="center" v-for="(office,index) in props.item.offices" :key="office.id">
+                    <table>
+                        <tr>
+                             <td><span>{{ office.name }}</span></td>
+                             <td> <v-chip
+                                :disabled="!checkActive()"
+                                :color="getColor(props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status)"
+                                text-color="white"
+                            >
+                                 {{trans('data.office_status')+' '+ props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status}}
+                            </v-chip></td>
+                             <td> <v-btn dark color="success" v-if="props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status =='finished'
+                                ||props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status =='accepted'" @click="viewDesignPrice(props.item)">
+                                {{trans('data.viewPrice')}}
+                            </v-btn></td></tr>
+                            </table>
+                        </div>
+            </v-card-text>
+          </v-card>
+                            </template>
+    </DesignRequest>
     </div>
 </template>
 
 <script>
 import Create from './Create';
 import Edit from './Edit';
-import view1 from './view1';
 import _ from 'lodash';
 import PricePdf from '../../common/PricePdf.vue'
+import DesignRequest from '../../common/design-request/List'
 
 export default {
     components: {
-        view1,
+        DesignRequest,
         Create,
         Edit,
        PricePdf
@@ -198,7 +275,6 @@ export default {
         const self = this;
         return {
             expand: true,
-            dialog: false,
             loading: false,
             headers: [
                 {
@@ -238,46 +314,11 @@ export default {
                     sortable: true,
                 },
             ],
-            items: [],
-            totalItems: 0,
-            pagination: {
-                rowsPerPage: 10,
-            },
-
-            tabs: 'tab-1',
-            filters: {
-                name: '',
-            },
         };
     },
-    mounted() {
-        const self = this;
-        self.$eventBus.$on(
-            ['DESIGN_ADDED', 'DESIGN__UPDATED', 'DESIGN__DELETED', 'DESIGN__ADDED'],
-            () => {
-                self.loadDesigns(() => {});
-            }
-        );
-    },
-    watch: {
-        'pagination.page': function () {
-            this.loadDesigns(() => {});
-        },
-        'pagination.rowsPerPage': function () {
-            this.loadDesigns(() => {});
-        },
-        'filters.name': _.debounce(() => {
-            const self = this;
-            self.loadDesigns(() => {});
-        }, 700),
-    },
     methods: {
-        refreshTable(event){
-            this.loadDesigns();
-        },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
+        refreshTable(){
+             this.$refs.requestList.loadDesigns()
         },
         viewProject(id) {
             const self = this;
@@ -307,10 +348,6 @@ export default {
             'estate_owner/rejectContractorRequestOffer'
            ]
             self.$refs.pdfPrice.openDialog(pdf_data)
-        },
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
         },
         trash(id) {
             const self = this;
@@ -357,29 +394,6 @@ export default {
             });
         },
 
-        loadDesigns(cb) {
-            const self = this;
-            let params = {
-                page: self.pagination.page,
-                rowsPerPage: self.pagination.rowsPerPage,
-            };
-
-            axios.get('/estate_owner/request-contractor', { params: params }).then(function (response) {
-                if (response.data.success === true) {
-                    self.items = response.data.msg.data;
-                    self.totalItems = response.data.msg.total;
-                    self.pagination.totalItems = response.data.msg.total;
-                    self.$forceUpdate()
-                } else {
-                    self.$store.commit('showSnackbar', {
-                        message: response.data.msg,
-                        color: response.data.success,
-                    });
-
-                    self.$store.commit('hideLoader');
-                }
-            });
-        },
 
     },
 };

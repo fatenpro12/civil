@@ -12,6 +12,7 @@ use App\Notifications\AcceptSupportServiceOfficeRequestByEstateOwner;
 use App\Notifications\RejectSupportServiceOfficeRequestByEstateOwner;
 use Notification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignRequestResource;
 use Lang;
 use App\Http\Responses\Response;
 use App\Notifications\AskSupportServiceRequestOffer;
@@ -31,17 +32,8 @@ class SupportServiceRequestController extends  Controller
     {
         $user=User::find(request()->user()->id);
         $rowsPerPage = ($request->get('rowsPerPage') > 0) ? $request->get('rowsPerPage') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
 
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
+       
 
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
@@ -50,10 +42,9 @@ class SupportServiceRequestController extends  Controller
         ->whereIn('customer_id', $childrens)
         ->where('request_type','support_service_request');
 
-        $requests = $requests->latest()
-        ->simplePaginate($rowsPerPage);
+        $requests = $requests->latest()->simplePaginate($rowsPerPage);
 
-       return $this->respondSuccess($requests);
+       return $this->respondSuccess(DesignRequestResource::collection($requests));
         
       
     }
@@ -214,9 +205,16 @@ class SupportServiceRequestController extends  Controller
                 $design->note=$request->note;
                 $design->service_type_id=$request->service_type_id;
                 $design->update();
+                $officeIds = [];
+             
+                foreach($request->office_id as $key=>$value){
+                  if(isset($value['id']))
+                  $officeIds[$key] = $value['id'];
+                  else
+                  $officeIds[$key] = $value;
+                }
                 $design->offices()->detach();
-                foreach($input['office_id'] as $office)
-                $design->offices()->attach($office, ['office_status' => 'recieved','request_type' => 'support_service_request']);
+                $design->offices()->attach($officeIds, ['office_status' => 'recieved','request_type' => 'support_service_request']);
                 DB::commit();
                 $message = Lang::get('site.success_update');
                 return $this->respondSuccess($message);
@@ -240,10 +238,9 @@ class SupportServiceRequestController extends  Controller
 
     public function show($id)
     {
-        $request = DesignRequest::with('customer','project','offices')->findOrFail($id);
-        $request = DesignRequest::find($id);
+        $request = DesignRequest::findOrFail($id);
         if($request!=  null){
-            return $this->respondSuccess($request);
+            return $this->respondSuccess(new DesignRequestResource($request));
         }
         else{
             $message = Lang::get('site.object_not_found');

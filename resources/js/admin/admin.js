@@ -94,6 +94,7 @@ const admin = new Vue({
 
             if (rn === 'vue') {
                 this.$router.push({ name: routeName });
+               
             }
             if (rn === 'full_load') {
                 window.location.href = routeName;

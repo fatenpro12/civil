@@ -192,14 +192,13 @@ class DesignRequestController extends  Controller
         }catch(\Exception $e){
            return  $this->respondWentWrong($e);
         }
-        return $output;
     }
 
 
 
     protected function _saveAskSupportServiceRequestOfferNotifications($members, $estate_id)
     {
-        foreach ($members[0] as $member){
+        foreach ($members as $member){
          //   dd($member);
             $notifiable_users = User::find($member->id);
             Notification::send($notifiable_users, new AskSupportServiceRequestOffer($estate_id));
@@ -207,7 +206,6 @@ class DesignRequestController extends  Controller
     }
     protected function _saveAskContractorRequestOfferNotifications($members, $estate_id)
     {
-        dd($members);
         foreach ($members as $member){
             $notifiable_users = User::find($member->id);
             Notification::send($notifiable_users, new AskContractorRequestOffer($estate_id));
@@ -215,7 +213,7 @@ class DesignRequestController extends  Controller
     }
     protected function _saveAskDesignRequestOfferNotifications($members, $estate_id)
     {
-        foreach ($members[0] as $member){
+        foreach ($members as $member){
             $notifiable_users = User::find($member->id);
             Notification::send($notifiable_users, new AskDesignRequestOffer($estate_id));
         }
@@ -232,13 +230,12 @@ class DesignRequestController extends  Controller
                 $design->status='sent';
                 $design->sent=1;
                 $design->update();
-                //dd(  $design->offices);
                 if($design->request_type == 'design_request')
-                $this->_saveAskDesignRequestOfferNotifications([$design->offices], Auth::id());
+                $this->_saveAskDesignRequestOfferNotifications($design->offices, Auth::id());
                 if($design->request_type == 'support_service_request')
-                $this->_saveAskSupportServiceRequestOfferNotifications([$design->offices], Auth::id());
+                $this->_saveAskSupportServiceRequestOfferNotifications($design->offices, Auth::id());
                 if($design->request_type == 'contractor_request')
-                $this->_saveAskContractorRequestOfferNotifications([$design->offices], Auth::id());
+                $this->_saveAskContractorRequestOfferNotifications($design->offices, Auth::id());
                 DB::commit();
                 $message = Lang::get('site.success_update');
                 return $this->respondSuccess($message);

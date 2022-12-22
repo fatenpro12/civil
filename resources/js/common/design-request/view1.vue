@@ -35,11 +35,15 @@
           </ul>
         </dd>
       </div>
+           <div v-if="design.service_type" :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-md font-medium text-gray-500">{{trans('data.service_types_list')}}</dt>
+        <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0"><span>{{ design.service_type['name_'+getCurrentLang()] }}</span></dd>
+      </div>
       <div :class="$vuetify.breakpoint.xsOnly?'flex justify-around':''" class="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-md font-medium text-gray-500">{{ trans('data.note') }}</dt>
         <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">{{ design.note }}</dd>
       </div>
-      <div class="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <div class="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6" v-if="employees.length>0">
         <dt class="text-md font-medium text-gray-500">{{ trans('data.employees') }}</dt>
         <dd class="mt-1 text-md text-gray-900 sm:col-span-2 sm:mt-0">
           <ul role="list" class="divide-y divide-gray-200 rounded-md border border-gray-200">

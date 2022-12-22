@@ -351,10 +351,10 @@ Route::prefix('estate_owner')
     ->middleware(['auth','enginner_office'])
     ->name('enginner_office')
     ->group(function () {
-            Route::get('/', 'SinglePageController@displaySPA')
-            ->name('estate_owner.spa');
-            Route::resource('dashboards', 'DashboardController')->only(['index']);
-            Route::post('addNewEmployee','UserController@addNewEmployee');
+            Route::get('/', 'SinglePageController@displaySPA')->name('enginner_office.spa');
+          //  Route::resource('dashboards', 'DashboardController')->only(['index'])->name('enginner_office.dashboards');
+        //  Route::get('dashboards', 'DashboardController@index')->name('enginner_office.dashboards');  
+          Route::post('addNewEmployee','UserController@addNewEmployee');
             Route::get('user-statistics', 'UserController@getStatistics');
             Route::get('users-all', 'UserController@getAllEmployee');
             Route::get('users/{id}/name', 'UserController@getEmployee');

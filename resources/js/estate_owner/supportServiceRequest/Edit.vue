@@ -17,10 +17,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12 sm6 md6>
                                     <v-autocomplete
+                                        v-if="design.project"
                                         item-text="name"
                                         item-value="id"
                                         :items="projects"
-                                        v-model="design.project_id"
+                                        v-model="design.project.projectId"
                                         :label="trans('data.project_name')"
                                         :rules="[
                                             (v) =>
@@ -162,6 +163,7 @@ export default {
         self.getSupportServices();
          self.getServiceTypes()
             self.design =data 
+            self.design.service_type_id = data.service_type.id
             self.dialog = true;
             
         },
@@ -194,7 +196,7 @@ if(event.find(val => val === 'all_offices')){
             let data = {
                
                    customer_id : self.design.customer_id,
-                   project_id : self.design.project_id,
+                   project_id : self.design.project.projectId,
                    office_id: self.design.offices,
                    service_type_id: self.design.service_type_id,
                     note: self.design.note

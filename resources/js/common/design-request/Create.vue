@@ -76,16 +76,6 @@
                                     >
                                     </v-autocomplete>
                                 </v-flex>
-                                 <!-- <v-flex xs12 sm12 md12>
-                                    <v-autocomplete
-                                        item-text="province_municipality"
-                                        item-value="id"
-                                        :items="locations"
-                                        v-model="design.location_id"
-                                        :label="trans('data.location_info')"
-                                      
-                                    ></v-autocomplete>
-                                </v-flex>-->
                             </v-layout>
                             <v-layout row>
                                 <v-flex xs12 sm12 md12>
@@ -238,14 +228,12 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
-            
-           
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
                     self.design.customer_id = response.data[0].id;
                     self.getProject(value)
-                     self.getOffices();
+                    self.getOffices();
                 })
                 .catch(function (error) {
                     console.log(error);

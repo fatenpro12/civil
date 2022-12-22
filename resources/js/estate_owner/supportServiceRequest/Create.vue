@@ -242,12 +242,11 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
-               self.getProject(value)
-           
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.design.customer_id = response.data.id;
+                    self.design.customer_id = response.data[0].id;
+                    self.getProject(value)
                      self.getSupportServices();
                 })
                 .catch(function (error) {
@@ -282,7 +281,7 @@ if(event.find(val => val === 'all_offices')){
             axios
                 .get('/get-supprt-services')
                 .then(function (response) {
-                    self.supportServices = response.data.filter(val => val.id==='all_offices' || val.location_data == self.project?.location?.province_municipality);
+                    self.supportServices = response.data//.filter(val => val.id==='all_offices' || val.location_data == self.project?.location?.province_municipality);
                 })
                 .catch(function (error) {
                     console.log(error);

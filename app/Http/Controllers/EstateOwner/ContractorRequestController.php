@@ -15,6 +15,7 @@ use App\Notifications\RejectContractorRequestByEstateOwner;
 
 use Notification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignRequestResource;
 use Lang;
 use App\Http\Responses\Response;
 use App\Notifications\AskContractorRequestOffer;
@@ -34,17 +35,7 @@ class ContractorRequestController extends  Controller
     {
         $user=User::find(request()->user()->id);
         $rowsPerPage = ($request->get('rowsPerPage') > 0) ? $request->get('rowsPerPage') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
 
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
 
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
@@ -53,8 +44,7 @@ class ContractorRequestController extends  Controller
         ->whereIn('customer_id', $childrens)
         ->where('request_type','contractor_request');
 
-        $requests = $requests->latest()
-        ->simplePaginate($rowsPerPage);
+        $requests = $requests = DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
 
        return $this->respondSuccess($requests);
         
@@ -212,9 +202,16 @@ class ContractorRequestController extends  Controller
                 $design->project_id=$request->project_id;
                 $design->note=$request->note;
                 $design->update();
+                $officeIds = [];
+             
+                foreach($request->office_id as $key=>$value){
+                  if(isset($value['id']))
+                  $officeIds[$key] = $value['id'];
+                  else
+                  $officeIds[$key] = $value;
+                }
                 $design->offices()->detach();
-                foreach($input['office_id'] as $office)
-                $design->offices()->attach($office, ['office_status' => 'recieved','request_type' => 'contractor_request']);
+                $design->offices()->attach($officeIds, ['office_status' => 'recieved','request_type' => 'contractor_request']);
                 DB::commit();
                 $message = Lang::get('site.success_update');
                 return $this->respondSuccess($message);
@@ -238,10 +235,10 @@ class ContractorRequestController extends  Controller
 
     public function show($id)
     {
-        $request = DesignRequest::with('customer','project','offices')->findOrFail($id);
-        $request = DesignRequest::find($id);
+        $request = DesignRequest::findOrFail($id);
+      //  $request = DesignRequest::find($id);
         if($request!=  null){
-            return $this->respondSuccess($request);
+            return $this->respondSuccess(new DesignRequestResource($request));
         }
         else{
             $message = Lang::get('site.object_not_found');

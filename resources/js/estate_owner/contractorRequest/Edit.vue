@@ -17,10 +17,11 @@
                             <v-layout row wrap>
                                 <v-flex xs12 sm6 md6>
                                     <v-autocomplete
+                                     v-if="design.project"
                                         item-text="name"
                                         item-value="id"
                                         :items="projects"
-                                        v-model="design.project_id"
+                                        v-model="design.project.projectId"
                                         :label="trans('data.project_name')"
                                         :rules="[
                                             (v) =>
@@ -156,6 +157,7 @@ export default {
         create(data) {
             const self = this;
             self.design =data 
+             console.log(data)
             self.dialog = true;
             self.getOffices();
         },
@@ -176,7 +178,7 @@ if(event.find(val => val === 'all_offices')){
             let data = {
                    
                    customer_id : self.design.customer_id,
-                   project_id : self.design.project_id,
+                   project_id : self.design.project.projectId,
                    office_id: self.design.offices,
                     note: self.design.note
 
@@ -215,12 +217,12 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
-            self.getProject(value)
+            
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.design.customer_id = response.data.id;
-                        
+                    self.design.customer_id = response.data[0].id;
+                        self.getProject(value)
                           self.design.project = self.project 
                      self.design.offices=[]
                      self.getOffices();
@@ -256,8 +258,8 @@ if(event.find(val => val === 'all_offices')){
             axios
                 .get('/get-contractors')
                 .then(function (response) {
-                    self.contractors = response.data.filter(val => val.id==='all_offices' ||val.location_data == self.design.project?.location?.province_municipality);
-             console.log(self.design.project)
+                    self.contractors = response.data//.filter(val => val.id==='all_offices' ||val.location_data == self.design.project?.location?.province_municipality);
+            
              })
                 .catch(function (error) {
                     console.log(error);
