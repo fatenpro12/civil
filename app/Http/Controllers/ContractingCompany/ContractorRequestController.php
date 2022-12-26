@@ -11,6 +11,7 @@ use App\Components\User\Models\User;
 
 use Notification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignRequestResource;
 use Lang;
 use App\Notifications\AcceptRequestSendedFromContractor;
 
@@ -26,26 +27,14 @@ class ContractorRequestController extends  Controller
     {
         $user=User::find(Auth::user()->id);
         $rowsPerPage = ($request->get('rowsPerPage') > 0) ? $request->get('rowsPerPage') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
-
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
+    
 
         $requests = DesignRequest::with('stages','customer','creator','project','offices','media')->WhereIn('status',['sent','rejected','pending','accepted','in_progress','completed'])
         ->where('request_type','contractor_request')
         ->whereHas('offices',function($q) use ($user){
            $q->where('office_id', $user->id);//->orWhere('office_id', $user->parent_id);
         });
-        $requests = $requests->latest()
-        ->simplePaginate($rowsPerPage);//->orderBy($sort_by, $orderby)
-                 //   ->paginate($rowsPerPage);
+        $requests =  DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
 
        return $this->respondSuccess($requests);
         

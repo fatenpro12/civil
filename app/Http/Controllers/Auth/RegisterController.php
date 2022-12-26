@@ -69,8 +69,6 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-      
- // dd($request->all());
         
         $this->validator($request->all())->validate();
         try {
@@ -110,13 +108,7 @@ class RegisterController extends Controller
                 'msg' => __('messages.something_went_wrong')
             ];
         }
-   return $user;
+   return $output;
      //   return redirect()->route('login')->with('status', $output);
-    }
-
-
-    protected function validateRegister(Request $request)
-    {
-       
     }
 }

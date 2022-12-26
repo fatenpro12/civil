@@ -44,7 +44,7 @@ class ContractorRequestController extends  Controller
         ->whereIn('customer_id', $childrens)
         ->where('request_type','contractor_request');
 
-        $requests = $requests = DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
+        $requests =  DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
 
        return $this->respondSuccess($requests);
         

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '../common/Store';
+import store from '../store';
 import Home from './dashboard/Home';
 import List from './dashboard/List';
 import EstateOwnerHome from '../estate_owner/dashboard/Home';

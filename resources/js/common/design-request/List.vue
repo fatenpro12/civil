@@ -78,7 +78,7 @@
                             {{ props.item.customer }}
                         </div>
                     </td>
-                    
+                    <slot name="specialCols" :props="props" />
                     <td>
                         <div align="center">
                             <v-btn
@@ -183,12 +183,7 @@ export default {
         }, 700),
     },
     methods: {
-      
-     
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
+    
         viewProject(id) {
             const self = this;
             self.$router.push({
@@ -203,10 +198,7 @@ export default {
             self.$refs.designView.create(item);
         },
  
-        createdDate(date) {
-            const current_datetime = new Date(date);
-            return current_datetime.toLocaleDateString('en-US');
-        },
+   
         trash(id) {
             const self = this;
             self.$store.commit('showDialog', {

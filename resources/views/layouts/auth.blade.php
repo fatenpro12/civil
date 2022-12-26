@@ -22,7 +22,7 @@
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet"/>
     <!-- app js values -->
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/auth.js') }}"></script>
     <link href="{{ asset('css/font-tajaw.css') }}" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet'>
     <title>Civil Application</title>
@@ -157,14 +157,18 @@ background-size: cover;
   </style>
 </head>
 <body data-gr-c-s-loaded="true" cz-shortcut-listen="true" id="app">
-        <div id="admin">
-            @yield('content') 
+        <div id="auth">
+               <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''">
+                <transition name="fade">
+                    <router-view></router-view>
+                </transition>
+            </v-content>
         </div>
    
     <script src="{{ env('APP_URL') . '/js/lang.js' }}"></script>
     <script src="{{ asset('js/manifest.js') }}"></script>
     <script src="{{ asset('js/vendor.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/auth.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
     

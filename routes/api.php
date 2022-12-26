@@ -16,6 +16,19 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::group([
+
+  'middleware' => 'api',
+ // 'prefix' => 'auth'
+], function ($router) {
+
+  Route::post('login', 'Auth\AuthController@login');
+  Route::post('logout', 'Auth\AuthController@logout');
+  Route::post('refresh', 'Auth\AuthController@refresh');
+  Route::get('user', 'Auth\AuthController@user');
+
+});
+
 Route::prefix('admin')->
     namespace('Admin')
    ->middleware(['auth:api', 'employee'])

@@ -249,7 +249,7 @@
                                  {{trans('data.office_status')+' '+ props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status}}
                             </v-chip></td>
                              <td> <v-btn dark color="success" v-if="props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status =='finished'
-                                ||props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status =='accepted'" @click="viewDesignPrice(props.item)">
+                                ||props.item.offices.find(val => val.pivot.office_id == office.id).pivot.office_status =='accepted'" @click="viewDesignPrice(props.item,office.id)">
                                 {{trans('data.viewPrice')}}
                             </v-btn></td></tr>
                             </table>
@@ -257,6 +257,13 @@
             </v-card-text>
           </v-card>
                             </template>
+                            <template #specialCols="{props}">
+     <td>
+                        <div align="center" v-if="props.item.service_type">
+                            {{ props.item.service_type['name_'+getCurrentLang()] }}
+                        </div>
+                    </td>
+            </template>
     </DesignRequest>
     </div>
 </template>

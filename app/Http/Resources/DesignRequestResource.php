@@ -29,8 +29,17 @@ class DesignRequestResource extends JsonResource
             'enginners' =>$this->enginners,
             'request_type' =>$this->request_type,
             'stages' =>$this->stages,
+            'media' =>$this->getMediaType(),
             'design_enginners' =>$this->designEnginners,
             'service_type' =>$this->service_type,
         ];
+    }
+    public function getMediaType(){
+         if($this->request_type=='contractor_request')
+         return $this->getMedia('pdfPriceContractor')->toArray();
+         else if($this->request_type=='design_request')
+         return $this->getMedia('pdfPrice')->toArray();
+         else if($this->request_type=='support_service_request')
+         return $this->getMedia('pdfPriceSupportService')->toArray();
     }
 }

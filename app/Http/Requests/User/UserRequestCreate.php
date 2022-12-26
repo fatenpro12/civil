@@ -30,6 +30,7 @@ class UserRequestCreate extends FormRequest
             'email' => 'required|email|unique:users,email',
             'id_card_number' => 'required|unique:users',
             'password' => 'required',
+            'location_data'=>'required',
         ];
     }
     public function failedValidation(Validator $validator)

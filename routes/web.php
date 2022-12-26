@@ -28,6 +28,11 @@ Route::get('cache', function () {
 Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
 
+Route::get('signin',function(){
+    return view('layouts.auth');
+ });
+
+
 Route::post('ajaxRequest', [UserController::class, 'getUserData'])->name('ajaxRequest.post');
 Route::post('checkUser', [UserController::class, 'checkUserType'])->name('checkUser.post');
 Route::post('getTypes', [ManageRolesController::class, 'getTypes'])->name('getTypes.post');

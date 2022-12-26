@@ -4,7 +4,7 @@ require('../common/common');
 // app
 import router from './router';
 import eventBus from '../common/Event';
-import store from '../common/Store';
+import store from '../store'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
 var x=APP.RTL;

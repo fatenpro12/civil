@@ -34,7 +34,7 @@
     ></v-progress-circular>
         </pdf>
                 </v-card-text>
-                <v-card-actions v-if="user_type == 'owner'">
+                <v-card-actions v-if="user_type == 'owner' && status != 'completed'">
                     <v-spacer></v-spacer>
                     <v-btn color="green darken-1" flat @click="rejectOffer">
                         {{ trans('data.reject') }}
@@ -48,6 +48,12 @@
                         {{ trans('data.aproved') }}
                     </v-btn>
                 </v-card-actions>
+                 <v-card-actions v-else>
+                        <v-btn color="green darken-1" flat @click="dialo65
+                        g = false">
+                        {{ trans('data.close') }}
+                    </v-btn>
+                 </v-card-actions>
             </v-card>
         </v-dialog>
     </v-layout>
@@ -69,7 +75,8 @@ export default {
             user_type:null,
             office_id:null,
             reject_link:null,
-            accept_link: null
+            accept_link: null,
+            status: null
         };
     },
     mounted() {
@@ -87,6 +94,8 @@ export default {
         openDialog(data){
           this.dialog =true
           this.item = data[0]
+          console.log(data[0])
+          this.status = data[0].status
           this.url = data[1].full_url?data[1].full_url:data[1].original_url
          this.office_id= data[2]
          this.user_type=data[3]
@@ -98,9 +107,9 @@ export default {
             let data = {
                 design_id: self.item.id,
                 office_id: this.office_id,
-                created_by: self.item.design_enginners[0].created_by
+                created_by: self.item.design_enginners[0]?.created_by
             };
-            console.log(data)
+          
                 self.loading = true;
                 axios
                     .post(self.accept_link, data)
@@ -111,10 +120,12 @@ export default {
                                 message: response.data.msg,
                                 color: response.data.success,
                             });
+                            self.status=response.data.status
                            self.dialog =false
                            self.$emit('refreshTable',response)
                            self.$forceUpdate()
                         }
+                       
                     })
                     .catch(function (error) {
                         console.log(error);

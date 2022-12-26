@@ -10,6 +10,7 @@ use App\DesignRequest;
 use App\Components\User\Models\User;
 use Notification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DesignRequestResource;
 use Lang;
 use App\Notifications\AcceptRequestSendedFromSupportServiceOffice;
 
@@ -25,25 +26,14 @@ class SupportServiceRequestController extends  Controller
     {
         $user=User::find(Auth::user()->id);
         $rowsPerPage = ($request->get('rowsPerPage') > 0) ? $request->get('rowsPerPage') : 0;
-        $sort_by = $request->get('sort_by');
-        $descending = $request->get('descending');
-
-        if ($descending == 'false') {
-            $orderby = 'asc';
-        } elseif ($descending == 'true') {
-            $orderby = 'desc';
-        } elseif ($descending == '') {
-            $orderby = 'desc';
-            $sort_by = 'id';
-        }
+    
 
         $requests = DesignRequest::with('stages','customer','service_type','creator','project','offices','media')->WhereIn('status',['sent','rejected','pending','accepted','in_progress','completed'])
         ->where('request_type','support_service_request')
         ->whereHas('offices',function($q) use ($user){
            $q->where('office_id', $user->id);//->orWhere('office_id', $user->parent_id);
         });
-        $requests = $requests->orderBy($sort_by, $orderby)
-                    ->paginate($rowsPerPage);
+        $requests =  DesignRequestResource::collection($requests->latest()->simplePaginate($rowsPerPage));
 
        return $this->respondSuccess($requests);
         
@@ -53,7 +43,7 @@ class SupportServiceRequestController extends  Controller
     {
            try {
             $design = DesignRequest::find($request->design_id);
-          //  dd($design,$request->all());
+
             if($design!=  null){
                 DB::beginTransaction();
                         $office = $design->offices->find(Auth::id());

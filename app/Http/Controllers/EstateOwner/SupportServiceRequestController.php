@@ -67,7 +67,7 @@ class SupportServiceRequestController extends  Controller
                $this->_saveAcceptSupportServiceRequestByEstateOwnerNotifications($request->office_id,$data);
                 DB::commit();
                 $message = Lang::get('site.success_update');
-                return $this->respondSuccess($message);
+                return $this->respondSuccess($message,$design->toArray());
             }
             else{
                 $message = Lang::get('site.object_not_found');

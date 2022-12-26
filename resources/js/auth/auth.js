@@ -25,8 +25,8 @@ Vue.use(Vuetify, {
  });
 Vue.use(eventBus);
 
-const admin = new Vue({
-    el: '#admin',
+const auth = new Vue({
+    el: '#auth',
     vuetify: Vuetify,
     eventBus,
     router,

@@ -76,7 +76,18 @@ class Controller extends BaseController
 
         return $this->respond($data);
     }
-
+    protected function respondWithToken($token, $message = [])
+    {
+        $data = [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ];
+        if (!empty($message)) {
+            $data = array_merge($data, $message);
+        }
+        return $data;
+    }
     /**
      * Returns a 200 response.
      *

@@ -28,6 +28,8 @@ class UserRequestEdit extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$this->id,
+            'id_card_number' => 'required|unique:users,id_card_number,'.$this->id,
+            'location_data'=>'required',
         ];
     }
     public function failedValidation(Validator $validator)

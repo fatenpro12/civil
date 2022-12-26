@@ -15,6 +15,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Activitylog\LogOptions;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Class User.
@@ -25,7 +26,7 @@ use Spatie\Activitylog\LogOptions;
  * @property array       $permissions
  * @property string|null $active
  */
-class User extends Authenticatable implements HasMedia
+class User extends Authenticatable implements HasMedia,JWTSubject
 {
     use Notifiable,
         LogsActivity,
@@ -717,7 +718,19 @@ class User extends Authenticatable implements HasMedia
         ->pluck('id')
         ->toArray();
     }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
 }

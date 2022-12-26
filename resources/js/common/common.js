@@ -9,6 +9,7 @@ require('../bootstrap');
 window.Vue = require('vue').default;
 
 
+
 //import Vue from 'vue'
 // VeeValidate
 import VeeValidate from 'vee-validate';
@@ -94,8 +95,10 @@ import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import VueSignaturePad from 'vue-signature-pad';
 
+
 Vue.use(VueSignaturePad);
 Vue.use(VueFlatPickr);
+
 
 flatpickr.setDefaults({
     // locale: 'Russian',
@@ -113,12 +116,15 @@ import MobileHeader from "../common/MobileHeader.vue"
 import Calendar from "../common/calendar/Calendar.vue"
 import Avatar from "../common/projects/components/Avatar.vue"
 import Create from "../admin/quick_add/Create.vue"
-
+import Login from "../auth/Login.vue"
+import Register from "../auth/Register.vue"
 
 Vue.component('moon-loader', MoonLoader);
 Vue.component('notification', Notification);
 Vue.component('userformadd', FormAdd);
 Vue.component('signaturepad', SignaturePad);
+Vue.component('login', Login);
+Vue.component('register', Register);
 Vue.component('mobileheader', MobileHeader);
 Vue.component('calendar', Calendar);
 Vue.component('avatar', Avatar);

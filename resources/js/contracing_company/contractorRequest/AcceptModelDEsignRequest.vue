@@ -81,7 +81,6 @@ export default {
             self.design_id = data.id
             self.project = data.project
             self.dialog = true;
-            console.log(data)
         },
         
         save() {
