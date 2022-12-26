@@ -25,10 +25,10 @@ Route::get('cache', function () {
 
     //$exitCode = Artisan::call('optimize:clear');
 });
-Auth::routes(['register' => true]);
+//Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
 
-Route::get('signin',function(){
+Route::get('login',function(){
     return view('layouts.auth');
  });
 

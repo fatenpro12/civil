@@ -3,14 +3,20 @@ import Router from 'vue-router';
 import store from '../store';
 import Login from './Login.vue'
 import Register from './Register.vue'
+
 Vue.use(Router);
 
 const router = new Router({
     routes: [
         {
-            path: 'login',
+            path: '/',
             name: 'login',
             component: Login,
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register,
         },
     ],
 });

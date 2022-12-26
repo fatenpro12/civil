@@ -1,34 +1,35 @@
 <template>
-    <div class="container h-100">
-        <div class="row h-100 align-items-center">
-            <div class="col-12 col-md-6 mx-auto">
-                <div class="card shadow sm">
-                    <div class="card-body">
-                        <h1 class="text-center">Login</h1>
-                        <hr/>
-                        <form class="row" method="post">
-                            <div class="form-group col-12">
-                                <label for="email" class="font-weight-bold">Email</label>
-                                <input type="text" v-model="auth.email" name="email" id="email" class="form-control">
+ <div class="container" >
+
+                <v-card class="card-signin mt-5 mx-auto">
+                    <v-card-title class="p-3">
+                            <h5 style="color:white;">
+                                {{ trans('data.Log_in_to_the_engineering_offices_system') }}
+                            </h5>
+                    </v-card-title>
+                    <div class="card-body p-5">
+                        <form>
+                          <div class="form-outline mb-1">
+                               
+                                <input type="text" v-model="auth.email" name="email" id="email" class="form-control form-control-lg" :placeholder="trans('data.email_or_id_card')">
                             </div>
-                            <div class="form-group col-12">
-                                <label for="password" class="font-weight-bold">Password</label>
-                                <input type="password" v-model="auth.password" name="password" id="password" class="form-control">
+                           <div class="form-outline mb-1">
+
+                                <input type="password" :placeholder="trans('data.password')" v-model="auth.password" name="password" id="password" class="form-control form-control-lg">
                             </div>
-                            <div class="col-12 mb-2">
-                                <button type="submit" :disabled="processing" @click="login" class="btn btn-primary btn-block">
-                                    {{ processing ? "Please wait" : "Login" }}
+                      
+                           <button class="btn btn-lg btn-block text-uppercase mt-3 w-40" @click="login"  style="background-color:#06706d;color:white;" id="submit" >
+                             
+                             {{trans('data.login')}}
+                            </button>
+                                <button  class="btn btn-link d-block text-center py-0 mt-2 mx-auto"  id="register" style="color:#06706d;"  @click="$router.push({name: 'register'})">
+                                {{trans('data.register')}}
                                 </button>
-                            </div>
-                            <div class="col-12 text-center">
-                                <label>Don't have an account? <router-link :to="{name:'register'}">Register Now!</router-link></label>
-                            </div>
+                           
                         </form>
                     </div>
-                </div>
-            </div>
+                </v-card>
         </div>
-    </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
@@ -62,3 +63,19 @@ export default {
     }
 }
 </script>
+<style scoped>
+  .card-signin {
+          border: 0;
+          max-width: 50%;
+       /*   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);*/
+        }
+  .card-signin .v-card__title {
+          background-color:#06706d;
+         /* margin-bottom: 2rem;*/
+          font-weight: 300;
+          font-size: 1.5rem;
+        }
+        .card-signin .card-body {
+          padding: 0rem;
+        }
+</style>

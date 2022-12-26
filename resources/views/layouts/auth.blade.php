@@ -40,26 +40,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <style type="text/css">
-          html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
-            background: #ffffff url("{{asset('img/welcome.jpg')}}") no-repeat right top;
-            background-size: cover;
-        }
-        .hide{
-            display: none !important;
-        }
+       
         :root {
           --input-padding-x: 1.5rem;
           --input-padding-y: .82rem;
-        }
-
-        body {
-          background: #ebeaea;
         }
 
         .card-signin {
@@ -77,25 +61,7 @@
         .card-signin .card-body {
           padding: 0rem;
         }
-        .mx-auto {
-            position: relative;
-            width: 100%;
-            padding-right: 0px;
-            padding-left: 0px;
-        }
-        .form-signin {
-          width: 100%;
-        }
-
-        .form-signin .btn {
-          font-size: 80%;
-          border-radius: 5rem;
-          letter-spacing: .1rem;
-          font-weight: bold;
-         /* padding: 1rem; */
-          transition: all 0.2s;
-        }
-
+     
        
         html, body {
           height: 100%;
@@ -109,42 +75,7 @@ background-size: cover;
             
          
         }
-        .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
 .error{
     color: red;
   }
@@ -158,11 +89,9 @@ background-size: cover;
 </head>
 <body data-gr-c-s-loaded="true" cz-shortcut-listen="true" id="app">
         <div id="auth">
-               <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''">
                 <transition name="fade">
                     <router-view></router-view>
                 </transition>
-            </v-content>
         </div>
    
     <script src="{{ env('APP_URL') . '/js/lang.js' }}"></script>
