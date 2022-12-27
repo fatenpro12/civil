@@ -46,9 +46,7 @@
                             <div class="form-outline mb-1" style="padding-top: 5px">
                             <select name="user_type" id="user_type"  class="form-control form-control-lg"   onchange="getComboA(this)" >
                             
-                                    <!-- @foreach(array_keys(config('constants.user_types'))  as $type)
-                                        <option value="{{$type}}" >{{config('constants.user_types')[$type]}} </option>
-                                    @endforeach -->
+                                
                                 </select>
                          
                                     <span class="help-block text-danger type_description">
@@ -60,17 +58,7 @@
           
                             </div>
                             </div>
-                            <!-- <div class="form-outline mb-1">
-                            <select name="type_name" id="type_name"   class="form-control form-control-lg" style="display: none;margin-top:4%;" >
-                                </select>
-                                @if ($errors->has('user_type'))
-                                    <span class="help-block text-danger">
-                                        <small class="help-text">
-                                            {{ $errors->first('user_type') }}
-                                        </small>
-                                    </span>
-                                @endif
-                            </div> -->
+                       
                             
                             <div class="custom-control custom-checkbox mb-3" id="remember_me">
                                 <input type="checkbox" class="custom-control-input" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>

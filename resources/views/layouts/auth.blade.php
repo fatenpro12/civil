@@ -63,18 +63,7 @@
         }
      
        
-        html, body {
-          height: 100%;
-  margin: 0;
-
-  background-image:url("{{asset('img/welcome.jpg')}}");
-/* Center and scale the image nicely */
-/*background-position: center;*/
-background-repeat: no-repeat;
-background-size: cover;
-            
-         
-        }
+  
 
 .error{
     color: red;
@@ -89,9 +78,13 @@ background-size: cover;
 </head>
 <body data-gr-c-s-loaded="true" cz-shortcut-listen="true" id="app">
         <div id="auth">
+          <template>
+            <v-app id="inspire-font" style="background-image:url(img/welcome.jpg)">
                 <transition name="fade">
                     <router-view></router-view>
                 </transition>
+            </v-app>
+          </template>
         </div>
    
     <script src="{{ env('APP_URL') . '/js/lang.js' }}"></script>

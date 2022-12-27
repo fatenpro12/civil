@@ -7,52 +7,60 @@
                                 {{ trans('data.Log_in_to_the_engineering_offices_system') }}
                             </h5>
                     </v-card-title>
-                    <div class="card-body p-5">
+                    <div  v-if="!showRoles" class="card-body p-3">
                         <form>
                           <div class="form-outline mb-1">
                                
-                                <input type="text" v-model="auth.email" name="email" id="email" class="form-control form-control-lg" :placeholder="trans('data.email_or_id_card')">
+                                <input type="text" v-model="auth.email_id_card"  class="form-control form-control-lg" :placeholder="trans('data.email_or_id_card')">
                             </div>
                            <div class="form-outline mb-1">
 
                                 <input type="password" :placeholder="trans('data.password')" v-model="auth.password" name="password" id="password" class="form-control form-control-lg">
                             </div>
                       
-                           <button class="btn btn-lg btn-block text-uppercase mt-3 w-40" @click="login"  style="background-color:#06706d;color:white;" id="submit" >
+                           <v-btn class="btn btn-lg btn-block mx-auto  text-uppercase mt-3 w-40" @click="getRoles"  style="background-color:#06706d;color:white;" id="submit" >
                              
                              {{trans('data.login')}}
-                            </button>
-                                <button  class="btn btn-link d-block text-center py-0 mt-2 mx-auto"  id="register" style="color:#06706d;"  @click="$router.push({name: 'register'})">
-                                {{trans('data.register')}}
-                                </button>
+                            </v-btn>
+                              
                            
                         </form>
+                          <v-btn flat  class="btn d-block text-center py-0 mt-2 mx-auto"  id="register" style="color:#06706d;"  :to=" '/register'">
+                                {{trans('data.register')}}
+                                </v-btn>
                     </div>
+                    <Roles  v-if="showRoles" :roles="roles" @login="login"/>
                 </v-card>
         </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
+import Roles from './Roles.vue'
 export default {
     name:"login",
+    components:{
+       Roles
+    },
     data(){
         return {
             auth:{
-                email:"",
-                password:""
+                email_id_card:"",
+                password:"",
+                user_type: null
             },
-            processing:false
+            roles:[],
+            processing:false,
+            showRoles: false
         }
     },
     methods:{
         ...mapActions({
             signIn:'auth/login'
         }),
-        async login(){
+         login(event){
             this.processing = true
-          //  await axios.get('/sanctum/csrf-cookie')
+          this.auth.user_type = event
              axios.post('api/login',this.auth).then(({data})=>{
-                console.log(data)
                 this.signIn(data)
             }).catch(({response:{data}})=>{
                 console.log(data.message)
@@ -60,6 +68,17 @@ export default {
                 this.processing = false
             })
         },
+            getRoles(){
+        axios.post('getType', this.auth).then((response)=>{
+                this.roles = response.data.roles
+                 if(this.roles.length>1)
+                 this.showRoles=true
+  else
+  this.login()
+            }).catch((response)=>{
+                console.log(response.message)
+            })
+    }
     }
 }
 </script>

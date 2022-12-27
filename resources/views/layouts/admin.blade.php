@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
+    <!-- CSRF Token -->re-font">
+           
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Civil Application</title>
@@ -63,8 +64,7 @@
 <body>
 <div id="admin">
     <template>
-        <v-app id="inspire-font">
-           
+        <v-app id="inspi
         <!--    </v-navigation-drawer>-->
             <div>
             <v-toolbar v-if='!$vuetify.breakpoint.xsOnly' style="background-color:#06706d;z-index: 100" app dark flat fixed dense height="100"

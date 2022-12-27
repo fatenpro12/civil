@@ -361,7 +361,7 @@ class UserController extends AdminController
     }
 
     public function getType(Request $request){
-        $x= $this->userRepository->getType($request->get('email'), $request->get('password'));
+        $x= $this->userRepository->getType($request->get('email_id_card'), $request->get('password'));
         return $this->respond($x);
     }
 

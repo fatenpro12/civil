@@ -24,15 +24,10 @@ export default {
     },
     actions:{
         login({commit},data){
-         //   return axios.post('/api/login').then(({data})=>{
                 console.log(data)
                 commit('SET_USER',data)
                 commit('SET_AUTHENTICATED',true)
-                router.push({name:'dashboard'})
-          /*  }).catch(({response:{data}})=>{
-                commit('SET_USER',{})
-                commit('SET_AUTHENTICATED',false)
-            })*/
+                window.location.href= "/"
         },
         logout({commit}){
             commit('SET_USER',{})

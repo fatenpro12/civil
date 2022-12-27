@@ -1,7 +1,7 @@
 <template>
-    <v-app id="inspire-font" style="background-image:url(img/welcome.jpg)">
-    <userformadd style="margin:5rem"/>
-    </v-app>
+    
+    <userformadd style="margin:5rem">
+    </userformadd>
 </template>
 <script>
 import { mapActions } from 'vuex'

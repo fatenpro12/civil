@@ -30,7 +30,7 @@ Route::get('get-genders', 'CommonController@getGenders');
 
 Route::get('login',function(){
     return view('layouts.auth');
- });
+ })->name('login');
 
 
 Route::post('ajaxRequest', [UserController::class, 'getUserData'])->name('ajaxRequest.post');

@@ -36,7 +36,7 @@
                             </v-flex>
              </template>
             <template #login>
-                  <v-btn style="color: #06706d" @click="login">
+                  <v-btn style="color: #06706d" @click="$router.push({name: 'login'})">
                             {{ trans('data.back_to_login') }}
                         </v-btn>
             </template>
@@ -59,9 +59,6 @@ export default {
      }
    },
     methods: {
-        login(){
-            window.location.href='/login'
-        },
         save(payload) {
             const self = this;
            
