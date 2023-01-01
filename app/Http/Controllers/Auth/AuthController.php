@@ -15,6 +15,7 @@ class AuthController extends Controller
    {
        $this->middleware('auth:api', ['except' => ['login']]);
    }
+  
    function checkEmail($email) {
     $find1 = strpos($email, '@');
     $find2 = strripos($email, '.');

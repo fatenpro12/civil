@@ -64,6 +64,8 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         'estate_owner' => \App\Http\Middleware\CheckEstateOwner::class,
         'enginner_office' => \App\Http\Middleware\CheckEnginneringOffice::class,
-    
+        //'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }

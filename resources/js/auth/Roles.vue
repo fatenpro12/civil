@@ -5,7 +5,7 @@
                             <v-flex xs12 sm12>
                                 <v-autocomplete
                                 :dense="true"
-                                :label="trans('data.role_name')"
+                                :placeholder="trans('data.role_name')"
                                  item-text="name"
                                 item-value="type"
                                 v-model="user_type"
@@ -14,7 +14,7 @@
                                 />
                             </v-flex>
                              <v-flex xs12 sm12>
-                            <button class="btn btn-lg btn-block text-uppercase ma-3" @click="$emit('login',user_type)"  style="background-color:#06706d;color:white;" id="submit" >
+                            <button class="btn btn-lg btn-block text-uppercase ma-3" @click="$emit('login',user_type)"  style="background-color:#06706d;color:white;">
                              
                              {{trans('data.login')}}
                             </button>

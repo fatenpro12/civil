@@ -62,6 +62,7 @@ export default {
           this.auth.user_type = event
              axios.post('api/login',this.auth).then(({data})=>{
                 this.signIn(data)
+                this.$router.push({path: '/'})
             }).catch(({response:{data}})=>{
                 console.log(data.message)
             }).finally(()=>{

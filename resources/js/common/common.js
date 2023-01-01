@@ -112,19 +112,17 @@ import MoonLoader from "vue-spinner/src/MoonLoader.vue"
 import Notification from "../common/notification/Notification.vue"
 import FormAdd from "../common/UserFormAdd.vue"
 import SignaturePad from "../common/SignaturePad.vue"
-import MobileHeader from "../common/MobileHeader.vue"
+import MobileHeader from "../common/layout/MobileHeader.vue"
 import Calendar from "../common/calendar/Calendar.vue"
 import Avatar from "../common/projects/components/Avatar.vue"
 import Create from "../admin/quick_add/Create.vue"
-import Login from "../auth/Login.vue"
-import Register from "../auth/Register.vue"
+import Index from "../common/layout/Index.vue"
 
 Vue.component('moon-loader', MoonLoader);
 Vue.component('notification', Notification);
 Vue.component('userformadd', FormAdd);
 Vue.component('signaturepad', SignaturePad);
-Vue.component('login', Login);
-Vue.component('register', Register);
+Vue.component('index', Index);
 Vue.component('mobileheader', MobileHeader);
 Vue.component('calendar', Calendar);
 Vue.component('avatar', Avatar);

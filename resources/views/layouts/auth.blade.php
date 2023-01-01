@@ -21,8 +21,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet"/>
-    <!-- app js values -->
-    <script src="{{ asset('js/auth.js') }}"></script>
+
     <link href="{{ asset('css/font-tajaw.css') }}" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet'>
     <title>Civil Application</title>
@@ -76,28 +75,21 @@
     }
   </style>
 </head>
-<body data-gr-c-s-loaded="true" cz-shortcut-listen="true" id="app">
-        <div id="auth">
-          <template>
-            <v-app id="inspire-font" style="background-image:url(img/welcome.jpg)">
+<body>
+        <div id="admin">
+          <index />
+         <!-- <template>
+            <v-app id="inspire-font" style="background-image:url(img/welcome.jpg) 0 0 no-repeat">
                 <transition name="fade">
-                    <router-view></router-view>
+                  <router-view></router-view>
                 </transition>
             </v-app>
-          </template>
+          </template>-->
         </div>
    
     <script src="{{ env('APP_URL') . '/js/lang.js' }}"></script>
     <script src="{{ asset('js/manifest.js') }}"></script>
     <script src="{{ asset('js/vendor.js') }}"></script>
-    <script src="{{ asset('js/auth.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="{{ asset('front/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('front/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('front/js/main.js') }}" type="text/javascript"></script>
-    @yield('javascript')
+    <script src="{{ asset('js/admin.js') }}"></script>
 </body>
 </html>

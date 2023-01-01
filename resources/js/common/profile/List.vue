@@ -61,7 +61,7 @@
 </template>
 <script>
 import ProfileMobile from  './components/ProfileMobile.vue'
-import MobileHeader from '../../common/MobileHeader'
+import MobileHeader from '../../common/layout/MobileHeader'
 import PersonalData from './components/PersonalData'
 import PersonDocuments from './components/PersonDocuments'
 import HeaderData from './components/HeaderData'

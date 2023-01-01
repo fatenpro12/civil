@@ -15,9 +15,13 @@ use App\Http\Controllers\EnginneringOffice\ManageRolesController as EnginneringO
 |
 */
 
-Route::get('/', function () {
-    return redirect(route('login'));
-});
+/*Route::get('/', function () {
+   return redirect('login');
+});*/
+
+Route::get('/{any?}', function (){
+    return view('layouts.auth');
+});//->where('any', '^(?!api\/)[\/\w\.-]*');
 Route::get('cache', function () {
     $exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:clear');
@@ -27,10 +31,6 @@ Route::get('cache', function () {
 });
 //Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
-
-Route::get('login',function(){
-    return view('layouts.auth');
- })->name('login');
 
 
 Route::post('ajaxRequest', [UserController::class, 'getUserData'])->name('ajaxRequest.post');
@@ -47,11 +47,11 @@ if (config('constants.enable_client_signup')) {
     Route::post('/client/register', 'Client\ClientRegisterController@store')
             ->name('client.register');
 }
-
+Route::get('/', 'EstateOwner\SinglePageController@displaySPA')->name('estate_owner.spa');
 // Employees & Superadmin
 Route::prefix('admin')->
     namespace('Admin')
-   ->middleware(['auth', 'employee'])
+   ->middleware(['jwt.auth', 'employee'])
     ->name('admin')
     ->group(function () {
         // single page
@@ -105,7 +105,7 @@ Route::prefix('admin')->
     });
 
 //Common routes
-Route::middleware(['auth'])
+Route::middleware(['jwt.auth'])
     ->name('common')
     ->group(function () {
         Route::resource('manage-profiles', 'ManageProfileController')
@@ -290,9 +290,10 @@ Route::middleware(['auth'])
 
 // Employees & Estate Owner
 
+
 Route::prefix('estate_owner')
     ->namespace('EstateOwner')
-    ->middleware(['auth','estate_owner'])
+    ->middleware(['jwt.auth','estate_owner'])
     ->name('estate_owner')
     ->group(function () {
             Route::get('/', 'SinglePageController@displaySPA')
@@ -353,7 +354,7 @@ Route::prefix('estate_owner')
 
     Route::prefix('enginner_office')
     ->namespace('EnginneringOffice')
-    ->middleware(['auth','enginner_office'])
+    ->middleware(['jwt.auth','enginner_office'])
     ->name('enginner_office')
     ->group(function () {
             Route::get('/', 'SinglePageController@displaySPA')->name('enginner_office.spa');

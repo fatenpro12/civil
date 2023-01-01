@@ -131,13 +131,35 @@ import SupportServiceList from '../supportService/dashboard/List'
 import ContractingCompanyList from '../contracing_company/dashboard/List'
 import EnginneringOfficeEditVisitRequest from '../enginnering_office/tickets/editVisitRequest'
 import Archives from '../common/archives/ArchivesData'
+import Index from '../common/layout/Index.vue'
+import Login from '../auth/Login.vue'
+import Register from '../auth/Register.vue'
 //import { createRouter, createWebHistory } from 'vue-router'
 Vue.use(Router);
 
 const router = new Router({
-    //mode: 'history',
+    history:true,
+    mode: 'history',
     //hash: false,
     routes: [
+        {
+            path: '/dashboard',
+            name: 'index',
+            component: Index,
+            meta: {requiresAuth: true},
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login,
+           // meta: { guest: true },
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: Register,
+            meta: { guest: true },
+        },
         {
             path: '/',
             redirect:  APP.USER_TYPE_LOG == 'ESTATE_OWNER' ? '/es' :
@@ -989,9 +1011,30 @@ router.beforeEach((to, from, next) => {
 
 
 });
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+      if (store.getters['auth/isAuthenticated']) {
+        next();
+        return;
+      }
+      next("/login");
+    } else {
+      next();
+    }
+  });
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.guest)) {
+      if (store.getters['auth/isAuthenticated']) {
+        next("/dashboard");
+        return;
+      }
+      next();
+    } else {
+      next();
+    }
+  });
 router.afterEach((to, from) => {
-    //   alert(JSON.stringify(to.path))
     localStorage.setItem("currenpath", to.path);
     setTimeout(() => {
         store.commit('hideLoader');

@@ -26,7 +26,7 @@ let mix = require('laravel-mix');
 mix.copyDirectory('resources/img', 'public/img')
     .js('resources/js/admin/admin.js', 'public/js')
     .js('resources/js/client/client.js', 'public/js')
-    .js('resources/js/auth/auth.js', 'public/js')
+   // .js('resources/js/auth/auth.js', 'public/js')
     .sass('resources/sass/admin.scss', 'public/css')
     .sass('resources/sass/front.scss', 'public/css')
     .vue()

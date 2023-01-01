@@ -4,7 +4,6 @@ require('../common/common');
 // app
 import router from './router';
 import eventBus from '../common/Event';
-//import store from '../store/Store';
 import store from '../store'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
@@ -38,59 +37,59 @@ const admin = new Vue({
         getBreadcrumbs() {
             return [];
         },
-        showLoader() {
-            return store.getters.showLoader;
+       /* showLoader() {
+            return store.getters['Store/showLoader'];
         },
         showSnackbar: {
             get() {
-                return store.getters.showSnackbar;
+                return store.getters['Store/showSnackbar'];
             },
             set(val) {
-                if (!val) store.commit('hideSnackbar');
+                if (!val) store.commit('Store/hideSnackbar');
             },
         },
-        snackbarMessage() {
-            return store.getters.snackbarMessage;
+       /* snackbarMessage() {
+            return store.getters['Store/snackbarMessage'];
         },
         snackbarColor() {
-            return store.getters.snackbarColor;
+            return store.getters['Store/snackbarColor'];
         },
         snackbarDuration() {
-            return store.getters.snackbarDuration;
+            return store.getters['Store/snackbarDuration'];
         },
 
         // dialog
         showDialog: {
             get() {
-                return store.getters.showDialog;
+                return store.getters['Store/showDialog'];
             },
             set(val) {
                 if (!val) store.commit('hideDialog');
             },
         },
         dialogType() {
-            return store.getters.dialogType;
+            return store.getters['Store/dialogType'];
         },
         dialogTitle() {
-            return store.getters.dialogTitle;
+            return store.getters['Store/dialogTitle'];
         },
         dialogMessage() {
-            return store.getters.dialogMessage;
+            return store.getters['Store/dialogMessage'];
         },
         dialogIcon() {
-            return store.getters.dialogIcon;
+            return store.getters['Store/dialogIcon'];
         },
         drawer: {
             get: function() {
-                return store.getters.drawer;
+                return store.getters['Store/drawer'];
             },
             set: function() {
-                return store.getters.drawerToggle;
+                return store.getters['Store/drawerToggle'];
             },
         },
     },
     methods: {
-        menuClick(routeName, routeType) {
+      /*  menuClick(routeName, routeType) {
             let rn = routeType || 'vue';
 
             if (rn === 'vue') {
@@ -121,6 +120,6 @@ const admin = new Vue({
             } else {
                 this.toggleFooter = false;
             }
-        },
+        },*/
     },
 });
