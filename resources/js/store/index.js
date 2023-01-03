@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate'
 import auth from './auth'
 import Store from './Store'
+import settings from './settings'
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -11,6 +12,7 @@ export default new Vuex.Store({
     ],
     modules:{
         auth,
-        Store
+        Store,
+        settings
     }
 })

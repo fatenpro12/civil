@@ -1,11 +1,11 @@
 <template>
   <div>
-      <div>
+      <div v-if="authenticated">
            <Nav v-if='!$vuetify.breakpoint.xsOnly' />
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
-            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''">
-              <v-app id="inspire-font" style="background-image:url(img/welcome.jpg) 0 0 no-repeat">
+            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" style="padding:0">
+              <v-app id="inspire-font" :style="!authenticated?'background:url(img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
                 <transition name="fade">
                     <router-view></router-view>
                 </transition>
@@ -59,9 +59,20 @@
 
 <script>
 import Nav from './Nav.vue'
+import store from '../../store'
 export default {
 components:{
     Nav
+},
+data(){
+ return {
+    authenticated: false,
+    user: null
+ }
+},
+created(){
+  this.authenticated=store.getters['auth/isAuthenticated']
+  this.user=store.getters['auth/user']
 }
 }
 </script>

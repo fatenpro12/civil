@@ -46,7 +46,7 @@ export default {
             });
 
         },
-        setRequests(state,url){
+        setRequests(state){
             axios
             .get('getRequestsCount')
             .then(function (response) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommonController;
 use Illuminate\Http\Request;
 
 /*
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 Route::middleware('jwt.auth')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('languages',[CommonController::class,'getLanguages']);
 Route::group([
 
   'middleware' => 'api',

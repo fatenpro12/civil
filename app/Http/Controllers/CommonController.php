@@ -20,6 +20,7 @@ use App\StageProject;
 use App\SupportRequestUsers;
 use App\VisitRequest;
 use File;
+use Illuminate\Support\Facades\Config;
 use Lang;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,6 +33,9 @@ class CommonController extends Controller
         $gender_types = User::getGenders();
         
         return $this->respond(['gender_types' => $gender_types]);
+    }
+    public function getLanguages(){
+       return Config::get('languages');
     }
     
     public function askPermissionForUser(Request $request)
