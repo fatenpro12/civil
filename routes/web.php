@@ -51,7 +51,7 @@ Route::get('/', 'EstateOwner\SinglePageController@displaySPA')->name('estate_own
 // Employees & Superadmin
 Route::prefix('admin')->
     namespace('Admin')
-   ->middleware(['jwt.auth', 'employee'])
+ //  ->middleware(['jwt.auth', 'employee'])
     ->name('admin')
     ->group(function () {
         // single page

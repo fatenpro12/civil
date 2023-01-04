@@ -1,97 +1,11 @@
 <script>
 import store from '../store'
 export default {
-      data: () => ({
-        toggleFooter: false,
-        /*showDialog: {
-            get() {
-                return store.getters['Store/showDialog'];
-            },
-            set(val) {
-                if (!val) store.commit('hideDialog');
-            },
-        },
-         showSnackbar: {
-            get() {
-                return store.getters['Store/showSnackbar'];
-            },
-            set(val) {
-                if (!val) store.commit('Store/hideSnackbar');
-            },
-        },
-        drawer: {
-            get: function() {
-                return store.getters['Store/drawer'];
-            },
-            set: function() {
-                return store.getters['Store/drawerToggle'];
-            },
-        },*/
-    }),
     methods: {
         $can(permissionName) {
             return _.get(APP.USER_PERMISSIONS, permissionName, false);
         },
-        /////////////////////
-         /* showLoader() {
-           return store.getters['Store/showLoader'];
-        },
-       /*   snackbarMessage() {
-            return store.getters['Store/snackbarMessage'];
-        },
-        snackbarColor() {
-            return store.getters['Store/snackbarColor'];
-        },
-        snackbarDuration() {
-            return store.getters['Store/snackbarDuration'];
-        },*/
-     
-        dialogType() {
-            return store.getters['Store/dialogType'];
-        },
-        dialogTitle() {
-            return store.getters['Store/dialogTitle'];
-        },
-        dialogMessage() {
-            return store.getters['Store/dialogMessage'];
-        },
-        dialogIcon() {
-            return store.getters['Store/dialogIcon'];
-        },
-
-       /*  menuClick(routeName, routeType) {
-            let rn = routeType || 'vue';
-
-            if (rn === 'vue') {
-                this.$router.push({ name: routeName });
-               
-            }
-            if (rn === 'full_load') {
-                window.location.href = routeName;
-            }
-        },*/
-        clickLogout(logoutUrl, afterLogoutRedirectUrl) {
-            axios.post(logoutUrl).then(r => {
-                window.location.href = afterLogoutRedirectUrl;
-            });
-        },
-        dialogOk() {
-            store.commit('dialogOk');
-        },
-        dialogCancel() {
-            store.commit('dialogCancel');
-        },
-        drawerToggle() {
-            store.commit('drawerToggle');
-        },
-        onScroll(e) {
-            if (window.pageYOffset > 100) {
-                this.toggleFooter = true;
-            } else {
-                this.toggleFooter = false;
-            }
-        },
-        ///////////////////////
+   
              createdDate(date) {
             const current_datetime = new Date(date);
             return current_datetime.toLocaleDateString('en-US');

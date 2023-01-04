@@ -4,7 +4,7 @@
            <Nav v-if='!$vuetify.breakpoint.xsOnly' />
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
-            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" style="padding:0">
+            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0">
               <v-app id="inspire-font" :style="!authenticated?'background:url(img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
                 <transition name="fade">
                     <router-view></router-view>
@@ -60,6 +60,7 @@
 <script>
 import Nav from './Nav.vue'
 import store from '../../store'
+
 export default {
 components:{
     Nav

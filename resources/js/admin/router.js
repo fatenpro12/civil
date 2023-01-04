@@ -143,7 +143,7 @@ const router = new Router({
     //hash: false,
     routes: [
         {
-            path: '/dashboard',
+            path: '/',
             name: 'index',
             component: Index,
             meta: {requiresAuth: true},
@@ -152,7 +152,7 @@ const router = new Router({
             path: '/login',
             name: 'login',
             component: Login,
-           // meta: { guest: true },
+            meta: { guest: true },
         },
         {
             path: '/register',
@@ -160,14 +160,14 @@ const router = new Router({
             component: Register,
             meta: { guest: true },
         },
-        {
+       /* {
             path: '/',
             redirect:  APP.USER_TYPE_LOG == 'ESTATE_OWNER' ? '/es' :
              APP.USER_TYPE_LOG == 'ENGINEERING_OFFICE_MANAGER' ? '/en' : 
              APP.USER_TYPE_LOG == 'CONTRACTING_COMPANY' ? '/en' : 
              APP.USER_TYPE_LOG == 'SUPPORT_SERVICES_OFFICE' ? '/en' : 
              '/dashboard',
-        },
+        },*/
         {
             path: '/to-do"',
             
@@ -1014,7 +1014,27 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (store.getters['auth/isAuthenticated']) {
-        next();
+        store.commit('showLoader');
+        let user = store.getters['auth/user']
+       
+        if (to.path == '/' || to.path == '/dashboard') {
+            if ( user.user_type_log == 'ESTATE_OWNER') {
+                    next('/es')
+                    console.log(user.user_type_log)
+            }
+            else if (user.user_type_log == 'ENGINEERING_OFFICE_MANAGER') {
+                    next('/en')
+            }
+            else if (user.user_type_log == 'CONTRACTING_COMPANY') {
+                next('/en')
+        }
+        else if (user.user_type_log == 'SUPPORT_SERVICES_OFFICE') {
+            next('/en')
+    }
+            else {
+                next('/dashboard')
+            }
+        }
         return;
       }
       next("/login");
@@ -1023,7 +1043,7 @@ router.beforeEach((to, from, next) => {
     }
   });
 
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.guest)) {
       if (store.getters['auth/isAuthenticated']) {
         next("/dashboard");
@@ -1033,7 +1053,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  });
+  });*/
 router.afterEach((to, from) => {
     localStorage.setItem("currenpath", to.path);
     setTimeout(() => {

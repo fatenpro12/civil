@@ -37,7 +37,7 @@ const admin = new Vue({
         getBreadcrumbs() {
             return [];
         },
-       /* showLoader() {
+        showLoader() {
             return store.getters['Store/showLoader'];
         },
         showSnackbar: {
@@ -48,7 +48,7 @@ const admin = new Vue({
                 if (!val) store.commit('Store/hideSnackbar');
             },
         },
-       /* snackbarMessage() {
+       snackbarMessage() {
             return store.getters['Store/snackbarMessage'];
         },
         snackbarColor() {
@@ -89,7 +89,7 @@ const admin = new Vue({
         },
     },
     methods: {
-      /*  menuClick(routeName, routeType) {
+      menuClick(routeName, routeType) {
             let rn = routeType || 'vue';
 
             if (rn === 'vue') {
@@ -120,6 +120,6 @@ const admin = new Vue({
             } else {
                 this.toggleFooter = false;
             }
-        },*/
+        },
     },
 });
