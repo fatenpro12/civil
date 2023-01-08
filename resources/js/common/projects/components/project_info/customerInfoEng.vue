@@ -153,7 +153,7 @@
                             </v-layout>
                            
                             <!--<v-layout row wrap>
-                               <!-- <v-flex md3>
+                              <v-flex md3>
                                     <v-btn
                                         @click="$router.push({ name: 'users_estate.create' })"
                                         large

@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Components\User\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserRequestCreate;
+use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
    public function __construct()
    {
-       $this->middleware('auth:api', ['except' => ['login']]);
+       $this->middleware('auth:api', ['except' => ['login','register']]);
    }
   
    function checkEmail($email) {
@@ -49,16 +51,20 @@ class AuthController extends Controller
   
            // $credentials = request(['email_id_card', 'password']);     
         }
-    
-        if (! $token = auth()->login($user)) {
+        //$token = auth()->login($user);
+        if (! $token = JWTAuth::fromUser($user)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-           
             $output = [
              'success' => true,
              'msg' => __('messages.registered_successfully'),
-             'user'=> $user
+             'user'=> $user,
+             'authorisation' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ]
          ];
+      //   dd($token, auth());
             return $this->respondWithToken($token, $output);
     }
    }
@@ -123,23 +129,27 @@ class AuthController extends Controller
     *
     * @return \Illuminate\Http\JsonResponse
     */
+ 
    public function logout()
    {
-       auth()->logout();
-
-       return response()->json(['message' => 'Successfully logged out']);
+       Auth::logout();
+       return response()->json([
+           'status' => 'success',
+           'message' => 'Successfully logged out',
+       ]);
    }
 
-   /**
-    * Refresh a token.
-    *
-    * @return \Illuminate\Http\JsonResponse
-    */
    public function refresh()
    {
-       return $this->respondWithToken(auth()->refresh());
+       return response()->json([
+           'status' => 'success',
+           'user' => Auth::user(),
+           'authorisation' => [
+               'token' => Auth::refresh(),
+               'type' => 'bearer',
+           ]
+       ]);
    }
-
    /**
     * Get the token array structure.
     *

@@ -321,7 +321,7 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
     }
 </script>
 <style scoped>
->>> .v-list__tile{
+:deep() .v-list__tile{
   
 }
 </style>

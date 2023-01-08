@@ -769,11 +769,11 @@ self.$emit('save',payload)
     color:rgb(105, 0, 0)!important;
     font-size: 24px;
 }
->>> .v-label{
+:deep() .v-label{
     left: unset!important;
     right: unset!important;
 }
->>> .v-list__tile__title{
+:deep() .v-list__tile__title{
     text-align: justify;
 }
 </style>

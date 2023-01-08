@@ -16,7 +16,7 @@ export default {
     },
     actions:{
         getLanguages({commit}){
-        axios.get('api/languages')
+        axios.get('/languages')
         .then(function (response) {
             commit('SET_LANGUAGES',response.data)
         })

@@ -1,7 +1,7 @@
 <template>
-    <v-toolbar v-if='!$vuetify.breakpoint.xsOnly' style="background-color:#06706d;z-index: 100" app dark flat fixed dense height="100"
+    <v-toolbar v-if='!$vuetify.breakpoint.xsOnly && isAuthenticated' style="background-color:#06706d;z-index: 100" app dark flat fixed dense height="100"
                 :clipped-left="true">
-                <img src="img/logo.png"  alt="logo" width="100" style="border-radius:20px;" />
+                <img :src="'/img/logo.png'"  alt="logo" width="100" style="border-radius:20px;" />
                 <v-layout >
                     <div style="font-size:20px;">
 
@@ -116,7 +116,10 @@ methods:{
         }),
   logoutUser(){
     this.signOut()
-    window.location.href = '/login';
+    axios.post('/logout')
+    this.$router.push('/login')
+    this.$forceUpdate()
+   // window.location.href = '/login';
   },
     change(lang){
         localStorage.setItem("currenpathaftercjange",localStorage.getItem("currenpath"));

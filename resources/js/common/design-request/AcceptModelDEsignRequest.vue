@@ -66,7 +66,6 @@
                 </v-card>
             </v-dialog>
         </div>
-    </div>
 </template>
 <style scoped>
 .style_rtl {

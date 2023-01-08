@@ -149,15 +149,15 @@
                                 <v-container>
                                     <v-layout row wrap class="add-agency" v-if="agency">
                                         <v-flex md3>
-                                            <!-- <v-autocomplete
+                                            <v-autocomplete
                                             item-text="trade_name"
                                             item-value="id"
                                             :items="agencies"
                                             v-model="agency.id"
                                             @change="(event) => updateAgentvalues(event)"
                                             :label="trans('data.trade_name')"
-                                        ></v-autocomplete> -->
-                                           <!-- <v-text-field
+                                        ></v-autocomplete> 
+                                            <v-text-field
                                                 v-model="agency.trade_name"
                                                 :label="trans('data.trade_name')"
                                                 readonly

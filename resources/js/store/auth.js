@@ -1,4 +1,5 @@
 
+import router from '../admin/router'
 export default {
     namespaced: true,
     state:{
@@ -31,8 +32,11 @@ export default {
     actions:{
         login({commit},data){
                 commit('SET_USER',data)
-                commit('SET_TOKEN',data.token)
+                commit('SET_TOKEN','Bearer '+data.authorisation.token)
                 commit('SET_AUTHENTICATED',true)
+                localStorage.setItem('token', 'Bearer '+data.authorisation.token)
+                axios.defaults.headers.common['Authorization'] = 'Bearer '+data.authorisation.token
+                router.push("/");
         },
         logout({commit}){
             commit('SET_USER',{})

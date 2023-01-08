@@ -142,10 +142,10 @@ methods:{
 </script>
 
 <style scoped>
->>> .v-toolbar__content{
+:deep() .v-toolbar__content{
   height: 100%!important;
 }
->>> .v-list__tile__title{
+:deep() .v-list__tile__title{
   @apply min-h-full
 }
 </style>

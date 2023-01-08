@@ -80,7 +80,7 @@ import editProject from '../common/projects/components/Edit_Project'
 import projectsList from '../common/projects/components/List'
 import backups from './backup/Backup'
 import backupsList from './backup/List'
-import schedule from '../common/projects/components/schedule'
+//import schedule from '../common/projects/components/schedule'
 import invoices_edit from '../common/projects/invoices/Edit'
 import settings from './settings/Settings'
 import settings_create from './settings/Create'
@@ -109,8 +109,8 @@ import tickets from '../common/tickets/Ticket'
 import tickets_list from '../common/tickets/List'
 import edit_visit_request_list from '../common/tickets/editVisitRequest'
 import constructionlicenses from './main/components/StructionLicenses'
-import general_information from './main/components/GeneralInformation'
-import offices_types from './main/components/OfficesTypes'
+//import general_information from './main/components/GeneralInformation'
+//import offices_types from './main/components/OfficesTypes'
 import create_visit_request_list from '../common/tickets/Create'
 import view_visit_request_list from '../common/tickets/view_visit_request'
 import home from  './main/Home'
@@ -119,7 +119,7 @@ import todolist from './main/ToDoList'
 import project_management from './main/components/ProjectManagement'
 import visit_request_list from '../common/tickets/List'
 import surveydecisions from './main/components/SurveyDecisions'
-import requests_role_view from './requests_role/View'
+//import requests_role_view from './requests_role/View'
 import create_project from '../common/tickets/CreateProjectRequest1'
 //import create_project2 from './main/components/superadmin/CreateProject'
 import requestsRole from './requests_role/RequestsRole'
@@ -134,14 +134,19 @@ import Archives from '../common/archives/ArchivesData'
 import Index from '../common/layout/Index.vue'
 import Login from '../auth/Login.vue'
 import Register from '../auth/Register.vue'
-//import { createRouter, createWebHistory } from 'vue-router'
+
 Vue.use(Router);
 
 const router = new Router({
     history:true,
     mode: 'history',
+    base: '/civil',//process.env.BASE_URL+'/civil',
     //hash: false,
     routes: [
+       /* {
+            path: "/:catchAll(.*)",
+          //  component: NotFound,
+          },*/
         {
             path: '/',
             name: 'index',
@@ -674,11 +679,11 @@ const router = new Router({
                     name: 'finished-projects',
                     component: finished_projects,
                 },
-                {
+               /* {
                     path: '/schedule',
                     name: 'schedule',
                     component: schedule,
-                },
+                },*/
                 {
                     path: ':project_id/invoices/:id/edit',
                     name: 'invoices.edit',
@@ -837,15 +842,10 @@ const router = new Router({
                     name: 'tickets.list',
                     component: tickets_list,
                 },
-                // {
-                //     path: ':id/show',
-                //     name: 'tickets.view',
-                //     component: ('../common/tickets/View'),
-                //     props: route => ({ propTicketId: route.params.id }),
-                // },
+               
             ],
         },
-        {
+       /* {
             path: '/offices_types',
             name: 'offices_types',
             component: offices_types,
@@ -854,7 +854,7 @@ const router = new Router({
             path: '/general_information',
             name: 'general_information     ',
             component: general_information,
-        },
+        },*/
         {
             path: '/construction-licenses',
             name: 'constructionlicenses',
@@ -930,11 +930,11 @@ const router = new Router({
                     component: requests_role_list,
                 },
           
-                {
+                /*{
                     path: 'view/:id',
                     name: 'requests_role.view',
                     component:  requests_role_view,
-                }
+                }*/
             ],
         },
          //request role common
@@ -948,11 +948,11 @@ const router = new Router({
                     component: requests_role_list_common,
                 },
           
-                {
+               /* {
                     path: 'view/:id',
                     name: 'requests_role.view',
                     component:  requests_role_view,
-                }
+                }*/
             ],
         },
         {
@@ -966,29 +966,29 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     store.commit('showLoader');
+    let user = store.getters['auth/user']
     if (to.path == '/to-do') {
-        //  alert(to.path)
-        if ( APP.USER_TYPE_LOG == 'ESTATE_OWNER') {
+        if ( user.user_type_log == 'ESTATE_OWNER') {
             if (from.path != '/es/to-do-list')
                 next('/es/to-do-list')
             else
              window.location.reload()
         }
-        else if (APP.USER_TYPE_LOG == 'ENGINEERING_OFFICE_MANAGER') {
+        else if (user.user_type_log == 'ENGINEERING_OFFICE_MANAGER') {
             if (from.path != '/en/to-do-list')
                 next('/en/to-do-list')
             else
                window.location.reload()
                //next('/')
         }
-        else if ( APP.USER_TYPE_LOG == 'CONTRACTING_COMPANY') {
+        else if ( user.user_type_log == 'CONTRACTING_COMPANY') {
             if (from.path != '/en/to-do-list_contractor')
                 next('/en/to-do-list_contractor')
             else
             window.location.reload()
             //    next('/')
         }
-        else if ( APP.USER_TYPE_LOG == 'SUPPORT_SERVICES_OFFICE') {
+        else if ( user.user_type_log == 'SUPPORT_SERVICES_OFFICE') {
             if (from.path != '/en/to-do-list-support-service')
                 next('/en/to-do-list-support-service')
             else

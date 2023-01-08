@@ -30,7 +30,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.contractor_request')+' ('+$store.state.countContractorRequest+')'
+                                                            trans('data.contractor_request')+' ('+$store.state.Store.countContractorRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -354,7 +354,8 @@ export default {
         };
     },
          mounted() {
- this.$store.commit('setRequests')
+            let user = this.$store.getters['auth/user']
+ this.$store.commit('setRequests',user.id)
     },
     methods: {
         askforpermission() {

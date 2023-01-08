@@ -1,6 +1,11 @@
 # civil
 
-
+"vue-router": "^3.0.1",
+"vue": "^2.6.12",
+"vue-template-compiler": "^2.6.12"
+    "vuetify-daterange-picker": "^3.1.6",
+    "vuetify-datetime-picker": "^1.0.5",
+     "bootstrap-vue": "^2.23.1",
 
 ## Getting started
 

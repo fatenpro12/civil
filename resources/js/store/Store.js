@@ -46,11 +46,11 @@ export default {
             });
 
         },
-        setRequests(state){
+        setRequests(state,id){
             axios
-            .get('getRequestsCount')
+            .get('/getRequestsCount/'+id)
             .then(function (response) {
-               //  state.countDedignRequest = response.data.msg.data.filter(x=>x.status == 'sent').length
+              
                  state.countDedignRequest = response.data.countDesignRequest
                  state.countContractorRequest = response.data.countContractorRequest
                  state.countServiceRequest = response.data.countServicesRequest

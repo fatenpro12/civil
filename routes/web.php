@@ -19,15 +19,18 @@ use App\Http\Controllers\EnginneringOffice\ManageRolesController as EnginneringO
    return redirect('login');
 });*/
 
-Route::get('/{any?}', function (){
+Route::get('civil/{any?}', function (){
     return view('layouts.auth');
-});//->where('any', '^(?!api\/)[\/\w\.-]*');
+})->where('any','.*');//->where('any', '^(?!api\/)[\/\w\.-]*');
 Route::get('cache', function () {
     $exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('config:cache');
 
     //$exitCode = Artisan::call('optimize:clear');
+});
+Route::get('link', function () {
+    $exitCode = Artisan::call('storage:link');
 });
 //Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
@@ -36,7 +39,7 @@ Route::get('get-genders', 'CommonController@getGenders');
 Route::post('ajaxRequest', [UserController::class, 'getUserData'])->name('ajaxRequest.post');
 Route::post('checkUser', [UserController::class, 'checkUserType'])->name('checkUser.post');
 Route::post('getTypes', [ManageRolesController::class, 'getTypes'])->name('getTypes.post');
-Route::post('getType', [UserController::class, 'getType'])->name('getType.post');
+//Route::post('getType', [UserController::class, 'getType'])->name('getType.post');
 
 Route::get('get-location-info', 'ProjectController@getLocationInfo');
 Route::get('create-user','CommonController@createUser');
@@ -47,7 +50,6 @@ if (config('constants.enable_client_signup')) {
     Route::post('/client/register', 'Client\ClientRegisterController@store')
             ->name('client.register');
 }
-Route::get('/', 'EstateOwner\SinglePageController@displaySPA')->name('estate_owner.spa');
 // Employees & Superadmin
 Route::prefix('admin')->
     namespace('Admin')
@@ -105,7 +107,7 @@ Route::prefix('admin')->
     });
 
 //Common routes
-Route::middleware(['jwt.auth'])
+/*Route::middleware(['jwt.auth'])
     ->name('common')
     ->group(function () {
         Route::resource('manage-profiles', 'ManageProfileController')
@@ -325,7 +327,7 @@ Route::prefix('estate_owner')
             Route::post('accept-design-request-offer', 'DesignRequestController@acceptDesign');
             
         // Route::get('dashboards', 'DashboardController@index');
-    });
+    });*/
 //contractor
     Route::prefix('contracting_company')
     ->namespace('ContractingCompany')

@@ -2,7 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use PHPOpenSourceSaver\JWTAuth\Http\Middleware\RefreshToken;
 
 class Kernel extends HttpKernel
 {
@@ -64,8 +66,8 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         'estate_owner' => \App\Http\Middleware\CheckEstateOwner::class,
         'enginner_office' => \App\Http\Middleware\CheckEnginneringOffice::class,
-        //'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'jwt.refresh' => RefreshToken::class,
     ];
 }

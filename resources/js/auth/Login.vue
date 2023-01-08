@@ -81,17 +81,18 @@ export default {
          login(event){
             this.processing = true
           this.auth.user_type = event
-             axios.post('api/login',this.auth).then(({data})=>{
+             axios.post('/login',this.auth).then(({data})=>{
+                console.log(data)
                 this.signIn(data)
-                this.$router.push({path: '/'})
-            }).catch(({response:{data}})=>{
-                console.log(data.message)
+              //  this.$router.push({path: '/'})
+            }).catch((response)=>{
+                console.log(response)
             }).finally(()=>{
                 this.processing = false
             })
         },
             getRoles(){
-        axios.post('getType', this.auth).then((response)=>{
+        axios.post('/getType', this.auth).then((response)=>{
                 this.roles = response.data.roles
                  if(this.roles.length>1)
                  this.showRoles=true
@@ -105,7 +106,7 @@ export default {
 }
 </script>
 <style scoped>
->>> .v-btn{
+:deep() .v-btn{
 border-radius: 20px;
 }
   .card-signin {

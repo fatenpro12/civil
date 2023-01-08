@@ -55,7 +55,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.design_requests')+' ('+$store.state.countDesignRequestEng+')'
+                                                            trans('data.design_requests')+' ('+$store.state.Store.countDesignRequestEng+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -85,7 +85,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.supervision_requests') +' ('+$store.state.countVisitRequest+')'
+                                                            trans('data.supervision_requests') +' ('+$store.state.Store.countVisitRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -113,7 +113,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.contractor_request')+' ('+$store.state.countContractorRequest+')'
+                                                            trans('data.contractor_request')+' ('+$store.state.Store.countContractorRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -141,7 +141,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.support_service_requests')+' ('+$store.state.countServiceRequest+')'
+                                                            trans('data.support_service_requests')+' ('+$store.state.Store.countServiceRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -378,7 +378,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.ask_for_permission') +' ('+$store.state.countRoleRequest+')'
+                                                            trans('data.ask_for_permission') +' ('+$store.state.Store.countRoleRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -447,7 +447,8 @@ export default {
         };
     },
     mounted() {
-     this.$store.commit('setRequests')
+        let user = this.$store.getters['auth/user']
+ this.$store.commit('setRequests',user.id)
     },
     methods: {
         askforpermission() {

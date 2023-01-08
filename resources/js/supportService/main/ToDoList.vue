@@ -137,7 +137,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('data.support_service_requests')+' ('+$store.state.countServiceRequest+')'
+                                                            trans('data.support_service_requests')+' ('+$store.state.Store.countServiceRequest+')'
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -351,7 +351,8 @@ export default {
         };
     },
       mounted() {
- this.$store.commit('setRequests')
+    let user = this.$store.getters['auth/user']
+     this.$store.commit('setRequests',user.id)
     },
     methods: {
         askforpermission() {

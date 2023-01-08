@@ -249,8 +249,8 @@ public function createUser()
       
        return User::getAllSupporters();
    }
-   public function getRequestsCount(){
-    $user=User::find(request()->user()->id);
+   public function getRequestsCount($id){
+    $user=User::find($id);
     $childrens=$user->childrenIds($user->id);
     array_push($childrens,$user->id);
     $countDesignRequest = DesignRequest::where('request_type','design_request')->whereIn('customer_id', $childrens)->where('status','sent')->count();

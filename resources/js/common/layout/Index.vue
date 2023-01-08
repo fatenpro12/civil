@@ -5,8 +5,8 @@
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
             <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0">
-              <v-app id="inspire-font" :style="!authenticated?'background:url(img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
-                <transition name="fade">
+              <v-app id="inspire-font" :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
+                <transition name="fade" class="mt-1">
                     <router-view></router-view>
                 </transition>
                 </v-app>
@@ -68,8 +68,67 @@ components:{
 data(){
  return {
     authenticated: false,
-    user: null
+    user: null,
+    toggleFooter: false,
  }
+},
+computed:{
+         onScroll(e) {
+            if (window.pageYOffset > 100) {
+                this.toggleFooter = true;
+            } else {
+                this.toggleFooter = false;
+            }
+        },
+           showLoader() {
+            return store.getters['Store/showLoader'];
+        },
+            snackbarDuration() {
+            return store.getters['Store/snackbarDuration'];
+        },
+              snackbarColor() {
+            return store.getters['Store/snackbarColor'];
+        },
+             snackbarMessage() {
+            return store.getters['Store/snackbarMessage'];
+        },
+            showSnackbar: {
+            get() {
+                return store.getters['Store/showSnackbar'];
+            },
+            set(val) {
+                if (!val) store.commit('Store/hideSnackbar');
+            },
+        },
+            // dialog
+        showDialog: {
+            get() {
+                return store.getters['Store/showDialog'];
+            },
+            set(val) {
+                if (!val) store.commit('hideDialog');
+            },
+        },
+                dialogType() {
+            return store.getters['Store/dialogType'];
+        },
+        dialogTitle() {
+            return store.getters['Store/dialogTitle'];
+        },
+        dialogMessage() {
+            return store.getters['Store/dialogMessage'];
+        },
+        dialogIcon() {
+            return store.getters['Store/dialogIcon'];
+        },
+           drawer: {
+            get: function() {
+                return store.getters['Store/drawer'];
+            },
+            set: function() {
+                return store.getters['Store/drawerToggle'];
+            },
+        },
 },
 created(){
   this.authenticated=store.getters['auth/isAuthenticated']

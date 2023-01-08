@@ -1,9 +1,4 @@
 <template>
-    <div>
-        <!-- create project -->
-        <!--<ProjectFormAdd ref="projectAdd"></ProjectFormAdd>
-        <!-- Edit project -->
-        <!--<ProjectFormEdit ref="projectEdit"></ProjectFormEdit>-->
         <v-container grid-list-md>
             <v-layout row pt-3>
                 <v-flex xs12 sm12>
@@ -270,7 +265,6 @@
             </div>
             <br />
         </v-container>
-    </div>
 </template>
 
 

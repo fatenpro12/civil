@@ -49,8 +49,7 @@
                     </v-btn>
                 </v-card-actions>
                  <v-card-actions v-else>
-                        <v-btn color="green darken-1" flat @click="dialo65
-                        g = false">
+                        <v-btn color="green darken-1" flat @click="dialog = false">
                         {{ trans('data.close') }}
                     </v-btn>
                  </v-card-actions>

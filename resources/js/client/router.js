@@ -94,12 +94,12 @@ const router = new Router({
                     name: 'edit_visit_request_list',
                     component: require('../common/tickets/editVisitRequest'),
                 },
-                {
+              /*  {
                     path: ':id/show',
                     name: 'visit_request_view',
                     component: require('../common/tickets/View'),
                     props: route => ({ propTicketId: route.params.id }),
-                },
+                },*/
             ],
         },
         {

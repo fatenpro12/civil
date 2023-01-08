@@ -7,6 +7,7 @@ import eventBus from '../common/Event';
 import store from '../store'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
+import axios from 'axios';
 
 var x=APP.RTL;
 Vue.use(Vuetify, {
@@ -23,69 +24,21 @@ Vue.use(Vuetify, {
      },
  });
 Vue.use(eventBus);
-
+axios.defaults.withCredentials=true;
+axios.defaults.baseURL = '/api/'
+const token= localStorage.getItem('token')
+if(token){
+    axios.defaults.headers.common['Authorization'] = token
+}
 const admin = new Vue({
     el: '#admin',
     vuetify: Vuetify,
     eventBus,
     router,
     store,
-    data: () => ({
-        toggleFooter: false,
-    }),
     computed: {
         getBreadcrumbs() {
             return [];
-        },
-        showLoader() {
-            return store.getters['Store/showLoader'];
-        },
-        showSnackbar: {
-            get() {
-                return store.getters['Store/showSnackbar'];
-            },
-            set(val) {
-                if (!val) store.commit('Store/hideSnackbar');
-            },
-        },
-       snackbarMessage() {
-            return store.getters['Store/snackbarMessage'];
-        },
-        snackbarColor() {
-            return store.getters['Store/snackbarColor'];
-        },
-        snackbarDuration() {
-            return store.getters['Store/snackbarDuration'];
-        },
-
-        // dialog
-        showDialog: {
-            get() {
-                return store.getters['Store/showDialog'];
-            },
-            set(val) {
-                if (!val) store.commit('hideDialog');
-            },
-        },
-        dialogType() {
-            return store.getters['Store/dialogType'];
-        },
-        dialogTitle() {
-            return store.getters['Store/dialogTitle'];
-        },
-        dialogMessage() {
-            return store.getters['Store/dialogMessage'];
-        },
-        dialogIcon() {
-            return store.getters['Store/dialogIcon'];
-        },
-        drawer: {
-            get: function() {
-                return store.getters['Store/drawer'];
-            },
-            set: function() {
-                return store.getters['Store/drawerToggle'];
-            },
         },
     },
     methods: {
@@ -114,12 +67,6 @@ const admin = new Vue({
         drawerToggle() {
             store.commit('drawerToggle');
         },
-        onScroll(e) {
-            if (window.pageYOffset > 100) {
-                this.toggleFooter = true;
-            } else {
-                this.toggleFooter = false;
-            }
-        },
+   
     },
 });

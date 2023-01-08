@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class Controller extends BaseController
 {
@@ -23,7 +24,9 @@ class Controller extends BaseController
         $this->statusCode = $statusCode;
         return $this;
     }
-
+    protected function user() {
+        return JWTAuth::parseToken()->authenticate();
+    }
     public function respondWithError($message = null)
     {
         return response()->json(

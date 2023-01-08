@@ -100,7 +100,6 @@ export default {
             return APP.USER_TYPE_LOG;
         },
         getCurrentUser() {
-          //  console.log(APP.CURRENT_USER)
             return APP.CURRENT_USER;
         },
          getEmployee(user_id) {
@@ -126,7 +125,8 @@ export default {
            return APP.LANGUAGES
         },
         checkActive() {
-            return APP.CURRENT_USER.active !=null;
+            let user = this.$store.getters['auth/user']
+            return user.active !=null;
         },
         $hasRole(roleName) {
             return _.get(APP.USER_ROLES, roleName, false);

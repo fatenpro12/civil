@@ -78,7 +78,7 @@
                                         header-tag="header1"
                                         title=""
                                     >
-                                        <!--<vuetify-money
+                                        <vuetify-money
                                             v-model="price"
                                             v-bind:label="label"
                                             v-bind:placeholder="placeholder"
@@ -97,9 +97,9 @@
                                                         name: trans('data.price'),
                                                     }),
                                             ]"
-                                        />-->
+                                        />
 
-                                        <!-- <v-text-field
+                                         <v-text-field
                                         id="input_name"
                                         v-model="price"
                                         v-validate="'required'"

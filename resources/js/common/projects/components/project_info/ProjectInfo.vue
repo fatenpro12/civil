@@ -410,7 +410,7 @@ label_active2:"",
 };
 </script>
 <style scoped>
->>> .ql-container{
+:deep() .ql-container{
     max-height: 70%;
 }
 </style>
