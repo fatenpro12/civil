@@ -1012,6 +1012,7 @@ router.beforeEach((to, from, next) => {
 
 });
 router.beforeEach((to, from, next) => {
+    console.log(to.matched.some((record) => record.meta.requiresAuth))
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (store.getters['auth/isAuthenticated']) {
         store.commit('showLoader');
@@ -1020,7 +1021,7 @@ router.beforeEach((to, from, next) => {
         if (to.path == '/' || to.path == '/dashboard') {
             if ( user.user_type_log == 'ESTATE_OWNER') {
                     next('/es')
-                    console.log(user.user_type_log)
+                 //   console.log(user.user_type_log)
             }
             else if (user.user_type_log == 'ENGINEERING_OFFICE_MANAGER') {
                     next('/en')

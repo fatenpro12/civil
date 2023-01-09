@@ -4,11 +4,11 @@
            <Nav v-if='!$vuetify.breakpoint.xsOnly' />
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
-            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0">
+            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0 pb-0">
               <v-app id="inspire-font" :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
-                <transition name="fade" class="mt-1">
+                <!--<transition name="fade" class="mt-1">-->
                     <router-view></router-view>
-                </transition>
+                <!--</transition>-->
                 </v-app>
             </v-content>
 
@@ -133,6 +133,22 @@ computed:{
 created(){
   this.authenticated=store.getters['auth/isAuthenticated']
   this.user=store.getters['auth/user']
+},
+mounted(){
+  this.authenticated=store.getters['auth/isAuthenticated']
+  this.user=store.getters['auth/user']
+},
+updated(){
+  this.authenticated=store.getters['auth/isAuthenticated']
+  this.user=store.getters['auth/user']
+},
+methods:{
+      dialogOk() {
+            store.commit('dialogOk');
+        },
+        dialogCancel() {
+            store.commit('dialogCancel');
+        },
 }
 }
 </script>

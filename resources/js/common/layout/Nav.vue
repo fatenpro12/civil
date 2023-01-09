@@ -71,7 +71,7 @@
                   
 
                             <v-list-tile @click="$router.push({ name: 'profile.list' })">
-                                <v-list-tile-title>
+                                <v-list-tile-title class="text-justify">
                                     <v-icon> account_circle </v-icon>
                                     {{trans('messages.profile')}}
                                 </v-list-tile-title>

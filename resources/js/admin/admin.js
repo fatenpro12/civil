@@ -58,12 +58,7 @@ const admin = new Vue({
                 window.location.href = afterLogoutRedirectUrl;
             });
         },
-        dialogOk() {
-            store.commit('dialogOk');
-        },
-        dialogCancel() {
-            store.commit('dialogCancel');
-        },
+      
         drawerToggle() {
             store.commit('drawerToggle');
         },
