@@ -182,11 +182,14 @@ const router = new Router({
             name: 'dashboard',
             path: '/dashboard',
             component: Home,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
                     name: 'dashboard.list',
                     component: List,
+                     meta: {requiresAuth: true},
+                    
                 },
                 ,
             ],
@@ -198,6 +201,7 @@ const router = new Router({
             name: 'dashboard_estate',
             path: '/es',
             component: EstateOwnerHome,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -285,16 +289,19 @@ const router = new Router({
                     path: 'design-request',
                     name: 'design_request_estate_list',
                     component: DesignRequestList,
+                    meta: {requiresAuth: true},
                 },
 {
     path: 'contractor-request',
     name: 'contractor_request_estate_list',
     component: ContractorRequestList,
+    meta: {requiresAuth: true},
 },
 {
     path: 'support-service-request',
     name: 'support-service_estate_list',
     component: SupportServiceRequestList,
+    meta: {requiresAuth: true},
 },
 
 
@@ -302,6 +309,7 @@ const router = new Router({
                     path: 'show-design-price/:id',
                     name: 'show_design_request_price_estate_list',
                     component: ShowDesignRequestReport,
+                    meta: {requiresAuth: true},
                     props: route => ({ design_id: route.params.id }),
                 }
 
@@ -315,6 +323,7 @@ const router = new Router({
             name: 'dashboard_contractor',
             path: '/en',
             component: ContractorHome,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -341,6 +350,7 @@ const router = new Router({
             name: 'support_service_office',
             path: '/en',
             component: SupportServiceHome,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -365,6 +375,7 @@ const router = new Router({
             name: 'dashboard_enginner_office',
             path: '/en',
             component: EnginneringOfficeHome,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -445,11 +456,13 @@ const router = new Router({
                     path: 'view_visit_request/:id',
                     name: 'view_visit_enginner_office_request_list',
                     component: EnginneringOfficeViewVisitRequest,
+                    meta: {requiresAuth: true},
                     props: route => ({ propRequestId: route.params.id }),
                 },
                 {
                     path: 'tasks',
                     component: EnginneringOfficeTasks,
+                    meta: {requiresAuth: true},
                     children: [
                         {
                             path: '/',
@@ -721,6 +734,7 @@ const router = new Router({
         {
             path: '/profiles',
             component: profiles,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -738,6 +752,7 @@ const router = new Router({
         {
             path: '/projects',
             component: Invoices,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/invoice/:project_id?',
@@ -770,6 +785,7 @@ const router = new Router({
         {
             path: '/knowledge-base',
             component: knowledge_base,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/knowledge-base',
@@ -893,11 +909,13 @@ const router = new Router({
             path: '/project-management',
             name: 'project-management',
             component: project_management,
+            meta: {requiresAuth: true},
         },
         {
             path: '/to-do-list',
             component: todolist,
-            name: 'todolist'
+            name: 'todolist',
+            meta: {requiresAuth: true},
         },
         {
             path: '/new_authorization_requests',
@@ -923,24 +941,20 @@ const router = new Router({
         {
             path: '/requests-role',
             component: requestsRole,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
                     name: 'requests_role.list',
                     component: requests_role_list,
                 },
-          
-                /*{
-                    path: 'view/:id',
-                    name: 'requests_role.view',
-                    component:  requests_role_view,
-                }*/
             ],
         },
          //request role common
          {
             path: '/requests-role-common',
             component: requestsRoleCommon,
+            meta: {requiresAuth: true},
             children: [
                 {
                     path: '/',
@@ -965,7 +979,7 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
-    store.commit('showLoader');
+   // store.commit('showLoader');
     let user = store.getters['auth/user']
     if (to.path == '/to-do') {
         if ( user.user_type_log == 'ESTATE_OWNER') {
@@ -1012,10 +1026,11 @@ router.beforeEach((to, from, next) => {
 
 });
 router.beforeEach((to, from, next) => {
-    console.log(to.matched.some((record) => record.meta.requiresAuth))
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
+   
+  //  if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (store.getters['auth/isAuthenticated']) {
-        store.commit('showLoader');
+      //  store.commit('showLoader');
+       console.log(to.matched.some((record) => record.meta.requiresAuth))
         let user = store.getters['auth/user']
        
         if (to.path == '/' || to.path == '/dashboard') {
@@ -1036,10 +1051,9 @@ router.beforeEach((to, from, next) => {
                 next('/dashboard')
             }
         }
+        next();
         return;
-      }
-      next("/login");
-    } else {
+      } else {
       next();
     }
   });

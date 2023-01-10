@@ -61,7 +61,7 @@ export default {
         },
         // loader
         showLoader(state) {
-            state.showLoader = true;
+           state.showLoader = true;
         },
         hideLoader(state) {
             state.showLoader = false;
@@ -126,7 +126,7 @@ export default {
 
         // loader
         showLoader: state => {
-            return state.showLoader;
+           return state.showLoader;
         },
 
         // snackbar

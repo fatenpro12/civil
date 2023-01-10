@@ -252,4 +252,145 @@ Route::group([
 
 
 });
+//contractor
+Route::prefix('contracting_company')
+->namespace('ContractingCompany')
+// ->middleware(['auth','enginner_office'])
+->name('contracting_company')
+->group(function () {
+        Route::get('/', 'SinglePageController@displaySPA')
+        ->name('estate_owner.spa');
+        Route::resource('request-contractor', 'ContractorRequestController');
+        Route::post('accept-contractor-request','ContractorRequestController@acceptContractorRequest');
+});
 
+//support service
+Route::prefix('support_service_office')
+->namespace('SupportService')
+// ->middleware(['auth','enginner_office'])
+->name('support_service_office')
+->group(function () {
+        Route::get('/', 'SinglePageController@displaySPA')
+        ->name('estate_owner.spa');
+        
+        Route::resource('request-support-service', 'SupportServiceRequestController');
+        Route::post('accept-support-service-request','SupportServiceRequestController@acceptSupportServiceRequest');
+});
+/// Enginnering OFFICE
+
+Route::prefix('enginner_office')
+->namespace('EnginneringOffice')
+->middleware(['jwt.auth','enginner_office'])
+->name('enginner_office')
+->group(function () {
+        Route::get('/', 'SinglePageController@displaySPA')->name('enginner_office.spa');
+      //  Route::resource('dashboards', 'DashboardController')->only(['index'])->name('enginner_office.dashboards');
+    //  Route::get('dashboards', 'DashboardController@index')->name('enginner_office.dashboards');  
+      Route::post('addNewEmployee','UserController@addNewEmployee');
+        Route::get('user-statistics', 'UserController@getStatistics');
+        Route::get('users-all', 'UserController@getAllEmployee');
+        Route::get('users/{id}/name', 'UserController@getEmployee');
+        Route::get('get-office-empoloyees/{id}', 'UserController@getUsersOffice');
+        Route::post('get-office-empoloyees-specialty', 'UserController@getEmployeesOfficeForSpecialty');
+        Route::resource('users', 'UserController');
+        Route::get('/customers', 'UserController@getCustomers');
+         //    request     
+         Route::post('get-office-empoloyees-request', 'RequestTypeController@getEmployeesOfficeForRequest');
+
+         Route::post('rejectContractorRequestOffer','ContractorRequestController@rejectContractorRequestOffer');
+         Route::post('acceptContractorRequestOffer','ContractorRequestController@acceptContractorRequestOffer');
+
+         Route::post('rejectSupportServiceRequestOffer','SupportServiceRequestController@rejectSupoortServiceRequestOffer');
+         Route::post('acceptSupportServiceRequestOffer','SupportServiceRequestController@acceptSupportServiceRequestOffer');
+
+         Route::post('accept-project', 'RequestTypeController@acceptProject');
+        Route::post('request-cancel', 'RequestTypeController@cancelRequest');
+        Route::get('get-office-requests','RequestTypeController@getOfficeRequests');
+        Route::get('projects-request','RequestTypeController@getProjectRequests');
+
+        Route::resource('request-contractor', 'ContractorRequestController');
+        Route::resource('request-support-service', 'SupportServiceRequestController');
+
+        Route::resource('request', 'RequestTypeController');
+        Route::post('accept-request-by-enginner','RequestTypeController@acceptRequestByEnginner');
+        
+
+        Route::get('project-tasks/mark-completed', 'ProjectTaskController@markAsCompleted');
+
+        Route::get('project-tasks/filter-data/{project_id}', 'ProjectTaskController@getFilterData');
+        
+        Route::get('project-task-description', 'ProjectTaskController@updateDescription');
+        Route::resource('project-tasks', 'ProjectTaskController');
+        //customer
+        Route::post('add-customer', 'UserController@addCustomer');
+
+        Route::get('all-employee/{id}', 'UserController@getAllEmployeeForRequest');
+
+
+        Route::resource('request-design', 'DesignRequestController');
+
+        Route::post('get-stages-design-request', 'DesignRequestController@getStagesDesignRequest');
+       
+        Route::post('accept-design-request', 'DesignRequestController@acceptDesignRequest');
+
+        Route::post('reject-design-request', 'DesignRequestController@rejectDesignRequest');
+
+        Route::post('send-design-request-offer', 'DesignRequestController@sendDesignRequestOffer');
+
+        Route::post('show-design-request-details', 'DesignRequestController@showDesignRequestDetails');
+});
+// Employees & Superadmin
+Route::prefix('admin')->
+    namespace('Admin')
+ //  ->middleware(['jwt.auth', 'employee'])
+    ->name('admin')
+    ->group(function () {
+        // single page
+        Route::get('/', 'SinglePageController@displaySPA')
+            ->name('admin.spa');
+            
+        // resource routes
+        Route::get('user-statistics', 'UserController@getStatistics');
+        Route::get('users-all', 'UserController@getAllEmployee');
+        Route::get('users/{id}/name', 'UserController@getEmployee');
+        
+        Route::resource('users', 'UserController');
+
+        Route::get('customers/{id}/customer-name', 'CustomerController@getCustomer');
+        Route::get('customers/{id}/contacts', 'CustomerController@getContacts');
+        Route::resource('customers', 'CustomerController')
+            ->except(['create']);
+        Route::resource('customer-notes', 'CustomerNoteController')
+            ->except(['create']);
+        Route::resource('contacts', 'ContactController');
+
+        Route::resource('employee-notes', 'EmployeeNoteController');
+
+        Route::resource('categories', 'CategoryController')->only(['store']);
+        Route::post('save-stick-notes', 'DashboardController@saveStickNotes');
+        Route::resource('dashboards', 'DashboardController')->only(['index']);
+
+        Route::post('system-settings-upload-logo', 'SystemSettingsController@uploadLogo');
+        Route::resource('system-settings', 'SystemSettingsController')->only(['create', 'store']);
+
+        Route::resource('currencies', 'CurrencyController')->only(['index', 'store']);
+
+        Route::resource('backups', 'BackupController')->only(['index', 'create']);
+        Route::get('backups/delete/{file_name}', 'BackupController@delete');
+        Route::get('backups/{file_name}', 'BackupController@download');
+
+        Route::resource('roles', 'ManageRolesController');
+        Route::resource('knowledge-bases', 'KnowledgeBaseController');
+        Route::resource('invoice-scheme', 'InvoiceSchemeController');
+        Route::resource('customer-account-ledger', 'CustomerAccountLedgerController')->only(['index']);
+
+        Route::resource('status', 'StatusController')->only(['index', 'store']);
+        Route::resource('source', 'SourceController')->only(['index', 'store']);
+
+        Route::get('lead-statistics', 'LeadController@getStatistics');
+        Route::get('leads-update-status', 'LeadController@updateStatus');
+        Route::resource('leads', 'LeadController');
+
+        Route::resource('lead-notes', 'LeadNoteController');
+        Route::resource('reminders', 'ReminderController');
+    });

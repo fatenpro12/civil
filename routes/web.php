@@ -15,10 +15,6 @@ use App\Http\Controllers\EnginneringOffice\ManageRolesController as EnginneringO
 |
 */
 
-/*Route::get('/', function () {
-   return redirect('login');
-});*/
-
 Route::get('civil/{any?}', function (){
     return view('layouts.auth');
 })->where('any','.*');//->where('any', '^(?!api\/)[\/\w\.-]*');
@@ -29,9 +25,11 @@ Route::get('cache', function () {
 
     //$exitCode = Artisan::call('optimize:clear');
 });
+Route::redirect('/', '/civil');
 Route::get('link', function () {
     $exitCode = Artisan::call('storage:link');
 });
+
 //Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
 
@@ -50,7 +48,7 @@ if (config('constants.enable_client_signup')) {
     Route::post('/client/register', 'Client\ClientRegisterController@store')
             ->name('client.register');
 }
-// Employees & Superadmin
+/* Employees & Superadmin
 Route::prefix('admin')->
     namespace('Admin')
  //  ->middleware(['jwt.auth', 'employee'])
@@ -327,7 +325,7 @@ Route::prefix('estate_owner')
             Route::post('accept-design-request-offer', 'DesignRequestController@acceptDesign');
             
         // Route::get('dashboards', 'DashboardController@index');
-    });*/
+    });
 //contractor
     Route::prefix('contracting_company')
     ->namespace('ContractingCompany')
@@ -421,7 +419,7 @@ Route::prefix('estate_owner')
             
         // Route::get('dashboards', 'DashboardController@index');
     });
-
+*/
 
 
 
