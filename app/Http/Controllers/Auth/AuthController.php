@@ -55,10 +55,13 @@ class AuthController extends Controller
         if (! $token = JWTAuth::fromUser($user)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+     //   dd($user->getUserPermissions($user));
             $output = [
              'success' => true,
              'msg' => __('messages.registered_successfully'),
              'user'=> $user,
+             'permissions' => $user->getUserPermissions($user),
+             'roles' => $user->getUserRoles($user),
              'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',

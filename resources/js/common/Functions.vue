@@ -3,7 +3,9 @@ import store from '../store'
 export default {
     methods: {
         $can(permissionName) {
-            return _.get(APP.USER_PERMISSIONS, permissionName, false);
+            let permissions= this.$store.getters['auth/permissions']
+            
+            return _.get(permissions, permissionName, false);
         },
    
              createdDate(date) {
@@ -12,7 +14,6 @@ export default {
         },
                     sendRequest(id) {
             const self = this;
-            console.log(id)
             self.$store.commit('showDialog', {
                 type: 'confirm',
                 icon: 'warning',
@@ -97,10 +98,10 @@ export default {
             return APP.RTL;
         },
         checkType() {
-            return APP.USER_TYPE_LOG;
+            return this.getCurrentUser().user_type_log;
         },
         getCurrentUser() {
-            return APP.CURRENT_USER;
+            return this.$store.getters['auth/user'];
         },
          getEmployee(user_id) {
             const self = this;
@@ -129,7 +130,8 @@ export default {
             return user.active !=null;
         },
         $hasRole(roleName) {
-            return _.get(APP.USER_ROLES, roleName, false);
+             let roles= this.$store.getters['auth/roles']
+            return _.get(roles, roleName, false);
             //  return _.get(APP.USER_ROLES, 'superadmin', _.get(APP.USER_ROLES, roleName, false));
         },
               viewProject(id) {

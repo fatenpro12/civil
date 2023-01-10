@@ -1029,10 +1029,10 @@ router.beforeEach((to, from, next) => {
    
   //  if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (store.getters['auth/isAuthenticated']) {
-      //  store.commit('showLoader');
+        store.commit('showLoader');
        console.log(to.matched.some((record) => record.meta.requiresAuth))
         let user = store.getters['auth/user']
-       
+       console.log(user)
         if (to.path == '/' || to.path == '/dashboard') {
             if ( user.user_type_log == 'ESTATE_OWNER') {
                     next('/es')
@@ -1057,7 +1057,18 @@ router.beforeEach((to, from, next) => {
       next();
     }
   });
-
+  router.beforeEach((to, from, next) => {
+    const loggedIn = localStorage.getItem("auth");
+    const isAuth = to.matched.some((record) => record.meta.requiresAuth);
+    const isHide = to.matched.some((record) => record.meta.guest);
+  
+    if (isAuth && !loggedIn) {
+      return next({ path: "/login" });
+    } else if (isHide && loggedIn) {
+      return next({ path: "/" });
+    }
+    next();
+  });
 /*router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.guest)) {
       if (store.getters['auth/isAuthenticated']) {
