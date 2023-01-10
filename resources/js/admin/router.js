@@ -1059,8 +1059,8 @@ router.beforeEach((to, from, next) => {
   });
   router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem("auth");
-    const isAuth = to.matched.some((record) => record.meta.requiresAuth);
-    const isHide = to.matched.some((record) => record.meta.guest);
+    const isAuth = to.matched.some((record) => record.meta.guest);
+    const isHide = to.matched.some((record) => record.meta.requiresAuth);
   
     if (isAuth && !loggedIn) {
       return next({ path: "/login" });
