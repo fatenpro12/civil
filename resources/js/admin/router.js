@@ -157,13 +157,13 @@ const router = new Router({
             path: '/login',
             name: 'login',
             component: Login,
-            meta: { guest: true },
+         //   meta: { guest: true },
         },
         {
             path: '/register',
             name: 'register',
             component: Register,
-            meta: { guest: true },
+          //  meta: { guest: true },
         },
        /* {
             path: '/',
@@ -1026,11 +1026,9 @@ router.beforeEach((to, from, next) => {
 
 });
 router.beforeEach((to, from, next) => {
-   
-  //  if (to.matched.some((record) => record.meta.requiresAuth)) {
+   if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (store.getters['auth/isAuthenticated']) {
-        store.commit('showLoader');
-       console.log(to.matched.some((record) => record.meta.requiresAuth))
+        store.commit('showLoader')
         let user = store.getters['auth/user']
        console.log(user)
         if (to.path == '/' || to.path == '/dashboard') {
@@ -1051,13 +1049,19 @@ router.beforeEach((to, from, next) => {
                 next('/dashboard')
             }
         }
-        next();
-        return;
-      } else {
-      next();
-    }
+
+        }
+        if (!store.getters['auth/isAuthenticated']) {
+            next({ name: 'login' })
+          } else {
+            next() // go to wherever I'm going
+          }
+        } 
+        else {
+          next() // does not require auth, make sure to always call next()!
+        }
   });
-  router.beforeEach((to, from, next) => {
+ /* router.beforeEach((to, from, next) => {
     const loggedIn = localStorage.getItem("auth");
     const isAuth = to.matched.some((record) => record.meta.guest);
     const isHide = to.matched.some((record) => record.meta.requiresAuth);

@@ -6,9 +6,9 @@
             </div>
             <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0 pb-0">
               <v-app id="inspire-font" :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
-                <!--<transition name="fade" class="mt-1">-->
+                <transition name="fade" mode="out-in" class="mt-1">
                     <router-view></router-view>
-                <!--</transition>-->
+                </transition>
                 </v-app>
             </v-content>
 
