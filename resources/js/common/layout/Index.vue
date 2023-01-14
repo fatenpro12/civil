@@ -6,7 +6,7 @@
             </div>
             <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0 pb-0">
               <v-app id="inspire-font" :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
-                <transition name="fade" mode="out-in" class="mt-1">
+                <transition name="translate" mode="out-in" class="mt-1">
                     <router-view></router-view>
                 </transition>
                 </v-app>
@@ -188,4 +188,14 @@ div[aria-required=true].v-autocomplete .v-label::after {
  .v-progress-circular{
     margin: auto
  }
+  .translate-enter-active,
+  .translate-leave-active {
+    transition: all 0.5s ease;
+  }
+  
+  .translate-enter-from,
+  .translate-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
 </style>

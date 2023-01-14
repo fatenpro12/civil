@@ -3,7 +3,7 @@
         <AskPermissionModal ref="permissionref" />
 
         <v-container grid-list-md>
-            <v-flex pt-3 pb-5>
+            <v-flex pb-5>
                 <h1 style="color: #0000008a" class="text-md-center">
                     {{ trans('data.Engineering_offices_system') }}
                 </h1>

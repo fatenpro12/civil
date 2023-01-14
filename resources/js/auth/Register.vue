@@ -1,6 +1,6 @@
 <template>
     
-    <userformadd style="margin:5rem">
+    <userformadd class="mx-auto" style="max-width:75%;margin:3rem">
     </userformadd>
 </template>
 <script>

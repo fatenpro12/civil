@@ -39,8 +39,8 @@ Route::post('checkUser', [UserController::class, 'checkUserType'])->name('checkU
 Route::post('getTypes', [ManageRolesController::class, 'getTypes'])->name('getTypes.post');
 //Route::post('getType', [UserController::class, 'getType'])->name('getType.post');
 
-Route::get('get-location-info', 'ProjectController@getLocationInfo');
-Route::get('create-user','CommonController@createUser');
+
+
 
 if (config('constants.enable_client_signup')) {
     Route::get('/client/register', 'Client\ClientRegisterController@index')

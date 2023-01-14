@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('get-location-info', 'ProjectController@getLocationInfo');
+Route::get('create-user','CommonController@createUser');
 Route::middleware('jwt.verify')->get('/user', function (Request $request) {
     return $request->user();
 });

@@ -16,7 +16,7 @@
                         <v-layout row wrap>
                             <v-flex xs12 sm6>
                                 <v-text-field
-                                    :label="trans('messages.name')"
+                                    :placeholder="trans('messages.name')"
                                     v-model="name"
                                     :rules="[
                                         (v) =>
@@ -32,7 +32,7 @@
                             </v-flex>
                             <v-flex xs12 sm6>
                                 <v-text-field
-                                    :label="trans('messages.email')"
+                                    :placeholder="trans('messages.email')"
                                     v-model="email"
                                     :rules="[
                                         (v) =>
@@ -57,7 +57,7 @@
                                             }),
                                     ]"
                                     type="number"
-                                    :label="trans('data.id_card_number')"
+                                    :placeholder="trans('data.id_card_number')"
                                     required
                                 ></v-text-field>
                             </v-flex>
@@ -68,7 +68,7 @@
             :type="show1 ? 'text' : 'password'"
             name="input-10-1"
             autocomplete="new-password"
-           :label="trans('data.password')"
+           :placeholder="trans('data.password')"
             hint="At least 6 characters"
             counter
             @click:append="show1 = !show1"
@@ -94,7 +94,7 @@
                            
                             <v-flex xs12 sm6>
                                 <v-text-field
-                                    :label="trans('messages.confirm_password')"
+                                    :placeholder="trans('messages.confirm_password')"
                                     type="password"
                                     v-model="passwordConfirm"
                                     :rules="[
@@ -133,7 +133,7 @@
                                                 name: trans('messages.role'),
                                             }),
                                     ]"
-                                    :label="trans('messages.role')"
+                                    :placeholder="trans('messages.role')"
                                     required
                                 ></v-autocomplete>
                             </v-flex>
@@ -155,7 +155,7 @@
                                     :chips="true"
                                     :items="enginnering_types"
                                     v-model="specialty_id"
-                                    :label="trans('data.enginnering_type')"
+                                    :placeholder="trans('data.enginnering_type')"
                                     :rules="[
                                         (v) =>
                                             !!v ||
@@ -181,7 +181,7 @@
                                                 name: trans('data.province_municipality'),
                                             }),
                                     ]"
-                                        :label="trans('data.province_municipality')"
+                                        :placeholder="trans('data.province_municipality')"
                                         :data-vv-as="trans('data.province_municipality')"
                                         :error-messages="errors.collect('province_municipality')"
                                         required
@@ -199,7 +199,7 @@
                                 <v-text-field
                                     type="number"
                                     v-model="form_fields.mobile"
-                                    :label="trans('messages.mobile')"
+                                    :placeholder="trans('messages.mobile')"
                                     v-validate="'required'"
                                       :rules="[
                                         (v) =>
@@ -217,7 +217,7 @@
                                 <v-text-field
                                     type="number"
                                     v-model="form_fields.alternate_num"
-                                    :label="trans('messages.alternate_num')"
+                                    :placeholder="trans('messages.alternate_num')"
                                 ></v-text-field>
                             </v-flex>
                       
@@ -228,7 +228,7 @@
                                     no-resize
                                     clearable
                                     @keypress="textAreaWrite"
-                                    :label="trans('messages.current_address')"
+                                    :placeholder="trans('messages.current_address')"
                                     rows="3"
                                 ></v-textarea>
                             </v-flex>
@@ -277,7 +277,7 @@
                                 <v-select
                                     :items="gender_types"
                                     v-model="form_fields.gender"
-                                    :label="trans('messages.gender')"
+                                    :placeholder="trans('messages.gender')"
                                 ></v-select>
                             </v-flex>
                             <!-- bank details -->
@@ -291,21 +291,21 @@
                             <v-flex xs12 sm6 md4>
                                 <v-text-field
                                     v-model="form_fields.bank_name"
-                                    :label="trans('data.bank_name')"
+                                    :placeholder="trans('data.bank_name')"
                                 ></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
                                 <v-text-field
                                     type="number"
                                     v-model="form_fields.account_no"
-                                    :label="trans('data.account_no')"
+                                    :placeholder="trans('data.account_no')"
                                 >
                                 </v-text-field>
                             </v-flex>  
                             <v-flex xs12 sm6 md4>
                                 <v-text-field
                                     v-model="form_fields.tax_payer_id"
-                                    :label="trans('data.tax_payer_id')"
+                                    :placeholder="trans('data.tax_payer_id')"
                                 >
                                     <Popover
                                         slot="append"
@@ -318,7 +318,7 @@
                                 <v-textarea
                                     rows="3"
                                     v-model="form_fields.note"
-                                    :label="trans('messages.note')"
+                                    :placeholder="trans('messages.note')"
                                        no-resize
                                     clearable
                                     @keypress="textAreaWrite"
@@ -333,7 +333,7 @@
                                     item-value="id"
                                     :items="roles"
                                     v-model="form_fields.role_ids"
-                                    :label="trans('messages.role')"
+                                    :placeholder="trans('messages.role')"
                                     :rules="[
                                         (v) =>
                                             (v && v.length > 0) ||
@@ -350,7 +350,7 @@
                                         item-value="id"
                                         :items="engennering_offices"
                                         v-model="office_id"
-                                        :label="trans('data.enginnering_office_name')"
+                                        :placeholder="trans('data.enginnering_office_name')"
                                         :rules="[
                                             (v) =>
                                                 !!v ||
@@ -364,7 +364,7 @@
                               <v-flex xs12 sm3 v-if="form_fields.role_ids && form_fields.role_ids.find(val => val == 2)">
                                 <v-text-field
                                     v-model="form_fields.title"
-                                    :label="trans('messages.title')"
+                                    :placeholder="trans('messages.title')"
                                     :rules="[
                                         (v) =>
                                             (v && v.length > 0) ||
@@ -405,7 +405,7 @@
                           
                             <v-flex xs12 sm3>
                                 <v-checkbox
-                                    :label="trans('messages.send_email')"
+                                    :placeholder="trans('messages.send_email')"
                                     value="true"
                                     v-model="send_email"
                                 >
@@ -656,6 +656,7 @@ reg_birth_date: null
             getEnginneringTypes(event) {
             const self = this;
             let url= '/get-enginnering-types-by-role/'+event
+            if(event)
             axios
                 .get(url)
                 .then(function (response) {
