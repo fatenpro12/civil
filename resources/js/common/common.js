@@ -96,9 +96,10 @@ import 'flatpickr/dist/flatpickr.css';
 import VueSignaturePad from 'vue-signature-pad';
 
 
+//Vue.use(i18n)
+
 Vue.use(VueSignaturePad);
 Vue.use(VueFlatPickr);
-
 
 flatpickr.setDefaults({
     // locale: 'Russian',

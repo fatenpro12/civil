@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" style="direction:{{ app()->getLocale() == 'ar'?'rtl':'ltr' }}">
+<html lang="{{ \App::getLocale() }}" style="direction:{{ \App::getLocale() == 'ar'?'rtl':'ltr' }}">
 <head>
       <script>
         var APP = {};
@@ -87,7 +87,7 @@
           </template>-->
         </div>
    
-    <script src="{{ env('APP_URL') . '/js/lang.js' }}"></script>
+    <script src="{{ env('APP_URL') . '/api/js/lang.js' }}"></script>
     <script src="{{ asset('js/manifest.js') }}"></script>
     <script src="{{ asset('js/vendor.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>

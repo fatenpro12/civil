@@ -48,6 +48,8 @@
 
 <script>
 import UserForm from './users/UserForm'
+import { mapActions } from 'vuex'
+
 export default {
     components: {
         UserForm
@@ -59,21 +61,24 @@ export default {
      }
    },
     methods: {
+          ...mapActions({
+            signIn:'auth/login'
+        }),
         save(payload) {
             const self = this;
            
                 axios
                     .post('/register', payload)
                     .then(function (response) {
-                        console.log(response)
+                        self.signIn(response.data)
                           self.$store.commit('showSnackbar', {
                             message: response.data.msg,
                             color: response.data.success,
                         });
                         self.$store.commit('hideLoader');
-                        if(response.status === 201){
-                            self.login();
-                        }
+                      //  if(response.status == 200){
+                        //   this.signIn(response.data)
+                      //  }
                     })
                     .catch(function (error) {
                         self.$store.commit('hideLoader');

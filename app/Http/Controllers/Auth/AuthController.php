@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Components\User\Models\User;
+use App\Components\User\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserRequestCreate;
 use Auth;
@@ -13,9 +14,10 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-   public function __construct()
+   public function __construct(UserRepository $userRepository)
    {
        $this->middleware('auth:api', ['except' => ['login','register']]);
+       $this->userRepository = $userRepository;
    }
   
    function checkEmail($email) {
@@ -37,7 +39,7 @@ class AuthController extends Controller
     else{
         $user = User::where('id_card_number', $request->input('email_id_card'))->first();
     }
-    
+   // dd(User::where('email', $request->input('email_id_card'))->first());
     if(isset($user)){
         if (Hash::check($request->password, $user->password)) {
             $user->last_login=\Carbon\Carbon::now();
@@ -76,8 +78,8 @@ class AuthController extends Controller
    {
 
   //  $this->validator($request->all())->validate();
-    try {
-        DB::beginTransaction();
+   // try {
+      //  DB::beginTransaction();
 
         $input = $request->only('name','location_data', 'email', 'mobile', 'alternate_num', 'home_address', 'current_address', 'skype', 'linkedin', 'facebook', 'twitter', 'birth_date', 'gender',  'password', 'id_card_number');
          $input['active']=true;
@@ -86,35 +88,40 @@ class AuthController extends Controller
          
         /** @var User $user */
         $user = $this->userRepository->create($input);
-        
+        $user->assignRole('Estate Owner');
+
         if($request->personal_image)
         $user->addMediaFromBase64($request->personal_image)->usingFileName('avatar'.time().'.png')->toMediaCollection('personal_image');
 
-        $user->assignRole('Estate Owner');
+        
 
         if($request->signature){
             $user->addMediaFromBase64($request->signature)->usingFileName('signature'.time().'.png')->toMediaCollection('signature');
         }
 
-        DB::commit();
-
-        $output = [
-            'success' => true,
-            'msg' => __('messages.registered_successfully')
-        ];
-        
-       if (! $token = auth()->attempt([$user->email,$user->password])) {
+      //  DB::commit();
+       if (! $token = JWTAuth::fromUser($user)) {
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-
+    $output = [
+        'success' => true,
+        'msg' => __('messages.registered_successfully'),
+        'user'=> $user,
+        'permissions' => $user->getUserPermissions($user),
+        'roles' => $user->getUserRoles($user),
+        'authorisation' => [
+           'token' => $token,
+           'type' => 'bearer',
+       ]
+    ];
     return $this->respondWithToken($token, $output);
-    } catch (\Exception $e) {
-        DB::rollBack();
+  //  } catch (\Exception $e) {
+      //  DB::rollBack();
         $output = [
             'success' => false,
             'msg' => __('messages.something_went_wrong')
         ];
-    }
+ //   }
 
    }
    /**

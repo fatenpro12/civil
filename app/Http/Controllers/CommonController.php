@@ -249,11 +249,22 @@ public function createUser()
       
        return User::getAllSupporters();
    }
+   public function settings(){
+    $timezone = config('app.timezone');
+    $notification_refresh_timeout = config('constants.notification_refresh_timeout');
+    $upload_file_max_size = config('constants.upload_file_max_size');
+    return [
+        'timezone' => $timezone,
+        'notification_refresh_timeout' => $notification_refresh_timeout,
+        'upload_file_max_size' => $upload_file_max_size
+    ];
+   }
    public function getRequestsCount($id){
     $user=User::find($id);
     $childrens=$user->childrenIds($user->id);
     array_push($childrens,$user->id);
-    $countDesignRequest = DesignRequest::where('request_type','design_request')->whereIn('customer_id', $childrens)->where('status','sent')->count();
+    $countDesignRequest = DesignRequest::where('request_type','design_request')
+    ->whereIn('customer_id', $childrens)->where('status','sent')->count();
     $countDesignRequestEng = DesignRequest::where('request_type','design_request')
     ->whereHas('offices',function($q) use ($user){
         $q->where('office_id', $user->id)->orWhere('office_id', $user->parent_id);
@@ -262,7 +273,8 @@ public function createUser()
        })->where('status','sent')->count();
     $countContractorRequest = DesignRequest::where('request_type','contractor_request')->whereIn('customer_id', $childrens)->where('status','sent')->count();
     $countServicesRequest = DesignRequest::where('request_type','support_service_request')->whereIn('customer_id', $childrens)->where('status','sent')->count(); 
-    $countVisitsRequest = VisitRequest::where('request_type','visit_request')->where('status','sent')->count(); 
+    $countVisitsRequest = VisitRequest::where('request_type','visit_request')
+    ->whereIn('customer_id', $childrens)->where('status','sent')->count(); 
     $countRolesRequest =RequestRole::where('status','pending')->where('user_id',Auth::id())->count();
     $data = ['countDesignRequest' => $countDesignRequest, 'countContractorRequest' => $countContractorRequest, 'countServicesRequest' => $countServicesRequest
 ,'countVisitsRequest' => $countVisitsRequest,'countRolesRequest' => $countRolesRequest,'countDesignRequestEng'=>$countDesignRequestEng];

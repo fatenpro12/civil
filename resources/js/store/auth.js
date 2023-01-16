@@ -45,6 +45,7 @@ export default {
     },
     actions:{
         login({commit},data){
+            console.log(data)
                 commit('SET_PERMISSIONS',data.permissions)
                 commit('SET_ROLES',data.roles)
                 commit('SET_USER',data.user)

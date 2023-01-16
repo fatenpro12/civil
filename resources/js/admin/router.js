@@ -140,7 +140,7 @@ Vue.use(Router);
 const router = new Router({
     history:true,
     mode: 'history',
-    base: '/civil',//process.env.BASE_URL+'/civil',
+    //base: '/civil',//process.env.BASE_URL+'/civil',
     //hash: false,
     routes: [
        /* {
@@ -1015,8 +1015,9 @@ router.beforeEach((to, from, next) => {
     }
     if (localStorage.getItem("currenpathaftercjange") != null) {
         var path = localStorage.getItem("currenpathaftercjange");
+        
         localStorage.removeItem("currenpathaftercjange");
-
+      
         next(path)
     }
     else {
@@ -1030,7 +1031,6 @@ router.beforeEach((to, from, next) => {
       if (store.getters['auth/isAuthenticated']) {
         store.commit('showLoader')
         let user = store.getters['auth/user']
-       console.log(user)
         if (to.path == '/' || to.path == '/dashboard') {
             if ( user.user_type_log == 'ESTATE_OWNER') {
                     next('/es')

@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div :style="language == 'ar'?'direction:rtl':'direction:ltr'">
       <div v-if="authenticated">
            <Nav v-if='!$vuetify.breakpoint.xsOnly' />
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
             <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0 pb-0">
               <v-app id="inspire-font" :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
-                <transition name="translate" mode="out-in" class="mt-1">
+                <transition name="translate" mode="out-in">
                     <router-view></router-view>
                 </transition>
                 </v-app>
@@ -70,6 +70,7 @@ data(){
     authenticated: false,
     user: null,
     toggleFooter: false,
+    language: null
  }
 },
 computed:{
@@ -133,6 +134,7 @@ computed:{
 created(){
   this.authenticated=store.getters['auth/isAuthenticated']
   this.user=store.getters['auth/user']
+  this.language = localStorage.getItem('currentLange')
 },
 mounted(){
   this.authenticated=store.getters['auth/isAuthenticated']

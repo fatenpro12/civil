@@ -1,5 +1,6 @@
 <template>
-    <v-toolbar v-if='!$vuetify.breakpoint.xsOnly && isAuthenticated' style="background-color:#06706d;z-index: 100" app dark flat fixed dense height="100"
+    <v-toolbar v-if='!$vuetify.breakpoint.xsOnly && isAuthenticated' 
+    style="background-color:#06706d;z-index: 100" app dark flat fixed dense height="100"
                 :clipped-left="true">
                 <img :src="'/img/logo.png'"  alt="logo" width="100" style="border-radius:20px;" />
                 <v-layout >
@@ -14,7 +15,7 @@
                         </v-btn>                                      
                     </div>
                 </v-layout>
-                <!--<notification></notification>-->
+               <notification />
                    <v-menu
                         attach
                         offset-y
@@ -104,7 +105,7 @@ languages:[]
 created(){ 
  store.dispatch('settings/getLanguages')
  this.languages = store.getters['settings/languages']
- this.language = localStorage.getItem('currentLange')?localStorage.getItem('currentLange'):this.getLanguages().ar
+ this.language = localStorage.getItem('currentLange')
 },
 methods:{
    ...mapGetters({
@@ -119,20 +120,21 @@ methods:{
     axios.post('/logout')
     this.$router.push('/login')
     this.$forceUpdate()
-   // window.location.href = '/login';
   },
     change(lang){
+        axios.get("lang/"+lang).then(()=>{
         localStorage.setItem("currenpathaftercjange",localStorage.getItem("currenpath"));
+            console.log(localStorage.getItem("currenpath"));
         localStorage.setItem("currentLange",lang);
-        localStorage.removeItem("currenpath");
-        window.location.href = "lang/"+lang;
-        language= lang;
-        console.log(lang)
+      //  localStorage.removeItem("currenpath");
+          this.$router.go(0)
+       // window.location.href = "lang/"+lang;
+      //  language= lang;
+       // console.log(lang) 
+        })
+              
         }
+        
 }
 }
 </script>
-
-<style>
-
-</style>

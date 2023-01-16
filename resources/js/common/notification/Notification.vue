@@ -1395,6 +1395,7 @@
 </template>
 <script>
 import TaskShow from '../projects/tasks/Show';
+import store from '../../store'
 export default {
     components: {
         TaskShow,
@@ -1411,16 +1412,18 @@ colorIcon: null
             notifications: [],
             url: null,
             loading: false,
+            interval:null,
         };
     },
     mounted: function () {
         const self = this;
         self.url = '/notifications-mark-as-read';
         self.getNotificationsFromApi();
-       
+         store.dispatch('settings/settings')
+        self.interval=store.getters['settings/settings'].notification_refresh_timeout
         setInterval(() => {
             self.getNotificationsFromApi();
-        }, APP.NOTIFICATION_REFRESH_TIMEOUT);
+        }, self.interval);
     },
     methods: {
         requestSenderRoute(item){

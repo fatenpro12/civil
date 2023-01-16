@@ -19,6 +19,18 @@ Route::get('create-user','CommonController@createUser');
 Route::middleware('jwt.verify')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('locale', function () {
+  // Validate
+  $validated = request()->validate([
+      'language' => ['required'],
+  ]);
+  // Set locale
+  App::setLocale($validated['language']);
+  // Session
+  session()->put('locale', $validated['language']);
+  // Response
+  return redirect()->back();
+});
 //Common routes
 Route::middleware(['jwt.auth'])
     ->name('common')
@@ -250,7 +262,8 @@ Route::group([
 ], function ($router) {
 
   Route::post('login', 'Auth\AuthController@login');
-
+  Route::post('register', 'Auth\AuthController@register');
+  Route::get('settings','CommonController@settings');
 
 });
 //contractor
@@ -395,3 +408,29 @@ Route::prefix('admin')->
         Route::resource('lead-notes', 'LeadNoteController');
         Route::resource('reminders', 'ReminderController');
     });
+    Route::get('set-locale/{locale}', function ($locale) {  
+      App::setLocale($locale);
+    });
+    
+    Route::get('/js/lang.js', function () {
+      // $strings = Cache::remember('lang.js', 2, function () {
+           $lang = \App::getLocale();//config('app.locale');
+       //   dd($lang,app()->getLocale());
+           $files = glob(resource_path('lang/'.$lang.'/*.php'));
+           
+           $strings = [];
+           foreach ($files as $file) {
+           
+               $name = basename($file, '.php');
+      
+               $strings[$name] = require $file;
+           }
+        
+        //   return $strings;
+       //});
+   
+       header('Content-Type: text/javascript');
+       echo 'window.i18n = '.json_encode($strings).';';
+       exit();
+   })->name('assets.lang');
+   Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'LanguageController@switchLang']);

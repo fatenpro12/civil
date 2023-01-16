@@ -15,17 +15,18 @@ use App\Http\Controllers\EnginneringOffice\ManageRolesController as EnginneringO
 |
 */
 
-Route::get('civil/{any?}', function (){
+Route::get('/{any?}', function (Request $request){
+    //App::setLocale($request->cookie('site_language') ?: 'en');
     return view('layouts.auth');
 })->where('any','.*');//->where('any', '^(?!api\/)[\/\w\.-]*');
-Route::get('cache', function () {
+Route::get('cache/cl', function () {
     $exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('config:cache');
 
     //$exitCode = Artisan::call('optimize:clear');
 });
-Route::redirect('/', '/civil');
+//Route::redirect('/', '/civil');
 Route::get('link', function () {
     $exitCode = Artisan::call('storage:link');
 });
@@ -436,30 +437,7 @@ Route::prefix('client')
     });
 
    
-
 // Localization
-Route::get('/js/lang.js', function () {
-   // $strings = Cache::remember('lang.js', 2, function () {
-        $lang = config('app.locale');
-   
-        $files = glob(resource_path('lang/'.$lang.'/*.php'));
-       
-        $strings = [];
-        foreach ($files as $file) {
-        
-            $name = basename($file, '.php');
-   
-            $strings[$name] = require $file;
-         
-       
-        }
-     
-     //   return $strings;
-    //});
 
-    header('Content-Type: text/javascript');
-    echo 'window.i18n = '.json_encode($strings).';';
-    exit();
-})->name('assets.lang');
-Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'LanguageController@switchLang']);
+//Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'LanguageController@switchLang']);
 
