@@ -408,14 +408,14 @@ Route::prefix('admin')->
         Route::resource('lead-notes', 'LeadNoteController');
         Route::resource('reminders', 'ReminderController');
     });
-    Route::get('set-locale/{locale}', function ($locale) {  
+ /*   Route::get('set-locale/{locale}', function ($locale) {  
       App::setLocale($locale);
-    });
+    });*/
     
-    Route::get('/js/lang.js', function () {
+    Route::get('/js/lang.js', function (Request $request) {
       // $strings = Cache::remember('lang.js', 2, function () {
-           $lang = \App::getLocale();//config('app.locale');
-       //   dd($lang,app()->getLocale());
+           $lang = app()->getLocale();//config('app.locale');
+        //   dd($lang,config('app.locale'));
            $files = glob(resource_path('lang/'.$lang.'/*.php'));
            
            $strings = [];

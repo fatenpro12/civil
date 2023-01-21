@@ -124,7 +124,6 @@ methods:{
     change(lang){
         axios.get("lang/"+lang).then(()=>{
         localStorage.setItem("currenpathaftercjange",localStorage.getItem("currenpath"));
-            console.log(localStorage.getItem("currenpath"));
         localStorage.setItem("currentLange",lang);
       //  localStorage.removeItem("currenpath");
           this.$router.go(0)

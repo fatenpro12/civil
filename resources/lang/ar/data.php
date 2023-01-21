@@ -6,6 +6,7 @@ return [
     'create new project'=>'إنشاء مشروع جديد',
     'add' =>'أضف',
     'owner_added'=> 'تمت اضافة المالك',
+    'Engineering_offices_system'=>'نظام إدارة المكاتب الهندسية',
     'agency_added'=> 'تمت اضافة الوكيل',
     'owner_added_before' => 'المالك مضاف سابقا',
     'id_card_number_for_owner' => 'رقم بطاقة الهوية للمالك',
