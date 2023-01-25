@@ -7,8 +7,7 @@
                     <v-btn outline color="indigo"
                                      @click="$router.push({name: 'edit_report', 
                                    params:{
-                                  //  id :item.id,
-                                    id: item.media[item.media.length-1].full_url//.replace('upload','public/upload')
+                                    id :item.id
                                    }
                                                                         })"
                                                                     v-if="$can('project.list')">
@@ -16,7 +15,8 @@
                                                                     {{ trans('data.view') }}
                                                                     </v-btn>
                                                                     </div>
-                <div class="element"><div class="col-title">{{trans('data.owner')}}</div><div class="content">{{ item.owner }} </div></div>
+                                                                 
+                <div class="element"><div class="col-title">{{trans('data.owner')}}</div><div class="content">{{ item.owners.map(x=> x.name)+', ' }} </div></div>
                 <div class="element"><div class="col-title">{{trans('data.type')}}</div><div class="content" >{{ language == 'ar'?item.type.type_name_ar:item.type.type_name_en }}</div></div>
                 <div class="element"><div class="col-title">{{trans('data.created_by')}}</div><div class="content">{{ item.report_creator.name }}</div></div>
            </v-card>
@@ -36,11 +36,11 @@ export default {
     data () {
       return {
         selected: [2],
-        language: ''
+        language: null
       }
     },
      created(){
-        this.language = localStorage.getItem('currentLange')?localStorage.getItem('currentLange'):'ar'
+        this.language = localStorage.getItem('currentLange')
      },
     methods: {
           view(id) {

@@ -136,12 +136,12 @@ export default {
             piece_number: false,
             statuses: [],
             filterTypeList:[
-                {id: 'creator', name: self.trans('data.searchBy.customer')},
+                {id: 'owners', name: self.trans('data.searchBy.customer')},
                 {id: 'location', name: self.trans('data.searchBy.location')},
                 {id: 'id', name: self.trans('data.id')},
                 ],
             lists:{
-               creator:[{id:'name', name: self.trans('data.name')},
+               owners:[{id:'name', name: self.trans('data.name')},
                {id:'email',name: self.trans('data.email_address')},
                {id:'mobile',name: self.trans('data.mobile')},
               {id:'id_card_number',name: self.trans('data.id_card_number')},
@@ -246,14 +246,14 @@ export default {
                 .then(function(response) {
                     self.loading = false;
                     self.projectData = _.concat(self.projectData, response.data.projects);
-                    console.log(self.projectData)
                     self.projectData.forEach(val => {
-                        val.report.map(x => x.owner = val.customer.name)
+                        val.report.map(x => x.owners = val.owners)
                         self.reportData.push(...val.report)
                     })
                     if(self.searchBy=='id' && self.reports){
                         self.reportData = self.reportData.filter(val => val.id == self.filters.searchInTable)
                     }
+                   
                     self.statuses = response.data.status;
                     self.url = _.get(response, 'data.projects.next_page_url', null);
                     self.getStatistics();

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ProjectRequest;
 use App\VisitRequest;
 use App\Agency;
+use App\Http\Resources\OwnerResource;
 use App\Http\Resources\ProjectResource;
 use App\Location;
 use App\Http\Responses\Response;
@@ -156,7 +157,7 @@ class ProjectController extends Controller
             }); 
             });
         }
-        $reports = []; 
+    
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
             if(!empty($startDate))
@@ -185,7 +186,7 @@ class ProjectController extends Controller
             $projects= $projects->where('id', $search);
             }
             if(!empty($columnTable) && !empty($search))
-            $projects= $projects->whereHas('creator', function ($q) use ($search,$columnTable) {
+            $projects= $projects->whereHas('owners', function ($q) use ($search,$columnTable) {
                 $q->where($columnTable,'like', '%'.$search.'%');
             });
             if(!empty($province_municipality)) {
@@ -211,12 +212,13 @@ class ProjectController extends Controller
             }
         }
  
-        $result = $projects->latest()
-                    ->simplePaginate(10);
+        $result = $projects->latest()->get();
+                    //->simplePaginate(10);
                     
         $status = Project::getStatusForProject();
 
-        $data = ['status' => $status, 'projects' => ProjectResource::collection($result), 'reports'=> $reports];
+    
+        $data = ['status' => $status, 'projects' => ProjectResource::collection($result)];
      
 
         return $data;

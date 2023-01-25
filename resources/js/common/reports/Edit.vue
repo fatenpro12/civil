@@ -64,8 +64,6 @@ export default {
     created() {
         const self = this;
         self.getReport(self.$route.params.id);
-        //self.url = self.$route.params.id
-       // self.medias= self.$route.params.item?.media?.slice(1)//?.filter(x=>x.collection_name ==='report_attachment')
     },
     methods: {
         getReport(id) {
@@ -74,7 +72,6 @@ export default {
                 .get('/reports/'+id)
                 .then(function (response) {
                     self.report = response.data;
-                   console.log(self.report)
                     self.url = self.report?.media[0].full_url?self.report?.media[0].full_url:self.report?.media[0].original_url
                 self.medias= self.report?.media?.slice(1)
                 self.$forceUpdate()

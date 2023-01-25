@@ -504,5 +504,8 @@ export default {
     },
 };
 </script>
- 
-
+  <style scoped>
+ .v-card{
+    @apply w-full;
+ }
+ </style>
