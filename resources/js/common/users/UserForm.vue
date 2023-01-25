@@ -581,7 +581,7 @@ reg_birth_date: null
                     self.imageFiles.signature = response.data.user.signature;
                     self.imageFiles.avatar = response.data.user.personal_image
                     self.imageFiles.logo = response.data.user.logo
-                     console.log(response)
+                   
                 });
                
         },
@@ -770,11 +770,11 @@ self.$emit('save',payload)
     color:rgb(105, 0, 0)!important;
     font-size: 24px;
 }
-:deep() .v-label{
+>>> .v-label{
     left: unset!important;
     right: unset!important;
 }
-:deep() .v-list__tile__title{
+>>> .v-list__tile__title{
     text-align: justify;
 }
 </style>

@@ -51,13 +51,7 @@ class ProjectTaskController extends Controller
             $orderby = 'desc';
             $sort_by = 'id';
         }
-        // if (!empty($project_id) && (!request()->user()->can('project.'.$project_id.'.task.view'))) {
-        //     abort(403, 'Unauthorized action.');
-        // }
-
-        $view_style = request()->input('view_style');
-
-        $user = request()->user();
+     
     
         $project_ids=Project::getProjectsIdForCustomer();
         
@@ -78,24 +72,7 @@ class ProjectTaskController extends Controller
         }
         
 
-       
-        // if (empty($project_id) && !$user->hasRole('superadmin')) {
-        //     $tasks = $tasks->whereIn('id', $tasks_id);
-        // }
-
-        // if (!empty(request()->input('user_id'))) {
-        //     $user_id = request()->input('user_id');
-        //     $tasks->whereHas('taskMembers', function ($query) use ($user_id) {
-        //         $query->where('user_id', $user_id);
-        //     });
-        // }
-
-        // if (!empty(request()->input('assigned_to_me'))) {
-        //     $user_id = request()->user()->id;
-        //     $tasks->whereHas('taskMembers', function ($query) use ($user_id) {
-        //         $query->where('user_id', $user_id);
-        //     });
-        // }
+    
 
         if (!empty(request()->input('status'))) {
             if (request()->input('status') === 'completed') {
@@ -109,15 +86,9 @@ class ProjectTaskController extends Controller
         }
       
 
-      
-        
-        // if ($user->hasRole('contact')) {
-        //     $tasks->where('show_to_customer', 1);
-        // }
         
         
-            $tasks = $tasks->orderBy($sort_by, $orderby)
-            ->paginate($rowsPerPage);
+            $tasks = $tasks->latest()->simplePaginate(10);
                     
 
         $output = [

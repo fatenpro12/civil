@@ -23,7 +23,7 @@
                                             item-value="id"
                                             :items="customers.filter(i => !inputs.includes(i))"
                                             v-model="input.id"
-                                            :label="trans('messages.name')"
+                                            :placeholder="trans('messages.name')"
                                             v-validate="'required'"
                                             data-vv-name="name"
                                             :data-vv-as="trans('messages.name')"
@@ -37,14 +37,14 @@
                                         <v-text-field
                                             v-model="input.id_card_number"
                                             type="number"
-                                            :label="trans('data.id_card_number')"
+                                            :placeholder="trans('data.id_card_number')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 md4>
                                         <v-text-field
-                                            :label="trans('messages.email')"
+                                            :placeholder="trans('messages.email')"
                                             v-model="input.email"
                                             readonly
                                             :disabled="isEdit"
@@ -55,7 +55,7 @@
                                         <v-text-field
                                             v-model="input.mobile"
                                             type="number"
-                                            :label="trans('messages.mobile')"
+                                            :placeholder="trans('messages.mobile')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -89,7 +89,7 @@
                                         <v-text-field
                                             v-model="agency_inputs.id_card_number"
                                             type="number"
-                                            :label="trans('data.id_card_number')"
+                                            :placeholder="trans('data.id_card_number')"
                                              :rules="[
                                         (v) =>
                                             !!v ||
@@ -107,7 +107,7 @@
                                     <v-flex xs12 md4>
                                          <v-text-field
                                             v-model="agency_inputs.name"
-                                            :label="trans('messages.name')"
+                                            :placeholder="trans('messages.name')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -116,7 +116,7 @@
                                    
                                     <v-flex xs12 md4>
                                         <v-text-field
-                                            :label="trans('messages.email')"
+                                            :placeholder="trans('messages.email')"
                                             v-model="agency_inputs.email"
                                             readonly
                                             :disabled="isEdit"
@@ -126,7 +126,7 @@
                                         <v-text-field
                                             v-model="agency_inputs.mobile"
                                             type="number"
-                                            :label="trans('messages.mobile')"
+                                            :placeholder="trans('messages.mobile')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -144,97 +144,7 @@
                                     </v-flex>
                                 </v-layout>
                             </v-layout>
-                            <!--<div v-show="isAgency" v-for="(agency, k) in agency_inputs" :key="k">
-                                <v-divider></v-divider>
-                                <v-container>
-                                    <v-layout row wrap class="add-agency" v-if="agency">
-                                        <v-flex md3>
-                                            <v-autocomplete
-                                            item-text="trade_name"
-                                            item-value="id"
-                                            :items="agencies"
-                                            v-model="agency.id"
-                                            @change="(event) => updateAgentvalues(event)"
-                                            :label="trans('data.trade_name')"
-                                        ></v-autocomplete> 
-                                            <v-text-field
-                                                v-model="agency.trade_name"
-                                                :label="trans('data.trade_name')"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.record_number"
-                                                :label="trans('data.record_number')"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                        <v-flex md3 v-if="agency.email">
-                                            <v-text-field
-                                                :label="trans('messages.email')"
-                                                v-model="agency.email"
-                                                 v-validate="'required|email'"
-                                                data-vv-name="email"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.mobile"
-                                                type="number"
-                                                :label="trans('messages.mobile')"
-                                            ></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                    <v-layout row wrap>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.delegate_record"
-                                                :label="trans('data.delegate_record')"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.agency_number"
-                                                :label="trans('data.agency_number')"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.agent_name"
-                                                :label="trans('data.agent_name')"
-                                                readonly
-                                            >
-                                            </v-text-field>
-                                        </v-flex>
-                                        <v-flex md3>
-                                            <v-text-field
-                                                v-model="agency.agent_card_number"
-                                                :label="trans('data.agent_card_number')"
-                                                readonly
-                                            ></v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </div>-->
                            
-                            <!--<v-layout row wrap>
-                                <v-flex md3>
-                                    <v-btn
-                                        @click="$router.push({ name: 'users_estate.create' })"
-                                        large
-                                        dark
-                                        v-show="!isEdit"
-                                        style="background-color: #06706d; color: white"
-                                    >
-                                        Add User
-                                       
-                                    </v-btn>
-                                </v-flex>
-                            </v-layout>-->
                             <v-layout row wrap>
                                 <v-flex md3>
                                     <v-btn

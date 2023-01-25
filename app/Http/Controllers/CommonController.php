@@ -235,7 +235,10 @@ public function createUser()
     if(!$user->hasRole('superadmin')){
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
-        $projects=Project::select('id', 'name')->whereIn('customer_id',$childrens)->get()->toArray();
+        $projects=Project::select('id', 'name')
+        ->whereHas('owners', function ($q) use ($childrens) {
+            $q->whereIn('owner_id', $childrens);
+        })->get()->toArray();
     }
     else{
         $projects=Project::select('id', 'name')->get()->toArray();

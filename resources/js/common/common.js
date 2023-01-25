@@ -59,15 +59,15 @@ Vue.use(QuillEditor, {
         ],
     },
 });
-var x=APP.RTL;
+
 
 window.accounting = require('accounting');
 
 Vue.filter('formatDateTime', function(date) {
-    if (APP.TIME_FORMAT == 12) {
-        var format = APP.DATE_FORMAT.VALUE + ' h:mm A';
+    if (store.getters['auth/TIME_FORMAT'] == 12) {
+        var format = store.getters['auth/DATE_FORMAT'].VALUE + ' h:mm A';
     } else {
-        var format = APP.DATE_FORMAT.VALUE + ' h:mm';
+        var format = store.getters['auth/DATE_FORMAT'].VALUE + ' h:mm';
     }
 
     if (date) {
@@ -77,7 +77,7 @@ Vue.filter('formatDateTime', function(date) {
 
 Vue.filter('formatDate', function(date) {
     if (date) {
-        return moment(date).format(APP.DATE_FORMAT.VALUE);
+        return moment(date).format(store.getters['auth/DATE_FORMAT'].VALUE);
     }
 });
 
@@ -94,7 +94,7 @@ import Vue from 'vue';
 import VueFlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import VueSignaturePad from 'vue-signature-pad';
-
+import store from '../store'
 
 //Vue.use(i18n)
 

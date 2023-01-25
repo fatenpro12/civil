@@ -217,7 +217,7 @@ backBtn: true
             ],
             projectId: null,
             taskLists: [],
-            url: null,
+          //  url: null,
             filters: [],
             user_filter_type: null,
             usersList: [{ id: 0, name: self.trans('messages.all') }],
@@ -274,10 +274,10 @@ backBtn: true
     created() {
         const self = this;
         self.filters.status = '';
-        self.url = 'project-tasks';
+      //  self.url = 'project-tasks';
         self.getProjects();
         self.$eventBus.$on('updateTaskTable', (data) => {
-            self.url = 'project-tasks';
+           // self.url = 'project-tasks';
             self.taskLists = [];
              self.projects=self.projects.filter(x=>x.id==data);
             self.getTaskList(self.projectId);
@@ -331,7 +331,6 @@ backBtn: true
             const self = this;
  self.projectId = projectId
 
-
             let params = {
                 page: self.pagination.page,
                 per_page: self.pagination.rowsPerPage,
@@ -348,21 +347,21 @@ backBtn: true
             }
             else{
                 params['project_id'] = self.filters.project_id;
-            }
-            console.log(params)
+            } 
+                  console.log(params)
             axios
-                .get(self.url, { params: params })
+                .get('project-tasks', { params: params })
                 .then(function (response) {
                     var tasks = [];
                     tasks = response.data.tasks;
-           
+           console.log(response.data.tasks)
                     self.items = response.data.tasks.data;
                     self.totalItems = response.data.tasks.total;
                     self.pagination.totalItems = response.data.tasks.total;
 
                     self.taskLists = _.concat(self.taskLists, tasks);
 
-                    self.url = _.get(response, 'data.next_page_url', null);
+                  //  self.url = _.get(response, 'data.next_page_url', null);
                     self.projectCategories = response.data.project_categories;
                     self.projectCategories.push({ id: '' });
                 })
@@ -412,7 +411,7 @@ backBtn: true
 
         filterChanged() {
             const self = this;
-            self.url = 'project-tasks';
+          //  self.url = 'project-tasks';
             self.taskLists = [];
             self.getTaskList(self.projectId);
         },

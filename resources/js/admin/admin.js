@@ -9,10 +9,10 @@ import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios';
 
-var x=APP.RTL;
+var lang_ar=localStorage.getItem('currentLange')=='ar'?true:false;
 Vue.use(Vuetify, {
     // rtl: true,
-     rtl: x,
+     rtl: lang_ar,
      theme: {
          primary: '#1976D2',
          secondary: '#424242',

@@ -50,7 +50,7 @@
                                         />
                                         <img
                                             v-else
-                                            src="img/image-1@2x.jpg"
+                                            src="/img/image-1@2x.jpg"
                                             style="max-width:40rem"
                                         />
                                     </div>
@@ -100,7 +100,7 @@
                                         ></pdf>
                                         <img
                                             v-if="!numPages"
-                                            src="img/image-1@2x.jpg"
+                                            src="/img/image-1@2x.jpg"
                                             style="max-width:35rem"
                                         />
                                     </div>
@@ -154,7 +154,7 @@
                                                 :src="currentSrc"
                                             >
                                             </iframe>
-                                            <img v-if="!currentSrc" src="img/image-1@2x.jpg" />
+                                            <img v-if="!currentSrc" src="/img/image-1@2x.jpg" />
                                         </div>
                                     </div>
 

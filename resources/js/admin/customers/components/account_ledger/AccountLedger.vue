@@ -178,7 +178,7 @@ export default {
                     .endOf('month')
                     .format('YYYY-MM-DD'),
             },
-            format: APP.DATE_FORMAT.VALUE,
+            format: this.$store.getters['auth/DATE_FORMAT'],
             highlightColor: 'blue lighten-1',
             inputStyle: {
                 'prepend-inner-icon': 'date_range',

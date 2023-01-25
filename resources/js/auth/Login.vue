@@ -106,7 +106,7 @@ export default {
 }
 </script>
 <style scoped>
-:deep() .v-btn{
+>>> .v-btn{
 border-radius: 20px;
 }
   .card-signin {

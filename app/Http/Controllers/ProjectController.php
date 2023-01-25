@@ -141,7 +141,7 @@ class ProjectController extends Controller
     {
         $childrens=Auth::user()->childrenIds(Auth::user()->id);
         array_push($childrens,Auth::user()->id);
-        $projects = Project::with('customer', 'media','location','creator','report','report.media','report.reportCreator','report.type');
+        $projects = Project::with('owners', 'media','location','creator','report','report.media','report.reportCreator','report.type');
         if(Auth::user()->user_type_log=='ENGINEERING_OFFICE_MANAGER') {
             $projects = $projects->where(function($q) use ($childrens) {
                 $q->where('created_by',Auth::user()->id)->orWhereHas('members', function ($qu) use ($childrens) {
@@ -238,7 +238,7 @@ class ProjectController extends Controller
             return Response::respondError('هذا الفعل غير مسموح');
         }
 
-        $customers =[];//User::getUsersForDropDown() ;//Customer::getCustomersForDropDown();
+        $customers =[];//User::getUsersForDropDown() ;
       //  $users = User::getUsersMemberForDropDown();
         $user=Auth::user();
         $users = User::
@@ -273,12 +273,14 @@ public function getProjectsOffice(Request $request)
     {
         $user = User::find($request->office_id);
         if(isset($request->office_id)){
-            $projects = Project::with('customer', 'categories','media', 'members', 'members.media','location','creator','report','report.reportCreator','report.type');
+            $projects = Project::with('owners', 'categories','media', 'members', 'members.media','location','creator','report','report.reportCreator','report.type');
             $childrens=$user->childrenIds($user->id);
            array_push($childrens,$user->id);
             $projects = $projects->whereHas('members', function ($q) use ($childrens) {
                 $q->WhereIn('user_id', $childrens);
-            })->orWhere('customer_id', $user->id)
+            })->orWhereHas('owners', function ($q) use ($user) {
+                $q->Where('owner_id', $user->id);
+            })
             ->get()
             ->toArray();
         }else{
@@ -322,7 +324,6 @@ public function getProjectsOffice(Request $request)
 
             $project_data = $request->only(
                 'name',
-                'customer_id',
                 'project_type',
                 'total_rate',
                 'price_per_hours',
@@ -443,7 +444,7 @@ public function getProjectsOffice(Request $request)
             }
 
             $project_members = $this->getMembers($id);
-            $customers = Customer::getCustomersForDropDown();
+            $customers = User::getCustomersForDropDown();
             $users = User::getUsersForDropDown();
             $projectTypes = Project::getProjectTypes();
             $status = Project::getStatusForProject();
@@ -486,7 +487,6 @@ public function getProjectsOffice(Request $request)
 
             $input = $request->only(
                 'name',
-                'customer_id',
                 'project_type',
                 'total_rate',
                 'price_per_hours',
@@ -502,7 +502,7 @@ public function getProjectsOffice(Request $request)
             $project = Project::with('members')->findOrFail($id);
 
             $project_lead = $project->lead_id;
-            $customer = $project->customer_id;
+        //    $customer = $project->customer_id;
             $members = $project->members;
             $project->update($input);
 

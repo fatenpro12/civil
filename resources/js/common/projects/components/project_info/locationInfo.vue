@@ -35,6 +35,7 @@
                                         :error-messages="errors.collect('province_municipality')"
                                          :disabled="isEdit"
                                     required
+                                    dense
                                     ></v-autocomplete>
                                 </v-flex>
                                 <v-flex md3>
@@ -50,6 +51,7 @@
                                         :error-messages="errors.collect('municipality')"
                                          :disabled="isEdit"
                                          required
+                                         dense
                                     ></v-autocomplete>
                                 </v-flex>
 

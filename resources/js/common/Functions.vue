@@ -95,10 +95,10 @@ export default {
                 });
         },
         $checklang() {
-            return APP.RTL;
+            return localStorage.getItem('currentLange')=='ar'?true:false;
         },
         checkType() {
-            return this.getCurrentUser().user_type_log;
+            return this.$store.getters['auth/user'].user_type_log;
         },
         getCurrentUser() {
             return this.$store.getters['auth/user'];
@@ -115,7 +115,7 @@ export default {
                 });
         },
         getCurrentLang(){
-            return APP.CURRENT_LANGUAGE
+            return localStorage.getItem('currentLange')
         },
                  textAreaWrite(event){
    if(event.which === 13)
@@ -123,7 +123,7 @@ export default {
 
   },
         getLanguages(){
-           return APP.LANGUAGES
+           return this.$store.getters['settings/languages']
         },
         checkActive() {
             let user = this.$store.getters['auth/user']
@@ -132,7 +132,7 @@ export default {
         $hasRole(roleName) {
              let roles= this.$store.getters['auth/roles']
             return _.get(roles, roleName, false);
-            //  return _.get(APP.USER_ROLES, 'superadmin', _.get(APP.USER_ROLES, roleName, false));
+      
         },
               viewProject(id) {
             const self = this;
@@ -249,19 +249,18 @@ export default {
         flatPickerDate() {
             var config = {
                 altInput: true,
-                altFormat: APP.DATE_FORMAT.KEY,
+                altFormat: this.$store.getters['auth/DATE_FORMAT'].KEY,
             };
-
             return config;
         },
         flatPickerDateTime() {
             var format = '';
             var enable_24_hr = false;
 
-            if (APP.TIME_FORMAT == 12) {
-                format = APP.DATE_FORMAT.KEY + ' h:i K';
+            if (this.$store.getters['auth/TIME_FORMAT'] == 12) {
+                format = this.$store.getters['auth/DATE_FORMAT'].KEY + ' h:i K';
             } else {
-                format = APP.DATE_FORMAT.KEY + ' H:i';
+                format = this.$store.getters['auth/DATE_FORMAT'].KEY + ' H:i';
                 enable_24_hr = true;
             }
 

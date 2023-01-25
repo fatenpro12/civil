@@ -20,7 +20,7 @@
                                         <v-text-field
                                             v-model="input.id_card_number"
                                             type="number"
-                                            :label="trans('data.id_card_number')"
+                                            :placeholder="trans('data.id_card_number')"
                                              :rules="[
                                         (v) =>
                                             !!v ||
@@ -42,7 +42,7 @@
                                     <v-flex xs12 md4>
                                          <v-text-field
                                             v-model="input.name"
-                                            :label="trans('messages.name')"
+                                            :placeholder="trans('messages.name')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -51,7 +51,7 @@
                                    
                                     <v-flex xs12 md4>
                                         <v-text-field
-                                            :label="trans('messages.email')"
+                                            :placeholder="trans('messages.email')"
                                             v-model="input.email"
                                             readonly
                                             :disabled="isEdit"
@@ -61,7 +61,7 @@
                                         <v-text-field
                                             v-model="input.mobile"
                                             type="number"
-                                            :label="trans('messages.mobile')"
+                                            :placeholder="trans('messages.mobile')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -96,7 +96,7 @@
                                         <v-text-field
                                             v-model="agency_inputs.id_card_number"
                                             type="number"
-                                            :label="trans('data.id_card_number')"
+                                            :placeholder="trans('data.id_card_number')"
                                              :rules="[
                                         (v) =>
                                             !!v ||
@@ -114,7 +114,7 @@
                                     <v-flex xs12 md4>
                                          <v-text-field
                                             v-model="agency_inputs.name"
-                                            :label="trans('messages.name')"
+                                            :placeholder="trans('messages.name')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>
@@ -123,7 +123,7 @@
                                    
                                     <v-flex xs12 md4>
                                         <v-text-field
-                                            :label="trans('messages.email')"
+                                            :placeholder="trans('messages.email')"
                                             v-model="agency_inputs.email"
                                             readonly
                                             :disabled="isEdit"
@@ -133,7 +133,7 @@
                                         <v-text-field
                                             v-model="agency_inputs.mobile"
                                             type="number"
-                                            :label="trans('messages.mobile')"
+                                            :placeholder="trans('messages.mobile')"
                                             readonly
                                             :disabled="isEdit"
                                         ></v-text-field>

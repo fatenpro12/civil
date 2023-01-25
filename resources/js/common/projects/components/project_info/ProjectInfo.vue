@@ -19,7 +19,7 @@
                                         <v-text-field
                                              :disabled="isEdit"
                                             v-model="project.name"
-                                            :label="trans('messages.name')"
+                                            :placeholder="trans('messages.name')"
                                             v-validate="'required'"
                                             data-vv-name="name"
                                             :data-vv-as="trans('messages.name')"
@@ -56,7 +56,7 @@
                                             :items="status"
                                             :class="$vuetify.breakpoint.xsOnly?'mt-5':''"
                                             v-model="project.status"
-                                            :label="trans('messages.status')"
+                                            :placeholder="trans('messages.status')"
                                             not_started
                                         ></v-select>
                                     </v-flex>
@@ -151,7 +151,7 @@
                                             :items="users"
                                             :readonly="isEdit"
                                             v-model="project.users_id"
-                                            :label="trans('messages.members')"
+                                            :placeholder="trans('messages.members')"
                                             :rules="[
                                                 (v) =>
                                                     !!v ||
@@ -177,7 +177,7 @@
                                         <v-text-field
                                             v-model="project.authorization_request_number"
                                             :disabled="isEdit"
-                                            :label="trans('data.authorization_request_number')"
+                                            :placeholder="trans('data.authorization_request_number')"
                                          
                                         >
                                         </v-text-field>
@@ -187,7 +187,7 @@
                                         <v-text-field
                                             v-model="project.license_number"
                                             :disabled="isEdit"
-                                            :label="trans('data.license_number')"
+                                            :placeholder="trans('data.license_number')"
                                          
                                         >
                                         </v-text-field>
@@ -197,7 +197,7 @@
                                         <v-text-field
                                             v-model="project.plot_number"
                                              :disabled="isEdit"
-                                            :label="trans('data.plot_number')"
+                                            :placeholder="trans('data.plot_number')"
                                           
                                         >
                                         </v-text-field>
@@ -207,7 +207,7 @@
                                         <v-text-field
                                             v-model="project.cadastral_decision_number"
                                             :disabled="isEdit"
-                                            :label="trans('data.cadastral_decision_number')"
+                                            :placeholder="trans('data.cadastral_decision_number')"
                                            
                                         >
                                         </v-text-field>
@@ -220,7 +220,7 @@
                                              :disabled="isEdit"
                                             :items="buiding_types"
                                             v-model="project.buiding_type"
-                                            :label="trans('data.buiding_type')"
+                                            :placeholder="trans('data.buiding_type')"
                                             return-object
                                         >
                                         </v-autocomplete>
@@ -231,14 +231,14 @@
                                             type="number"
                                             ref="input"
                                           :disabled="isEdit"
-                                            :label="trans('data.unit_number')"
+                                            :placeholder="trans('data.unit_number')"
                                             v-model.number="project.unit_number"
                                         ></v-text-field>
                                     </v-flex>
                                     <v-flex md4>
                                         <v-text-field
                                             v-model="project.build_rate"
-                                            :label="trans('data.build_rate')"
+                                            :placeholder="trans('data.build_rate')"
                                            :disabled="isEdit"
                                            
                                         ></v-text-field>
@@ -250,7 +250,7 @@
                                            :disabled="isEdit"
                                             :items="project_types"
                                             v-model="project.project_type"
-                                            :label="trans('data.project_type')"
+                                            :placeholder="trans('data.project_type')"
                                            return-object
                                         ></v-autocomplete>
                                     </v-flex>
@@ -261,7 +261,7 @@
                                             :disabled="isEdit"
                                             :items="roles_number"
                                             v-model="project.role_number"
-                                            :label="trans('data.role_number')"
+                                            :placeholder="trans('data.role_number')"
                                         >
                                         </v-autocomplete>
                                     </v-flex>
@@ -272,7 +272,7 @@
                                             :disabled="isEdit"
                                             :items="using_types"
                                             v-model="project.using"
-                                            :label="trans('data.using')"
+                                            :placeholder="trans('data.using')"
                                             return-object
                                         >
                                         </v-autocomplete>
@@ -410,7 +410,7 @@ label_active2:"",
 };
 </script>
 <style scoped>
-:deep() .ql-container{
+>>> .ql-container{
     max-height: 70%;
 }
 </style>

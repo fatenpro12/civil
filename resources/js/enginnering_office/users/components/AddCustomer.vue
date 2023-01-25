@@ -27,7 +27,7 @@ export default {
                         });
 
                         self.$store.commit('hideLoader');
-                        console.log(response)
+                     
                         if (response.data.success === true) {
                        
                             self.goBack();

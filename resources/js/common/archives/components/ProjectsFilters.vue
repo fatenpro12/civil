@@ -245,7 +245,8 @@ export default {
                 })
                 .then(function(response) {
                     self.loading = false;
-                    self.projectData = _.concat(self.projectData, response.data.projects.data);
+                    self.projectData = _.concat(self.projectData, response.data.projects);
+                    console.log(self.projectData)
                     self.projectData.forEach(val => {
                         val.report.map(x => x.owner = val.customer.name)
                         self.reportData.push(...val.report)

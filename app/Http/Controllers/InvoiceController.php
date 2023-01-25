@@ -42,9 +42,9 @@ class InvoiceController extends Controller
     {
         $project_id = request()->get('project_id');
 
-        if (!empty($project_id) && (!request()->user()->can('project.'.$project_id.'.invoice.view'))) {
+       /* if (!empty($project_id) && (!request()->user()->can('project.'.$project_id.'.invoice.view'))) {
             abort(403, 'Unauthorized action.');
-        }
+        }*/
 
         $rowsPerPage = (request()->get('rowsPerPage') > 0) ? request()->get('rowsPerPage') : 0;
         $sort_by = request()->get('sort_by');

@@ -41,7 +41,7 @@ class UserResource extends JsonResource
             'personal_image' => $this->parent&&$this->parent->getFirstMedia('personal_image')?$this->parent->getFirstMedia('personal_image')->original_url:'',
             'parent_title'=>$this->parent?$this->parent->title:'',
             'user_type_log' => $this->user_type_log,
-            'id_card_number' => $this->id_card_number
+            'id_card_number' => $this->id_card_number,
         ];
     }
 }

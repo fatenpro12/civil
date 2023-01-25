@@ -285,7 +285,7 @@ table, th, td {
   margin:-0.6rem 15px 0 15px;
   padding: 0;
 }
-  .v-text-field :deep() input {
+  .v-text-field >>> input {
       text-align: center!important;
     }
 </style>

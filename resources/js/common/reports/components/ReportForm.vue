@@ -265,7 +265,7 @@ this.$forceUpdate();
 .sm1, .md1,.sm6,.md6,.sm2 ,.md2{
   justify-content: center;
 }
-.v-textarea :deep() textarea{
+.v-textarea >>> textarea{
   overflow: hidden!important;
   resize: none;
 }
@@ -330,7 +330,7 @@ table, th, td {
   margin:-0.6rem 15px 0 15px;
   padding: 0;
 }
-  .v-text-field :deep() input {
+  .v-text-field >>> input {
       text-align: center!important;
     }
  /*  .v-select >>> .v-input__icon {

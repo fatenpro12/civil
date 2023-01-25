@@ -322,8 +322,11 @@ class Project extends Model implements HasMedia
         $customer_id=$user->id;
         $childrens=$user->childrenIds($user->id);
         array_push($childrens,$user->id);
-        $projects_id=Project::whereIn('customer_id',$childrens)->pluck('id')
-        ->toArray();
+        $projects_id=Project::whereHas('owners', function ($q) use ($childrens) {
+            $q->whereIn('owner_id', $childrens);
+        })->pluck('id')->toArray();
+       // whereIn('customer_id',$childrens)->pluck('id')
+        
         return $projects_id;
     }
 }

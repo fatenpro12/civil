@@ -19,7 +19,7 @@
                             <v-flex xs12 md6>
                                 <v-text-field
                                     v-model="project.name"
-                                    :label="trans('messages.name')"
+                                    :placeholder="trans('messages.name')"
                                     v-validate="'required'"
                                     data-vv-name="name"
                                     :data-vv-as="trans('messages.name')"
@@ -34,7 +34,7 @@
                                     item-value="id"
                                     :items="categories"
                                     v-model="category_id"
-                                    :label="trans('messages.category')"
+                                    :placeholder="trans('messages.category')"
                                     multiple
                                     v-validate="'required'"
                                     data-vv-name="category"
@@ -62,59 +62,10 @@
                                     item-value="id"
                                     :items="customers"
                                     v-model="project.customer_id"
-                                    :label="trans('messages.customer')"
+                                    :placeholder="trans('messages.customer')"
                                 ></v-autocomplete>
                             </v-flex>
-                            <!-- <v-flex xs12 md4>
-                                <v-select
-                                    item-text="value"
-                                    item-value="key"
-                                    :items="billing_types"
-                                    v-model="project.billing_type"
-                                    :label="trans('messages.billing_type')"
-                                   
-                                    v-validate="'required'"
-                                    data-vv-name="billing_type"
-                                    :data-vv-as="trans('messages.billing_type')"
-                                    :error-messages="errors.collect('billing_type')"
-                                    required
-                                ></v-select>
-                            </v-flex>
-
-                            <v-flex xs12 md4>
-                                <v-text-field
-                                   
-                                    v-model="project.total_rate"
-                                    :label="trans('messages.total_rate')"
-                                >
-                                </v-text-field>
-                            </v-flex>
-                            
-                            <v-flex xs12 md4>
-                                <v-text-field
-                                   
-                                    v-model="project.price_per_hours"
-                                    :label="trans('messages.price_per_hours')"
-                                >
-                                </v-text-field>
-                            </v-flex>
-                            <v-flex xs12 md4>
-                                <v-text-field
-                                   
-                                    v-model="project.estimated_hours"
-                                    :label="trans('messages.estimated_hours')"
-                                >
-                                </v-text-field>
-                            </v-flex>
-
-                            <v-flex xs12 md4>
-                                <v-text-field
-                                   
-                                    v-model="project.estimated_cost"
-                                    :label="trans('messages.estimated_cost')"
-                                >
-                                </v-text-field>
-                            </v-flex> -->
+                      
 
                             <v-flex xs12 md4>
                                 <v-select
@@ -122,7 +73,7 @@
                                     item-value="key"
                                     :items="status"
                                     v-model="project.status"
-                                    :label="trans('messages.status')"
+                                    :placeholder="trans('messages.status')"
                                     v-validate="'required'"
                                     data-vv-name="status"
                                     :data-vv-as="trans('messages.status')"
@@ -136,7 +87,7 @@
                                     item-value="id"
                                     :items="users"
                                     v-model="project.lead_id"
-                                    :label="trans('messages.lead')"
+                                    :placeholder="trans('messages.lead')"
                                     v-validate="'required'"
                                     data-vv-name="lead"
                                     :data-vv-as="trans('messages.lead')"
@@ -212,7 +163,7 @@
                                     item-value="id"
                                     :items="users"
                                     v-model="project.user_id"
-                                    :label="trans('messages.members')"
+                                    :placeholder="trans('messages.members')"
                                     chips
                                     multiple
                                     v-validate="'required'"

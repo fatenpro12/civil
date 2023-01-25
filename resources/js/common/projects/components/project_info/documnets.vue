@@ -118,7 +118,7 @@
                                         />
                                         <img
                                             v-else
-                                            src="img/image-1@2x.jpg"
+                                            src="/img/image-1@2x.jpg"
                                             style="max-width:40rem"
                                         />
                                     </div>
@@ -168,7 +168,7 @@
                                         ></pdf>
                                         <img
                                             v-if="!numPages"
-                                            src="img/image-1@2x.jpg"
+                                            src="/img/image-1@2x.jpg"
                                             style="max-width:35rem"
                                         />
                                     </div>
@@ -254,7 +254,7 @@
                                                 :src="currentSrc"
                                             >
                                             </iframe>
-                                            <img v-if="!currentSrc" src="img/image-1@2x.jpg" />
+                                            <img v-if="!currentSrc" src="/img/image-1@2x.jpg" />
                                         </div>
                                     </div>
 
@@ -290,7 +290,7 @@
 <script>
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-
+import store from '../../../../store'
 import pdf from 'vue-pdf';
 export default {
     components: {
@@ -310,11 +310,12 @@ export default {
             currentSrc: null,
             myPdfComponentPrint: null,
             dropzoneOptions: {
-                url: APP.APP_URL + '/media',
+                url: APP.APP_URL + '/api/media',
                 thumbnailWidth: 250,
                 maxFilesize: 100,
                 addRemoveLinks: true,
-                headers: { 'X-CSRF-TOKEN': _token },
+               headers: { 'X-CSRF-TOKEN': _token//localStorage.getItem('_token')
+                },
             },
         };
     },

@@ -42,7 +42,7 @@
         </v-list-tile-action>
 
         <v-list-tile-content>
-          <v-list-tile-title>{{ trans('messages.overview') }}</v-list-tile-title>
+          <v-list-tile-title>{{ trans("messages.overview") }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
         <v-list-tile
@@ -246,8 +246,8 @@ import Popover from '../../../admin/popover/Popover';
        loadProject() {
             const self = this;
            axios.get('projects/' + self.propProjectId).then(function (response) {
+     
                 if (!response.data.error_code) {
-                  console.log(response)
                   self.resultData = response
                    self.$forceUpdate()
                    //self.$refs.projectData.fillEditData(response.data.data.project, true);
@@ -295,7 +295,7 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
             self.currentCard = 'taskLists'
            
             self.$refs.taskLists.getTaskList(self.projectId)
-           self.$eventBus.$emit('updateTaskTable', self.propProjectId);
+        //   self.$eventBus.$emit('updateTaskTable', self.propProjectId);
         },
  
         milestones() {
@@ -320,8 +320,3 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
     },
     }
 </script>
-<style scoped>
-:deep() .v-list__tile{
-  
-}
-</style>

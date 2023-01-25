@@ -14,6 +14,8 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    protected $commonUtil;
+    private $userRepository;
    public function __construct(UserRepository $userRepository)
    {
        $this->middleware('auth:api', ['except' => ['login','register']]);
@@ -64,6 +66,8 @@ class AuthController extends Controller
              'user'=> $user,
              'permissions' => $user->getUserPermissions($user),
              'roles' => $user->getUserRoles($user),
+             'DATE_FORMAT'=> $user->appDateFormat(),
+             'TIME_FORMAT'=> $user->appTimeFormat(),
              'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
