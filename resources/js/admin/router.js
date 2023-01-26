@@ -18,7 +18,7 @@ import AddCustomer from '../enginnering_office/users/components/AddCustomer'
 import EnginneringOfficeUserLists from '../enginnering_office/users/components/UserLists'
 import EnginneringOfficeUserFormAdd from '../enginnering_office/users/components/UserFormAdd'
 import ViewVisitRequest from '../common/visit-request/view_visit_request'
-import ProjectManagement from '../estate_owner/main/components/ProjectManagement'
+const ProjectManagement = () => import ('../estate_owner/main/components/ProjectManagement')
 import TasksList from '../common/tasks/List'
 import DesignRequestList from '../estate_owner/designRequest/List'
 import ContractorRequestList from '../estate_owner/contractorRequest/List';
