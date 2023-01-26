@@ -456,7 +456,7 @@
                           <v-btn color="secondary" class="mr-4" @click="pickFile('signatureImage')">
                             {{ trans('data.uploadSignature') }}
                         </v-btn>
-                        <v-btn @click="save()" :disabled="!valid" color="success" class="mr-4">
+                        <v-btn @click="save()"  color="success" class="mr-4">
                             {{ trans('messages.save') }}
                         </v-btn>
                                      <v-btn class="primary"  @click='pickFile("personalImage")'>
@@ -720,8 +720,9 @@ self.$emit('save',payload)
                 self.$store.commit('showSnackbar', {
                     message: 'املئ الحقول الضرورية',
                     color: 'error',
-                    duration: 3000,
+                 //   duration: 3000,
                 });
+                self.$store.commit('hideLoader');
             }
     },
             reset() {

@@ -187,6 +187,7 @@
 <script>
 import AddAgency from './AddAgency.vue';
 import NewCustomer from './NewCustomer.vue'
+import store from '../../../../store'
 export default {
     components: {
         AddAgency,
@@ -216,8 +217,10 @@ export default {
     mounted() {
         const self = this;
         self.getCustomers();
-        self.getAgencies()
+        self.getAgencies();
+        console.log(self.getCurrentUser().user_type_log)
        if(self.getCurrentUser().user_type_log === 'ESTATE_OWNER'){
+        console.log(store.getters['auth/user'])
         self.input = self.getCurrentUser()
         self.inputs.push(self.input)
        }

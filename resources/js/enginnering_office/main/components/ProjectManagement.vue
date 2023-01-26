@@ -169,4 +169,8 @@ export default {
     methods: {},
 };
 </script>
-
+<style scoped>
+.v-card{
+    @apply w-full;
+}
+</style>

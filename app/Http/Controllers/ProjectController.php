@@ -1124,6 +1124,7 @@ public function getProjectsOffice(Request $request)
         foreach($customers as $customer){
         $project->owners()->attach($customer['id']);
          array_push($customer_ids,$customer['id']);
+      //   dd(Auth::user());
         if(Auth::user()->user_type_log == 'ESTATE_OWNER'){
         $project->owners->where('id',Auth::id())->first()->pivot->status = 'accepted';
         $project->owners->where('id',Auth::id())->first()->pivot->update();

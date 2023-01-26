@@ -194,7 +194,9 @@ div[aria-required=true].v-autocomplete .v-label::after {
 .ql-toolbar {
   background-color: white;
 }
-
+>>> .error{
+    color:#fff;
+}
 /* show when screen is at least 600px wide */
 
 

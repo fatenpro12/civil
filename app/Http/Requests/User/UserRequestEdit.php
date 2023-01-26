@@ -25,10 +25,12 @@ class UserRequestEdit extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('user');
+       // dd($this->name,$id);
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$this->id,
-            'id_card_number' => 'required|unique:users,id_card_number,'.$this->id,
+            'email' => 'required|email|unique:users,email,'.$id,
+            'id_card_number' => 'required|unique:users,id_card_number,'.$id,
             'location_data'=>'required',
         ];
     }

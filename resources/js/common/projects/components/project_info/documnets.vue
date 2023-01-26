@@ -81,7 +81,7 @@
                                 <v-form ref="form" v-if="isEdit">
                                     <v-layout row wrap>
                                         <v-flex xs12 md12 v-show="can_file_upload">
-                                            <v-flex xs12 md12>
+                                       
                                                 <vue-dropzone
                                                     :useCustomSlot="true"
                                                     @vdropzone-success="vsuccessMuliple"
@@ -99,7 +99,7 @@
                                                     </div>
                                                 </vue-dropzone>
                                             </v-flex>
-                                        </v-flex>
+                                       
 
                                     </v-layout>
                                 </v-form>
@@ -290,7 +290,6 @@
 <script>
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import store from '../../../../store'
 import pdf from 'vue-pdf';
 export default {
     components: {
@@ -314,7 +313,9 @@ export default {
                 thumbnailWidth: 250,
                 maxFilesize: 100,
                 addRemoveLinks: true,
-               headers: { 'X-CSRF-TOKEN': _token//localStorage.getItem('_token')
+               headers: {
+                 "X-CSRF-TOKEN": document.head.querySelector("[name=csrf-token]").content
+                // 'X-CSRF-TOKEN': localStorage.getItem('token')
                 },
             },
         };
@@ -405,5 +406,8 @@ self.$refs.myVueDropzone.manuallyAddFile({ size: val.size?val.size:val.size1, na
     object-fit: cover;
     cursor: pointer;
     margin: 0.5rem;
+}
+.v-card{
+    @apply w-full;
 }
 </style>

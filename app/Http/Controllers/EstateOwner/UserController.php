@@ -276,7 +276,7 @@ class UserController extends  Controller
             }
             if($request->signature && $request->signature!=='delete'){    
                 $user->clearMediaCollection('signature');
-                $user->addMediaFromBase64($payload['signature'])->usingFileName('signature'.time().'.png')->toMediaCollection('signature');
+                $user->addMediaFromBase64($request->signature)->usingFileName('signature'.time().'.png')->toMediaCollection('signature');
             }
             if($request->signature==='delete'){
                 $user->clearMediaCollection('signature');

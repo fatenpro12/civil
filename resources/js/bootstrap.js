@@ -1,6 +1,6 @@
 window._ = require('lodash');
 window.moment = require('moment-timezone');
-window.Dropzone = require('dropzone');
+//window.Dropzone = require('dropzone');
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support

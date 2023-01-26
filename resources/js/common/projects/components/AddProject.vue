@@ -201,6 +201,12 @@ export default {
                     }
                 })
                 .catch(function (error) {
+                    self.loading = false;
+                      self.$store.commit('showSnackbar', {
+                    message: 'املئ الحقول الضرورية',
+                    color: 'error',
+                 //   duration: 3000,
+                });
                     console.log(error);
                 });
         },

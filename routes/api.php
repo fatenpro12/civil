@@ -31,6 +31,7 @@ Route::post('locale', function () {
   // Response
   return redirect()->back();
 });
+Route::resource('media', 'MediaController');
 //Common routes
 Route::middleware(['jwt.auth'])
     ->name('common')
@@ -39,7 +40,7 @@ Route::middleware(['jwt.auth'])
             ->only(['index', 'edit', 'update']);
 
             Route::resource('dashboards', 'DashboardController')->only(['index']);
-        Route::resource('media', 'MediaController');
+       // Route::resource('media', 'MediaController');
         
         Route::get('getRequestsCount','CommonController@getRequestsCount');
         Route::resource('enginner_office/roles', EnginneringOfficeManageRolesController::class);
