@@ -354,6 +354,7 @@
 <script>
 import avatar from '../components/Avatar';
 import TaskFormAdd from '../tasks/Add';
+import store from '../../../store'
 
 export default {
     components: {
@@ -518,9 +519,12 @@ export default {
                 //    self.url = _.get(response, 'data.projects.next_page_url', null);
                     self.getStatistics();
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         edit(id) {
             const self = this;
@@ -586,9 +590,12 @@ export default {
                     });
                     project.is_favorited = response.data.favorite;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         updateStatus(status, project) {
             const self = this;
@@ -607,9 +614,12 @@ export default {
                         self.getStatistics();
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         toggleFavorite(project) {
             if (project.is_favorited) {
@@ -651,9 +661,12 @@ export default {
                                   .value
                             : '';
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         filterChanged() {
             const self = this;

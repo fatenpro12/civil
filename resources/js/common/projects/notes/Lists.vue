@@ -192,9 +192,12 @@ export default {
                     self.items = response.data.data;
                     self.loading = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         create() {
             var data = { projectId: this.projectId };

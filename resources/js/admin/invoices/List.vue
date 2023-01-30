@@ -276,6 +276,7 @@ import InvoicePayment from '../../common/projects/invoices/payment/InvoicePaymen
 import InvoiceReminder from '../invoices/InvoiceReminder';
 import ViewPayment from '../../common/projects/invoices/payment/ViewPayment';
 import StatusLabel from '../status/StatusLabel';
+import store from '../../store'
 export default {
     components: {
         InvoiceShow,
@@ -406,9 +407,12 @@ export default {
                     self.items = response.data.transactions.data;
                     self.loading = false;
                 })
-                .catch(function(error) {
-                    console.log(error);
-                });
+                .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         deleteInvoice(invoice) {
             const self = this;
@@ -433,9 +437,12 @@ export default {
                                 self.getStatistics();
                             }
                         })
-                        .catch(function(error) {
-                            console.log(error);
-                        });
+                      .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
                 },
                 cancelCb: () => {
                     console.log('CANCEL');
@@ -469,9 +476,12 @@ export default {
                     self.customers = response.data.customers;
                     self.paymentStatuses = response.data.payment_statuses;
                 })
-                .catch(function(error) {
-                    console.log(error);
-                });
+              .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         filterChanged() {
             const self = this;
@@ -496,9 +506,12 @@ export default {
                         self.getStatistics();
                     }
                 })
-                .catch(function(error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         sendReminder(item) {
             var data = { transaction_id: item.id, project_id: item.project_id };
@@ -518,9 +531,12 @@ export default {
                         self.currency = response.data.currency;
                         self.paid_amount = response.data.paid_amount.paid_amount;
                     })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                   .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
             }
         },
         totalTransactionCount(transactions) {

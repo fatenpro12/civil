@@ -267,6 +267,7 @@
     </div>
 </template>
 <script>
+import store from '../../store'
 export default {
     components: {
     },
@@ -399,9 +400,12 @@ export default {
                         );
                     }
                 })
-                .catch(function(error) {
-                    console.log(error);
-                });
+              .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         currencyChanged() {
             const self = this;

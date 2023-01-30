@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import store from '../../../store'
 export default {
     name: 'permission',
     data() {
@@ -107,9 +108,12 @@ export default {
                     //self.gender_types = response.data.gender_types;
                     self.permissions = response.data.roles;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         create() {
             const self = this;

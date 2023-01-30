@@ -98,6 +98,7 @@ import AddReportType from '../report_types/Add.vue'
 import ReportForm from './components/ReportForm.vue'
 import ReportPdf from "./components/ReportPdf.vue"
 import vue2Dropzone from 'vue2-dropzone'
+import store from '../../store'
 
 export default {
     components:{
@@ -174,9 +175,12 @@ export default {
                      self.reportData.project= self.project.name
                      
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getFields(input, field) {
             var output = [];
@@ -191,9 +195,12 @@ export default {
                 .then(function (response) {
                     self.projects = response.data
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
                 self.$forceUpdate()
         },
         getReportTypes() {
@@ -207,9 +214,12 @@ export default {
                     self.report_id = response.data.report_id
                     
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
     },

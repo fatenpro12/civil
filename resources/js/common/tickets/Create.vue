@@ -265,9 +265,12 @@ export default {
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getOffices() {
             const self = this;
@@ -276,9 +279,12 @@ export default {
                 .then(function (response) {
                     self.engennering_offices = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getEnginneringTypes() {
             const self = this;
@@ -287,9 +293,12 @@ export default {
                 .then(function (response) {
                     self.enginnering_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         reset() {
             const self = this;
@@ -311,9 +320,12 @@ export default {
                 .then(function (response) {
                     self.request_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         getpriority() {
@@ -323,9 +335,12 @@ export default {
                 .then(function (response) {
                     self.priorities = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getCustomerProject() {
             const self = this;
@@ -334,9 +349,12 @@ export default {
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         createRequestType() {
             const self = this;
@@ -390,9 +408,12 @@ export default {
                 .then(function (response) {
                     self.customer_id = response.data.id;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

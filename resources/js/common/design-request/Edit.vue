@@ -225,9 +225,12 @@ if(event.find(val => val === 'all_offices')){
                      self.getOffices();
                      
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         getCustomerProject() {
             const self = this;
@@ -236,9 +239,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         getCustomers() {
             const self = this;
@@ -247,9 +253,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         getOffices() {
             const self = this;
@@ -261,9 +270,12 @@ if(event.find(val => val === 'all_offices')){
        
               console.log(self.engneering_offices,self.design.project)
               })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

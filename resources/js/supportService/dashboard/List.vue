@@ -232,6 +232,7 @@
     </div>
 </template>
 <script>
+import store from '../../store'
 export default {
     components: {
     },
@@ -310,9 +311,7 @@ export default {
         const self = this;
         self.$eventBus.$off('updateDashboard');
     },
-    created(){
-    //    console.log(this.desserts);
-    },
+  
     watch: {
         pagination: {
             handler() {

@@ -125,6 +125,7 @@ import AcceptModelDEsignRequest from '../../common/design-request/AcceptModelDEs
 import DesignRequest from '../../common/design-request/List'
 import _ from 'lodash';
 import PricePdf from '../../common/PricePdf.vue'
+import store from '../../store'
 
 export default {
     components: {

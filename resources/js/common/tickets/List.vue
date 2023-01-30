@@ -113,6 +113,7 @@
 </template>
 <script>
 import TicketEdit from './Edit';
+import store from '../../store'
 import StatusLabel from '../../admin/status/StatusLabel';
 import AcceptEnginneringOfficeModal from './AcceptEnginneringOfficeModal.vue';
 export default {
@@ -238,9 +239,12 @@ export default {
                 .then(function (response) {
                     self.request_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         sendRequest(request) {
             const self = this;
@@ -436,9 +440,12 @@ export default {
                     self.projects = response.data;
                     self.loading = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         removeVisitRequest(id) {},
         getTicketFromApi() {
@@ -481,9 +488,12 @@ export default {
                     self.items = response.data.data;
                     self.loading = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         edit(ticket_id) {
             this.$refs.ticketEdit.edit(ticket_id);

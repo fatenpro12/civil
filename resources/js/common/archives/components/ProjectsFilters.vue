@@ -198,9 +198,12 @@ export default {
                     self.province_municipalities = response.data.provinceMunicipalities;
                     self.municipalities = response.data.municipalities;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+              .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         clearInputs(){
           this.filters= []

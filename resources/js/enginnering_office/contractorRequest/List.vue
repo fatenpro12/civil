@@ -186,6 +186,7 @@ import Edit from './Edit';
 import view1 from './view1';
 import _ from 'lodash';
 import PricePdf from '../../common/PricePdf.vue'
+import store from '../../store'
 
 export default {
     components: {

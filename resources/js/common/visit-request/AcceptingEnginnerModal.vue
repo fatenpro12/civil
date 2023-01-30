@@ -58,6 +58,7 @@
 }
 </style>
 <script>
+import store from '../../store'
 export default {
     name: 'permission',
     data() {

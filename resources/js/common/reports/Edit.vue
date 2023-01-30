@@ -76,9 +76,12 @@ export default {
                 self.medias= self.report?.media?.slice(1)
                 self.$forceUpdate()
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

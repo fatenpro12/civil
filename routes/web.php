@@ -19,7 +19,7 @@ Route::get('/{any?}', function (Request $request){
     //App::setLocale($request->cookie('site_language') ?: 'en');
     return view('layouts.auth');
 })->where('any','.*');//->where('any', '^(?!api\/)[\/\w\.-]*');
-Route::get('cache/cl', function () {
+Route::get('cache', function () {
     $exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:clear');
     $exitCode = Artisan::call('config:cache');

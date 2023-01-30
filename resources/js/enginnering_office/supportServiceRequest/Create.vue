@@ -248,9 +248,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.design.customer_id = response.data.id;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
              getCustomerProject() {
             const self = this;
@@ -259,9 +262,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getCustomers() {
             const self = this;
@@ -270,9 +276,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getSupportServices() {
             const self = this;
@@ -281,9 +290,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.supportServices = response.data.filter(val => val.id==='all_offices' || val.location_data == self.project.location.province_municipality);
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

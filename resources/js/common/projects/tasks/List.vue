@@ -365,9 +365,12 @@ backBtn: true
                     self.projectCategories = response.data.project_categories;
                     self.projectCategories.push({ id: '' });
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
             //  }
         },
 
@@ -404,9 +407,12 @@ backBtn: true
                         self.project_list = _.concat(self.project_list, response.data.projects);
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         filterChanged() {
@@ -439,9 +445,12 @@ backBtn: true
                         self.projects = response.data.data;
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

@@ -1,5 +1,11 @@
-
+import store from './index'
 import router from '../admin/router'
+import axios from 'axios';
+
+const user = localStorage.getItem('user');
+const initialState = user
+  ? { status: { loggedIn: true }, user }
+  : { status: { loggedIn: false }, user: null };
 export default {
     namespaced: true,
     state:{
@@ -9,7 +15,8 @@ export default {
         permissions:[],
         roles:[],
         DATE_FORMAT:null,
-        TIME_FORMAT:null
+        TIME_FORMAT:null,
+        initialState
     },
     getters:{
         isAuthenticated(state){
@@ -55,9 +62,16 @@ export default {
         },
         SET_ROLES(state, value){
             state.roles = value
-        }
+        },
+        refreshToken(state, accessToken) {
+            state.authenticated = true;
+            state.user = { ...state.user, accessToken: accessToken };
+          }
     },
     actions:{
+        refreshToken({ commit }, accessToken) {
+            commit('refreshToken', accessToken);
+          },
         login({commit},data){
                 commit('SET_PERMISSIONS',data.permissions)
                 commit('SET_DATE_FORMAT',data.DATE_FORMAT)
@@ -67,7 +81,7 @@ export default {
                 commit('SET_TOKEN','Bearer '+data.authorisation.token)
                 commit('SET_AUTHENTICATED',true)
                 localStorage.setItem('token', 'Bearer '+data.authorisation.token)
-                localStorage.setItem('_token',data.authorisation.token)
+                localStorage.setItem('user',data.user)
                 localStorage.setItem('auth',true)
                 axios.defaults.headers.common['Authorization'] = 'Bearer '+data.authorisation.token
                 router.push("/");
@@ -76,6 +90,32 @@ export default {
             commit('SET_USER',{})
             commit('SET_TOKEN',null)
             commit('SET_AUTHENTICATED',false)
+            localStorage.removeItem('token')
+            localStorage.removeItem('auth')
+            localStorage.removeItem('user')
+        },
+        async handleResponse({commit},response) {
+             
+                    if (response.status === 401) {
+                        /*    const user = localStorage.getItem('user');
+                            const rs = await axios.post("/refreshtoken")
+                            console.log(rs,user)
+                            const { accessToken } = rs.data.authorisation.token;
+                
+                            store.dispatch('auth/refreshToken', accessToken);
+                            localStorage.setItem('token', 'Bearer '+accessToken)
+                       
+                            localStorage.setItem('auth',true)*/
+                      
+                     commit('SET_USER',{})
+                     commit('SET_TOKEN',null)
+                     commit('SET_AUTHENTICATED',false)
+                     localStorage.removeItem('token')
+                     localStorage.removeItem('auth')
+                     localStorage.removeItem('user')
+                        router.push('/login')
+                    }
+     
         }
     }
 }

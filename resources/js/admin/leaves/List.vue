@@ -313,9 +313,12 @@ export default {
                                 self.getLeavesFromApi();
                             }
                         })
-                        .catch(function(error) {
-                            console.log(error);
-                        });
+                              .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
                 },
                 cancelCb: () => {
                     console.log('CANCEL');

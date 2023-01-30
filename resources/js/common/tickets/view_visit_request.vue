@@ -168,6 +168,7 @@
 </template>
 <script>
 import AddRequestType from './AddRequestType';
+import store from '../../store'
 export default {
     components: {
         AddRequestType,
@@ -274,9 +275,12 @@ export default {
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getOffices() {
             const self = this;
@@ -285,9 +289,12 @@ export default {
                 .then(function (response) {
                     self.engennering_offices = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         reset() {
@@ -311,9 +318,12 @@ export default {
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

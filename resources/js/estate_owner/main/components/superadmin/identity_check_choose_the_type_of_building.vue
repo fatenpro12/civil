@@ -132,16 +132,7 @@ export default {
         self.getCustomerData();
     },
     methods:{
-        getCustomerData(){
-            // const self = this;
-            // axios.post('/customer-info' ,{customer_id:self.customerId}).then(function(response) {
-            //     self.customer=response.data;
-            //     console.log(self.customer);
-            // })
-            // .catch(function(error) {
-            //     console.log(error);
-            // });
-        },
+       
 
             nextStep() {
             this.$emit('next',this.customer);

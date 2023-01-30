@@ -130,6 +130,7 @@
 import AddEmployeeById from './AddEmployeeById.vue'
 import UsersList from '../../../common/users/UserList'
 import _ from 'lodash';
+import store from '../../../store'
 export default {
     components:{
      AddEmployeeById,
@@ -281,9 +282,12 @@ this.$refs.addEmployeeById.create()
                 .then(function (response) {
                     self.enginnering_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getTypeEnginner(type) {
             const self = this;
@@ -315,9 +319,12 @@ this.$refs.addEmployeeById.create()
                     self.statistics['in_active'] = response.data.in_active;
                     self.statistics['users'] = response.data.users;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

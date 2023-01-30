@@ -95,6 +95,7 @@ import Popover from '../../../admin/popover/Popover';
 import Document from './project_info/documnets.vue';
 import CustomerInfoEng from './project_info/customerInfoEng.vue';
 import CustomerInfoOwner from './project_info/customerInfoEstate.vue';
+import store from '../../../store'
 
 export default {
     components: {
@@ -208,9 +209,12 @@ export default {
                         self.$eventBus.$emit('updateTicketsTable');
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

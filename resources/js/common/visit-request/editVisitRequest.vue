@@ -135,6 +135,7 @@
     </v-container>
 </template>
 <script>
+import store from '../../store'
 export default {
     components: {},
     props: {
@@ -231,9 +232,12 @@ export default {
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getOffices() {
             const self = this;
@@ -242,9 +246,12 @@ export default {
                 .then(function (response) {
                     self.engennering_offices = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         reset() {
@@ -268,9 +275,12 @@ export default {
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         createRequestType() {
             const self = this;
@@ -284,9 +294,12 @@ export default {
                     self.customer_id = response.data[0].id;
                  //   self.customers = response.data
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         getEnginneringTypes() {
@@ -296,9 +309,12 @@ export default {
                 .then(function (response) {
                     self.enginnering_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         update() {
             const self = this;

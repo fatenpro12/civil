@@ -350,9 +350,12 @@ default: null
                     self.projects = response.data;
                     self.loading = false;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         viewProject(id) {

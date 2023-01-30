@@ -77,6 +77,7 @@
 }
 </style>
 <script>
+import store from '../../store'
 export default {
     name: 'permission',
     data() {
@@ -173,9 +174,12 @@ export default {
                     self.inputs[key].users = response.data;
                     //return ;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
 
             // self.current_customer = value;
         },
@@ -232,9 +236,12 @@ export default {
                         }
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
 
         getEmployeeSpecialty(specialty_id) {
@@ -247,9 +254,12 @@ export default {
                 .then(function (response) {
                     return response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
 
         //
@@ -297,9 +307,12 @@ export default {
                 .then(function (response) {
                     self.enginnering_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         getDefaultMembers(id) {
             const self = this;

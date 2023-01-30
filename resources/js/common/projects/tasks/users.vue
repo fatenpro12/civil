@@ -200,6 +200,7 @@
 </style>
 <script>
 import _ from 'lodash';
+import store from '../../../store'
 export default {
     data() {
         const self = this;

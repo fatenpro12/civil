@@ -296,6 +296,8 @@
 <script>
 import Popover from '../../../../admin/popover/Popover';
 import Document from './documnets.vue';
+import store from '../../../../store'
+
 export default {
     components: {
         Popover,
@@ -383,9 +385,12 @@ label_active2:"",
 
                     console.log(self.using_types);
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         nextStep() {

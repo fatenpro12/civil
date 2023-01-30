@@ -14,6 +14,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('cache', function () {
+  $exitCode = Artisan::call('cache:clear');
+  $exitCode = Artisan::call('config:clear');
+  $exitCode = Artisan::call('config:cache');
+
+  //$exitCode = Artisan::call('optimize:clear');
+});
 Route::get('get-location-info', 'ProjectController@getLocationInfo');
 Route::get('create-user','CommonController@createUser');
 Route::middleware('jwt.verify')->get('/user', function (Request $request) {
@@ -220,9 +227,10 @@ Route::get('languages',[CommonController::class,'getLanguages']);
 Route::group(['middleware' => 'jwt.auth',], function ($router) {
 Route::get('getRequestsCount/{id}','CommonController@getRequestsCount');
 Route::post('logout', 'Auth\AuthController@logout');
-Route::post('refresh', 'Auth\AuthController@refresh');
+
 Route::get('user', 'Auth\AuthController@user');
 });
+Route::post('refreshtoken', 'Auth\AuthController@refresh');
 // Employees & Estate Owner
 Route::prefix('estate_owner')
     ->namespace('EstateOwner')

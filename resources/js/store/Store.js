@@ -1,3 +1,5 @@
+import store from './index'
+
 export default {
     state: {
         // breadcrumbs
@@ -50,15 +52,19 @@ export default {
             axios
             .get('/getRequestsCount/'+id)
             .then(function (response) {
-              
                  state.countDedignRequest = response.data.countDesignRequest
                  state.countContractorRequest = response.data.countContractorRequest
                  state.countServiceRequest = response.data.countServicesRequest
                  state.countVisitRequest = response.data.countVisitsRequest
                  state.countRoleRequest = response.data.countRolesRequest
                  state.countDesignRequestEng = response.data.countDesignRequestEng
+            }).catch((err)=>{
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
             });
         },
+        
         // loader
         showLoader(state) {
            state.showLoader = true;

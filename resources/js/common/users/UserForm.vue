@@ -476,6 +476,7 @@
 <script>
 import Popover from '../../admin/popover/Popover';
 import SignaturePad from '../../common/SignaturePad'
+import store from '../../store'
 export default {
     components:{
 Popover,
@@ -593,9 +594,12 @@ reg_birth_date: null
                     self.gender_types = response.data.gender_types;
                     self.roles = response.data.roles;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
              onPersonalFilePicked(e){
  const files = e.target.files
@@ -634,9 +638,12 @@ reg_birth_date: null
                 .then(function (response) {
                     self.engennering_offices = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     onFilePicked(e) {
       const files = e.target.files
@@ -662,9 +669,12 @@ reg_birth_date: null
                 .then(function (response) {
                     self.enginnering_types = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
          checkRolePrimary(id) {
             const self = this;

@@ -90,6 +90,7 @@
 <script>
 import TicketCreate from './Create';
 import TicketEdit from './Edit';
+import store from '../../store'
 import StatusLabel from '../../admin/status/StatusLabel';
 export default {
     components: {
@@ -346,9 +347,12 @@ export default {
                                 //self.getFilters();
                             }
                         })
-                        .catch(function(error) {
-                            console.log(error);
-                        });
+                              .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
                 },
                 cancelCb: () => {
                     console.log('CANCEL');

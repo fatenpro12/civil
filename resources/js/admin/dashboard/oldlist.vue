@@ -266,6 +266,7 @@
 </template>
 <script>
 //import Tab from '../dashboard/Tab';
+import store from '../../store'
 export default {
     components: {
         // Tab,

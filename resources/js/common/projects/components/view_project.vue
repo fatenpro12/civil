@@ -201,6 +201,7 @@ import LocationDataView from './project_info/LocationDataView.vue';
 import ProjectDataOverview from './project_info/ProjectDataOverview.vue';
 import Document from './project_info/documnets.vue';
 import Popover from '../../../admin/popover/Popover';
+import store from '../../../store'
 
   export default {
      components: {
@@ -313,9 +314,12 @@ this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, f
                 .then(function (response) {
                     self.project = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
     }

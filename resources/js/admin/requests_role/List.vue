@@ -224,9 +224,12 @@ export default {
 
                     // }
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         loadRoles() {
             const self = this;
@@ -236,9 +239,12 @@ export default {
                 .then(function (response) {
                     self.roles = response.data.roles;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         getType(role_id) {
             const self = this;

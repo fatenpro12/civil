@@ -1452,9 +1452,12 @@ this.$router.push({
                     self.notifications_count = response.data;
                      
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         markAsRead() {
             const self = this;
@@ -1478,9 +1481,12 @@ this.$router.push({
                     self.url = _.get(response, 'data.next_page_url', null);
                     self.getNotificationsFromApi();
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         view(task) {
             const self = this;

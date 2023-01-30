@@ -130,11 +130,9 @@
 </template>
 
 <script>
-
+import store from '../../store'
 export default {
-    components:{
-        
-    },
+  
     data(){
         const self = this;
         return{

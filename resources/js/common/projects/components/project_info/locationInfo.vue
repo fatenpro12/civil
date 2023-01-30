@@ -334,9 +334,12 @@ export default {
                 .then(function (response) {
                     self.statuses = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
 
         getLocationInfo() {
@@ -350,9 +353,12 @@ export default {
                     self.neighborhoods = response.data.neighborhoods;
                     self.districts = response.data.districts;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
             getMunicipalitiesInfo(event) {
             const self = this;
@@ -361,9 +367,12 @@ export default {
                 .then(function (response) {
                     self.municipalities = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         fillCordinate1(data) {
             const self = this;
@@ -397,9 +406,12 @@ export default {
                 .then(function (response) {
                     self.municipalities = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
 
         },
     },

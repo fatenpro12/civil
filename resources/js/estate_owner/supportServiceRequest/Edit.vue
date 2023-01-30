@@ -245,9 +245,12 @@ if(event.find(val => val === 'all_offices')){
                      self.design.offices=[]
                      self.getOffices();
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getCustomerProject() {
             const self = this;
@@ -256,9 +259,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.projects = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getCustomers() {
             const self = this;
@@ -267,9 +273,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.customers = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
        getSupportServices() {
             const self = this;
@@ -278,9 +287,12 @@ if(event.find(val => val === 'all_offices')){
                 .then(function (response) {
                     self.supportServices = response.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
     },
 };

@@ -90,9 +90,12 @@ export default {
                     self.neighborhoods = response.data.neighborhoods;
                     self.districts = response.data.districts;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         $checklang() {
             return localStorage.getItem('currentLange')=='ar'?true:false;
@@ -148,9 +151,12 @@ export default {
                 .then(function (response) {
                     self.project  = response.data.data;
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+               .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });
         },
         trans(string, params = []) {
             var str = _.get(window.i18n, string);

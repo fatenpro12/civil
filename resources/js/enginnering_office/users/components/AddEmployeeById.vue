@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import store from '../../../store'
  export default {
     data () {
       return {
@@ -154,9 +155,12 @@ this.message = this.trans('messages.employee_work_same_office')
                     self.enginnering_types = response.data;
                  
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                  .catch((err)=>{
+                console.log(err.response.status)
+                if (err.response.status === 401) {
+            store.dispatch('auth/handleResponse',err.response)
+                } 
+            });;
         },
         getCustomers() {
             const self = this;
