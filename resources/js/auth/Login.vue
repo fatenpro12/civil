@@ -80,13 +80,22 @@ export default {
         }),
          login(event){
             this.processing = true
-          this.auth.user_type = event
              axios.post('/login',this.auth).then(({data})=>{
                 console.log(data)
+                if(event){
+                this.auth.user_type = event
+                }
                 this.signIn(data)
-              //  this.$router.push({path: '/'})
-            }).catch((response)=>{
-                console.log(response)
+                this.$store.commit('showSnackbar', {
+                            message: data.msg,
+                            color: data.success,
+                        });
+                       
+            }).catch((err)=>{
+                  this.$store.commit('showSnackbar', {
+                            message: this.trans('messages.user_not_found'),
+                            color: "#FF5252",
+                        });
             }).finally(()=>{
                 this.processing = false
             })
@@ -110,7 +119,7 @@ export default {
 border-radius: 20px;
 }
   .card-signin {
-          border: 0;
+          border-radius: 0;
           max-width: 40%;
        /*   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);*/
         }

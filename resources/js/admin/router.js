@@ -13,12 +13,12 @@ const router = new Router({
             path: "/:catchAll(.*)",
           //  component: NotFound,
           },*/
-        {
+       /* {
             path: '/',
             name: 'index',
             component: () => import('../common/layout/Index.vue'),
             meta: {requiresAuth: true},
-        },
+        },*/
         {
             path: '/login',
             name: 'login',
@@ -39,7 +39,7 @@ const router = new Router({
         },
         {
             name: 'dashboard',
-            path: '/dashboard',
+            path: '/',
             component: () => import('./dashboard/Home'),
             meta: {requiresAuth: true},
             children: [
@@ -849,9 +849,9 @@ router.beforeEach((to, from, next) => {
         else if (user.user_type_log == 'SUPPORT_SERVICES_OFFICE') {
             next('/en')
     }
-            else {
-                next('/dashboard')
-            }
+    else if (user.user_type_log == 'SITE_MANAGEMENT') {
+        next('/')
+}
         }
 
         }

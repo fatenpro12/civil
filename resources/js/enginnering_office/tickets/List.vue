@@ -1,190 +1,7 @@
 
 <!-- For customer -->
 <template>
-   <!-- <v-container grid-list-md :class="$vuetify.breakpoint.xsOnly?'':''">
 
-<ViewVisitRequest ref="viewVisitRequest"></ViewVisitRequest>
-        <v-card class="mt-3">
-            <v-card-title primary-title xs8 sm8>
-                <div>
-                    <div class="headline">
-                        {{ trans('data.visit_requests') }}
-                    </div>
-                </div>
-                <v-spacer></v-spacer>
-                <v-btn
-                    style="background-color: #06706d; color: white"
-                    v-if="$can('tickets.create')"
-                    class="lighten-1"
-                    :disabled="!checkActive()"
-                    @click="
-                        $router.push({
-                            name: 'create_visit_enginner_office_request_list',
-                            params: { request_type: 'visit_request' },
-                        })
-                    "
-                >
-                    {{ trans('messages.add') }}
-                    <v-icon right dark>add</v-icon>
-                </v-btn>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-data-table
-                :headers="headers"
-                :pagination.sync="pagination"
-                :total-items="total_items"
-                :loading="loading"
-                :items="projects"
-                class="elevation-3"
-            >
-                <template slot="items" slot-scope="props">
-                    <td>
-                        <div style="display: inline-flex; padding-left: 30%" align="center">
-                            <v-btn small fab dark color="success" @click="viewRequest(props.item)">
-                                <v-icon color="white">info</v-icon>
-                            </v-btn>
-
-                          
-                            <div>
-                                <v-btn
-                                    color="primary"
-                                    small
-                                    fab
-                                    v-if="props.item.status == 'sent'"
-                                    :disabled="!checkActive()"
-                                    @click="acceptProject(props.item)"
-                                >
-                                    <v-icon color="white">check</v-icon>
-                                  
-                                </v-btn>
-                            </div>
-                            <div>
-                                <v-btn
-                                    color="primary"
-                                    small
-                                    fab
-                                    v-if="
-                                        props.item.request_enginners != undefined
-                                            ? props.item.request_enginners.filter(
-                                                  (x) =>
-                                                      x.user_id == currentUser && x.is_cheaked == 0
-                                              ).length > 0
-                                            : false
-                                    "
-                                    :disabled="!checkActive()"
-                                    @click="acceptRequestByEnginner(props.item)"
-                                >
-                                    <v-icon color="white">check</v-icon>
-                                   
-                                </v-btn>
-                            </div>
-
-                      
-
-                            <v-btn
-                                color="error"
-                                v-if="props.item.status == 'sent'"
-                                small
-                                fab
-                                :disabled="!checkActive()"
-                                @click="rejectProject(props.item.id)"
-                            >
-                                <v-icon color="white">cancel</v-icon>
-                              
-                            </v-btn>
-
-                            <v-btn
-                                color="primary"
-                                v-if="
-                                    props.item.request_enginners != undefined
-                                        ? props.item.request_enginners.filter(
-                                              (x) => x.user_id == currentUser && x.is_cheaked == 1
-                                          ).length > 0
-                                        : false
-                                "
-                                small
-                                fab
-                                :disabled="!checkActive()"
-                                @click="createReport(props.item)"
-                            >
-                                <v-icon color="white"> list </v-icon>
-                             
-                            </v-btn>
-                        </div>
-                    </td>
-                    <td>
-                        <div align="center">
-                            {{ props.item.id }}
-                        </div>
-                    </td>
-
-                    
-                    <td>
-                        <div align="center">
-                            <v-chip
-                                class="ma-2"
-                                v-if="props.item.status != ''"
-                                :color="getColor(props.item.status)"
-                                text-color="white"
-                            >
-                                {{
-                                    props.item.office_id == currentUser
-                                        ? props.item.office_status
-                                        : props.item.status
-                                }}
-                            </v-chip>
-                        </div>
-                    </td>
-                    <td>
-                        <div align="center">
-                            {{ props.item.customer }}
-                        </div>
-                    </td>
-                
-
-                    <td>
-                        <div align="center">
-                            <v-btn
-                                small
-                                v-if="true"
-                                fab
-                                dark
-                                color="teal"
-                                @click="viewProject(props.item.projectId)"
-                            >
-                                {{ props.item.projectName }}
-
-                             
-                            </v-btn>
-                            <span v-else> {{ props.item.projectName }}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div align="center">
-                            {{
-                                props.item.specialties != null
-                                    ? props.item.specialties.map((x) => x.name).join(',')
-                                    : ''
-                            }}
-                        </div>
-                    </td>
-
-                    <td>
-                        <div align="center">
-                            {{ props.item.created_at ? createdDate(props.item.created_at) : '-' }}
-                        </div>
-                    </td>
-                </template>
-            </v-data-table>
-        </v-card>
-        <br />
-        <div align="center">
-            <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
-                {{ trans('messages.back') }}
-            </v-btn>
-        </div>
-        <br />
-    </v-container>-->
     <div>
                 <AcceptEnginneringOfficeModal
             ref="acceptenginneringoffice"
@@ -198,8 +15,9 @@
                                     color="primary"
                                     small
                                     fab
-                                    v-if="props.item.status == 'sent' &&
-                                     props.item.offices[0].id == currentUser"
+                                    v-if="props.item.status == 'sent' && 
+                                    props.item.offices.length>0 &&
+                                     props.item.offices[0].id == currentUser.id"
                                     :disabled="!checkActive()"
                                     @click="acceptProject(props.item)"
                                 >
@@ -216,7 +34,7 @@
                                         props.item.request_enginners != undefined
                                             ? props.item.request_enginners.filter(
                                                   (x) =>
-                                                      x.user_id == currentUser && x.is_cheaked == 0
+                                                      x.user_id == currentUser.id && x.is_cheaked == 0
                                               ).length > 0
                                             : false
                                     "
@@ -233,7 +51,8 @@
                             <v-btn
                                 color="error"
                                 v-if="props.item.status == 'sent'&&
-                                     props.item.offices[0].id == currentUser"
+                                props.item.offices.length>0 &&
+                                     props.item.offices[0].id == currentUser.id"
                                 small
                                 fab
                                 :disabled="!checkActive()"
@@ -248,7 +67,7 @@
                                 v-if="
                                     props.item.request_enginners != undefined
                                         ? props.item.request_enginners.filter(
-                                              (x) => x.user_id == currentUser && x.is_cheaked == 1
+                                              (x) => x.user_id == currentUser.id && x.is_cheaked == 1
                                           ).length > 0
                                         : false
                                 "
@@ -288,7 +107,7 @@ export default {
         };
     },
 mounted(){
- this.currentUser= this.getCurrentUser().id
+ this.currentUser= this.getCurrentUser()
 },
     methods: {
         rejectProject(request_id) {

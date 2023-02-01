@@ -75,6 +75,8 @@ class AuthController extends Controller
          ];
       //   dd($token, auth());
             return $this->respondWithToken($token, $output);
+    } else {
+        return $this->respondWentWrong(__('messages.user_not_found'));
     }
    }
 

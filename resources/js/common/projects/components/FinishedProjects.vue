@@ -381,7 +381,7 @@ export default {
                 })
                 .then(function(response) {
                     self.loading = false;
-                    self.projectData = _.concat(self.projectData, response.data.projects.data);
+                    self.projectData = response.data.projects//_.concat(self.projectData, response.data.projects.data);
                     self.statuses = response.data.status;
                     self.url = _.get(response, 'data.projects.next_page_url', null);
                     self.getStatistics();
