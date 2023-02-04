@@ -3,7 +3,7 @@
         <AddAgency ref="agencyadded" @fillAgencyData="getAgenctData($event)"></AddAgency>
         <v-layout row>
             <v-flex xs12 sm12>
-                <v-card class="elevation-3">
+                <v-card class="elevation-3 w-full">
                     <v-card-title primary-title xs8 sm8>
                         <div>
                             <div class="headline">

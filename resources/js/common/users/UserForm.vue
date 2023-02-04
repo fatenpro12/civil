@@ -445,25 +445,25 @@
                     </v-container>
                 </v-card-text>
                 <v-layout justify-center>
-                    <v-card-actions class="flex-wrap">
-                        <v-spacer></v-spacer>
-                        <v-btn color="error" class="mr-4" @click="reset">
+                    <v-card-actions class="flex-wrap juistify-center">
+                        
+                        <v-btn color="error" class="mr-4 my-1" @click="reset">
                             {{ trans('data.reset') }}
                         </v-btn>
-                        <v-btn color="secondary" class="mr-4" @click="$refs.signature.dialog = true">
+                        <v-btn color="secondary" class="mr-4 my-1" @click="$refs.signature.dialog = true">
                             {{ trans('data.addSignature') }}
                         </v-btn>
-                          <v-btn color="secondary" class="mr-4" @click="pickFile('signatureImage')">
+                          <v-btn color="secondary" class="mr-4 my-1" @click="pickFile('signatureImage')">
                             {{ trans('data.uploadSignature') }}
                         </v-btn>
-                        <v-btn @click="save()"  color="success" class="mr-4">
+                        <v-btn @click="save()"  color="success" class="mr-4 my-1">
                             {{ trans('messages.save') }}
                         </v-btn>
-                                     <v-btn class="primary"  @click='pickFile("personalImage")'>
+                                     <v-btn class="primary my-1"  @click='pickFile("personalImage")'>
                 {{trans('data.personal_image')}}
              </v-btn>
-             <slot name="login">
-                        <v-btn style="color: #06706d" @click="$router.go(-1)">
+             <slot name="login" class="my-1">
+                        <v-btn style="color: #06706d" class="my-1" @click="$router.go(-1)">
                             {{ trans('messages.back') }}
                         </v-btn>
                         </slot>

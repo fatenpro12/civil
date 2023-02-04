@@ -118,6 +118,11 @@ export default {
 >>> .v-btn{
 border-radius: 20px;
 }
+@media (max-width: 700px) {
+    .card-signin {
+        max-width: 100%!important;
+    }
+}
   .card-signin {
           border-radius: 0;
           max-width: 40%;

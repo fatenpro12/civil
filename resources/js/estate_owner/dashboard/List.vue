@@ -8,7 +8,7 @@
                 <v-layout wrap>
                     <v-flex xs12 sm12 md6>
                         <v-hover  v-slot:default="{ hover }" open-delay="100" close-delay="100">
-                            <v-card class="w-full" :elevation="hover ? 16 : 2">
+                            <v-card class="w-full mx-auto" :elevation="hover ? 16 : 2">
                                 <v-card-text>
                                     <div class="my-2">
                                         <v-flex xs12 sm12 md12 class="text-md-center">
@@ -43,7 +43,7 @@
                 </v-flex>
                 <v-flex xs12 sm12 md6>
                         <v-hover  v-slot:default="{ hover }" open-delay="100" close-delay="100">
-                            <v-card class="w-full" :elevation="hover ? 16 : 2">
+                            <v-card class="w-full mx-auto" :elevation="hover ? 16 : 2">
                                 <v-card-text>
                                     <div class="my-2">
                                         <v-flex xs12 sm12 md12 class="text-md-center">
@@ -82,7 +82,7 @@
         </v-container>
         <v-layout row-wrap  mb-2>
             <v-flex >
-                <v-card elevation="4" xs12 sm4 md4>
+                <v-card class="mx-auto" elevation="4" xs12 sm4 md4>
                     <v-card-title>
                         <span class="headline">
                         <v-icon>receipt</v-icon>

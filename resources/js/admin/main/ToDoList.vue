@@ -424,7 +424,7 @@
                                                         x-large
                                                         style="font-size: 18px; color: #06706d"
                                                     >
-                                                        {{ trans('data.request_role') +' (' + $store.state.countPendingRoles+ ')'}}&nbsp;&nbsp;
+                                                        {{ trans('data.request_role') +' (' + $store.state.Store.countRoleRequest+ ')'}}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
                                                 </div>
@@ -491,9 +491,9 @@ export default {
             loading: false,
         };
     },
-    mounted(){
-             this.$store.commit('setCountPendingRoles')
-            this.$forceUpdate();
+         mounted() {
+    let user = this.$store.getters['auth/user']
+     this.$store.commit('setRequests',user.id)
     },
     methods: {
         askforpermission() {

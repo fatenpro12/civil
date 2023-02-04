@@ -202,38 +202,7 @@
                 </v-card>
                 </v-flex>
               
-                                        <!--<div
-                                            v-for="(media, index) in filterMedia"
-                                            :key="media.id"
-                                            @click="
-                                                changePdf(
-                                                    media.full_url
-                                                        ? media.full_url
-                                                        : media.original_url,
-                                                    $refs.myPdfComponent[index]
-                                                )
-                                            "
-                                        >
-                                        <v-btn flat class="w-15">
-                                        <v-icon>mdi-file-pdf-box</v-icon>
-                                        <span ref="myPdfComponent" style="white-space:break-spaces;max-width:70%">{{ media.name}}</span>
-                                        </v-btn>-->
-                                           <!-- <pdf
-                                                class="mx-auto"
-                                                ref="myPdfComponent"
-                                                :src="
-                                                    media.full_url
-                                                        ? media.full_url
-                                                        : media.original_url
-                                                "
-                                            >
-                                                <v-progress-circular
-                                                    :size="15"
-                                                    color="primary"
-                                                    indeterminate
-                                                ></v-progress-circular>
-                                            </pdf>
-                                        </div>-->
+                          
                                     </div>
                                         </div>
                                         <div v-else> {{trans('messages.no_files_exists')}}</div>

@@ -15,7 +15,7 @@
                         </v-btn>                                      
                     </div>
                 </v-layout>
-               <notification />
+               <notification v-if="isAuthenticated"/>
                    <v-menu
                         attach
                         offset-y

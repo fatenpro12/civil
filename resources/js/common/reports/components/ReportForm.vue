@@ -102,7 +102,7 @@
      
     
      <v-layout row wrap class="px-1">
-      <div style="border-end:1px solid gray;border-bottom:1px solid gray;width:50%">
+      <div class="p-0" style="border-end:1px solid gray;border-bottom:1px solid gray;width:50%">
         <div class="px-2 py-1" style="border-bottom:1px solid gray;background:#ededed">
         {{trans('data.Rating scores')}}:
         </div>

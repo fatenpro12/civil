@@ -12,7 +12,7 @@
       color="#fff"
           v-on="on">
           </v-toolbar-side-icon>
-          <notification color="#fff" colorIcon="#fff" class="mx-1" ref="notifications"></notification>
+          <notification v-if="isAuthenticated" color="#fff" colorIcon="#fff" class="mx-1" ref="notifications"></notification>
   </template>
       <v-list>
         <v-list-tile
@@ -45,14 +45,14 @@
               </template>
   
               <v-list-tile
-               v-for="(lang,key) in getLanguages()" 
+               v-for="(lang,key) in languages" 
                :key="key"
                @click='change(key)' 
                class="mx-4"
               >
                 <v-list-tile-content class="py-2">
                   <v-list-tile-title>
-                    <div v-if="key!=language">
+                    <div>
                                     <span :class="'pa-0 ma-0 max-h-full flag-icon flag-icon-'+lang['flag-icon']"></span>
                                      {{lang['display']}}
                                     </div>
@@ -117,8 +117,10 @@ return {
 language: null,
 }
 },
-created(){
-     self.language = localStorage.getItem('currentLange')?localStorage.getItem('currentLange'):self.getLanguages().ar
+created(){ 
+ store.dispatch('settings/getLanguages')
+ this.languages = store.getters['settings/languages']
+ this.language = localStorage.getItem('currentLange')
 },
 methods:{
     ...mapGetters({
@@ -131,12 +133,14 @@ methods:{
             });
   },
     change(lang){
+        axios.get("lang/"+lang).then(()=>{
         localStorage.setItem("currenpathaftercjange",localStorage.getItem("currenpath"));
         localStorage.setItem("currentLange",lang);
-        localStorage.removeItem("currenpath");
-        window.location.href = "lang/"+lang;
-        language= lang;
-        console.log(lang)
+  
+          this.$router.go(0)
+     
+        })
+              
         }
 }
 }

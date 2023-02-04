@@ -4,10 +4,10 @@
            <Nav v-if='!$vuetify.breakpoint.xsOnly' />
             <mobileheader v-if="$vuetify.breakpoint.xsOnly"/>
             </div>
-            <v-content :class="$vuetify.breakpoint.xsOnly?'mt-5':''" class="px-0 pb-0"
+            <v-content class="px-0 pb-0"
             :style="!authenticated?'background:url(/img/welcome.jpg) 0 0 no-repeat;background-size:cover':''">
                 <transition name="translate" mode="out-in">
-                    <router-view></router-view>
+                    <router-view :class="$vuetify.breakpoint.xsOnly?'mt-5':''"></router-view>
                 </transition>
             </v-content>
 

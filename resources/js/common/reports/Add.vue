@@ -127,7 +127,7 @@ export default {
             language: null,
             visit_request_id: null,
                    dropzoneOptions: {
-          url: APP.APP_URL + '/media',
+          url: APP.APP_URL + '/api/media',
           thumbnailWidth: 150,
           maxFilesize: 10,
           addRemoveLinks: true,
