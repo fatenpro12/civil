@@ -244,26 +244,7 @@
                                                                 </v-list-tile>
                                                             </v-list>
                                                         </v-menu>
-                                                        <!--      <div style="display: flex;">
-                                                            <v-btn color="success" small v-if=" $can('project.' + props.item.id + '.status') ||
-                                                                    $can('project.' + props.item.id + '.edit') ||
-                                                                    $can('project.' + props.item.id + '.delete')
-                                                            " slot="activator"  @click="$router.push({name: 'projects.project-tasks.list',params: { id: props.item.id }})">
-                                                                <v-icon small>visibility</v-icon>&nbsp;
-                                                                {{ trans('messages.view') }}
-                                                            </v-btn>
-                                                            <v-btn color="primary" small slot="activator" v-if="$can('project.' + props.item.id + '.edit')"  @click="$router.push({name: 'projects.project-tasks.list',params: { id: props.item.id }})">
-                                                                <v-icon small>edit</v-icon>&nbsp;
-                                                                {{ trans('messages.edit') }}
-                                                            </v-btn>
-                                                            <v-btn color="error" small slot="activator"  v-if="$can('project.' + props.item.id + '.delete')"
-                                                                    @click="deleteProject(props.item.id)">
-                                                                <v-icon small>delete_outline</v-icon>&nbsp;
-                                                                {{ trans('messages.delete') }}
-                                                            </v-btn>
-                                                        </div>  -->
-
-                                                        <!-- <td>{{ props.item.id }}</td> -->
+                                           
                                                     </div>
                                                 </td>
    <td>

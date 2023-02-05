@@ -62,7 +62,7 @@ class AuthController extends Controller
      //   dd($user->getUserPermissions($user));
             $output = [
              'success' => true,
-             'msg' => __('messages.registered_successfully'),
+             'msg' => __('messages.login_successfully'),
              'user'=> $user,
              'permissions' => $user->getUserPermissions($user),
              'roles' => $user->getUserRoles($user),

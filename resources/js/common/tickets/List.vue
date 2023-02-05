@@ -17,12 +17,12 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     style="background-color: #06706d; color: white"
-                    v-if="$can('tickets.create') && false"
+                    v-if="$can('tickets.create')"
                     class="lighten-1"
                     @click="
                         $router.push({
                             name: 'create_visit_request_list',
-                            params: { request_type: 'visit_request' },
+                            params: { request_type: 'visit_request',project_id: id},
                         })
                     "
                 >
@@ -70,7 +70,7 @@
                     </td>
                     <td>
                         <div align="center">
-                            {{ props.item.customer.name }}
+                            {{ props.item.customer }}
                         </div>
                     </td>
                     <!-- <td>
@@ -87,9 +87,9 @@
                                 fab
                                 dark
                                 color="teal"
-                                @click="viewProject(props.item.project_id)"
+                                @click="viewProject(props.item.projectId)"
                             >
-                                {{ props.item.project.name }}
+                                {{ props.item.projectName }}
                                 <!-- {{trans('messages.add')}}-->
                             </v-btn>
                         </div>
@@ -208,15 +208,12 @@ export default {
     mounted() {
         const self = this;
         self.getCurrentUser();
-        //self.getFilters();
-        // self.getStatistics();
+   
         self.$eventBus.$on('updateTicketsTable', (data) => {
             self.projectRequest = [];
             self.projects = [];
             self.getAllProjectRequest();
-            //  self.getTicketFromApi();
-            // self.getStatistics();
-            //self.getFilters();
+           
         });
     },
     beforeDestroy() {
@@ -365,20 +362,7 @@ export default {
                         office_id: item.office_id,
                     };
                     self.$refs.acceptenginneringoffice.fillData(data);
-                    // let info = {
-                    //     status: status,
-                    //     id: id,
-                    // };
-                    // axios
-                    //     .post('/accept-project', info)
-                    //     .then(function (response) {
-                    //         self.projectRequest = [];
-                    //         self.projects = [];
-                    //         self.getAllProjectRequest();
-                    //     })
-                    //     .catch(function (error) {
-                    //         console.log(error);
-                    //     });
+                   
                 },
                 cancelCb: () => {
                     console.log('CANCEL');

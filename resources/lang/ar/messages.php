@@ -526,7 +526,8 @@ return [
     'register' => 'Register',
 
 
-    'registered_successfully' => 'Registered successfully',
+    'registered_successfully' => 'تم التسجيل بنجاح',
+    'login_successfully' => 'تم الدخول بنجاح',
     'client_register' => 'Client Register',
     'login' => 'Login',
     'tickets' => 'Tickets',

@@ -7,42 +7,7 @@
                 <v-card-text>
                     <v-container grid-list-md>
                         <v-layout row wrap>
-                            <!-- <v-flex xs12 sm6 md6>
-                            <v-text-field
-                                v-model="title"
-                                :label="trans('messages.title')"
-                                v-validate="'required'"
-                                data-vv-name="title"
-                                :data-vv-as="trans('messages.title')"
-                                :error-messages="errors.collect('title')"
-                                required
-                            ></v-text-field>
-                        </v-flex> -->
-                            <!-- <v-flex xs12 sm6 md6>
-                            <v-autocomplete
-                                item-text="value"
-                                item-value="key"
-                                :items="request_types"
-                                v-model="request_type"
-                                :label="trans('data.request_type')"
-                                v-validate="'required'"
-                                data-vv-name="request_type"
-                                :data-vv-as="trans('data.request_type')"
-                                :error-messages="errors.collect('request_type')"
-                                required
-                            ></v-autocomplete>
-                        </v-flex> -->
-                            <!-- <v-flex xs1 sm1 md1>
-                                <v-btn
-                                    @click="createRequestType"
-                                    small
-                                    fab
-                                    dark
-                                    style="background-color:#06706d;color:white;"
-                                >
-                                    <v-icon>add</v-icon>
-                                </v-btn>
-                            </v-flex> -->
+                       
 
                             <v-flex xs12 sm6 md6>
                                 <v-autocomplete
@@ -58,7 +23,7 @@
                                                 name: trans('data.project_name'),
                                             }),
                                     ]"
-                                    @change="(event) => updateEmployee(event, k)"
+                                    @change="(event) => updateEmployee(event)"
                                     required
                                 ></v-autocomplete>
                             </v-flex>
@@ -126,11 +91,7 @@
                                     :error-messages="errors.collect('enginnering_type')"
                                     required
                                 >
-                                    <!-- <Popover
-                                    slot="append"
-                                    :helptext="trans('messages.project_member_tooltip')"
-                                >
-                                </Popover> -->
+                              
                                 </v-autocomplete>
                             </v-flex>
                         </v-layout>
@@ -139,7 +100,7 @@
                                 <v-text-field
                                     v-model="note"
                                     :label="trans('data.note')"
-                                    :readonly="isEdit"
+                                   
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
@@ -225,18 +186,14 @@ export default {
             // ? moment(self.location.instrument_date).format('dddd, MMMM Do YYYY')
             // : '';
         },
-        computedDateFormattedDatefns() {
-            const self = this;
-            return self.dead_line_date;
-            // ? format(parseISO(self.location.instrument_date), 'EEEE, MMMM do yyyy')
-            //  : '';
-        },
+    
     },
     created() {
         const self = this;
         self.reset();
-        self.project_id = self.project_id = self.$route.params.project_id;
-        self.customer_id = self.customer_id = self.$route.params.customer_id;
+        self.project_id =  self.$route.params.project_id;
+        
+       // self.customer_id =  self.$route.params.customer_id;
         self.request_type = self.$route.params.request_type;
         self.getRequestTypes();
         self.getCustomerProject();
@@ -259,18 +216,19 @@ export default {
     methods: {
         getCustomers() {
             const self = this;
-            axios
-                 .get('all-customers-admin')
+            axios.get('get-customer-project/' + self.project_id)
+               //  .get('all-customers-admin')
                 
                 .then(function (response) {
                     self.customers = response.data;
+                    self.customer_id = response.data[0].id;
                 })
                   .catch((err)=>{
                 console.log(err.response.status)
                 if (err.response.status === 401) {
             store.dispatch('auth/handleResponse',err.response)
                 } 
-            });;
+            });
         },
         getOffices() {
             const self = this;
@@ -348,6 +306,7 @@ export default {
                 .get('/projects-customer')
                 .then(function (response) {
                     self.projects = response.data;
+                   
                 })
                   .catch((err)=>{
                 console.log(err.response.status)
@@ -401,7 +360,7 @@ export default {
 
             //self.reset();
         },
-        updateEmployee(value, key) {
+        updateEmployee(value) {
             const self = this;
             axios
                 .get('get-customer-project/' + value)

@@ -504,6 +504,7 @@ return [
     'enable_client_signup' => 'Enable Client Registration',
     'register' => 'Register',
     'registered_successfully' => 'Registered successfully',
+    'login_successfully' => 'Login Successfully',
     'client_register' => 'Client Register',
     'login' => 'Login',
     'tickets' => 'Tickets',

@@ -695,7 +695,7 @@ const router = new Router({
 
         },
         {
-            path: '/create-visit-request',
+            path: '/create-visit-request/:project_id?',
             name: 'create_visit_request_list',
             component: () => import('../common/tickets/Create'),
         },
