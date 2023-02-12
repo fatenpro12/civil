@@ -1,6 +1,6 @@
 <template>
     <v-layout row justify-center>
-        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-dialog v-model="dialog"  hide-overlay transition="dialog-bottom-transition">
             <v-card>
                 <v-card-title>
                     <span class="headline">
@@ -268,6 +268,7 @@ export default {
                         message: response.data.msg,
                         color: response.data.success,
                     });
+         
                 })
                 .catch(function(error) {
                     console.log(error);
@@ -303,7 +304,9 @@ export default {
 
                             if (response.data.success === true) {
                                 self.$eventBus.$emit('updateTaskTable');
+                                self.dialog= false
                             }
+
                         })
                               .catch((err)=>{
                 console.log(err.response.status)
@@ -322,7 +325,6 @@ export default {
                 })
                 .then(function(response) {
                     self.comments = response.data;
-                    console.log('response.data')
                     console.log(response.data)
                 })
                 .catch(function(error) {

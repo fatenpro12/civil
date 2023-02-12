@@ -1162,7 +1162,35 @@ public function getProjectsOffice(Request $request)
    }
     return $output;
    }
+   public function mediaProject(Request $request){
+    if (!request()->user()->can('project.edit')) {
+        abort(403, 'Unauthorized action.');
+    }
+  //  dd($request->all());
+    try {
+        //TODO: optimise the process.
+        DB::beginTransaction();
+        $project = Project::find($request->id);
+        if (!empty($request->medias)) {
 
+            foreach($project->media->whereNotIn('id',collect($request->medias)->pluck('id'))as $file){
+                $file->delete();
+            }
+            foreach ($request->medias as $key => $file_name) {
+                if(!isset($file_name['id']))
+                $project->addMedia('uploads/'.config('constants.temp_upload_folder').'/'.$file_name)
+                    ->toMediaCollection('project_documents');
+            }
+          }
+        $output = $this->respondSuccess(__('messages.saved_successfully'));
+        DB::commit();
+   } catch (\Exception $e) {
+        DB::rollBack();
+        $output = $this->respondWentWrong($e);
+      
+    }
+    return $output;
+   }
 
    public function  editNewProject(Request $request){
   if (!request()->user()->can('project.edit')) {

@@ -181,7 +181,7 @@ export default {
                 agency_id: self.agency_id,
                 medias:self.medias
             };
-            console.log(data)
+           
             this.loading = true;
             axios
                 .post('/add-new-project', data)

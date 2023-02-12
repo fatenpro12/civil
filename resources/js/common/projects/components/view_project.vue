@@ -264,7 +264,7 @@ import store from '../../../store'
         getProjectMedia(){
           this.currentCard = 'document'
           
-this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project.media, false);
+this.$refs.documentsInfo.fillEditData(this.resultData.data.data.project, false);
         },
         projectOverview() {
             const self = this;

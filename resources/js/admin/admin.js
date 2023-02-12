@@ -10,6 +10,7 @@ import 'vuetify/dist/vuetify.min.css'
 import axios from 'axios';
 
 var lang_ar=localStorage.getItem('currentLange')=='ar'?true:false;
+console.log(lang_ar)
 Vue.use(Vuetify, {
     // rtl: true,
      rtl: lang_ar,

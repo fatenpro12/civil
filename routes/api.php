@@ -77,6 +77,7 @@ Route::middleware(['jwt.auth'])
 
        Route::get('get-customer-project/{id}', 'ProjectController@getCustomer');
         Route::post('add-new-project', 'ProjectController@addNewProject');
+        Route::post('media-project', 'ProjectController@mediaProject');
         Route::get('get-offices', 'Admin\UserController@getAllOffices');
         Route::get('get-supprt-services', 'Admin\UserController@getAllSupportServices');
         

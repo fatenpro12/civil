@@ -78,7 +78,7 @@
                         <v-card-text>
                             <v-container grid-list-md>
                                 <slot name="form">
-                                <v-form ref="form" v-if="isEdit">
+                                <v-form ref="form">
                                     <v-layout row wrap>
                                         <v-flex xs12 md12 v-show="can_file_upload">
                                        
@@ -99,7 +99,9 @@
                                                     </div>
                                                 </vue-dropzone>
                                             </v-flex>
-                                       
+                                        <v-btn color="success" class="max-w-30" @click="store" v-if="!isEdit">
+                        {{ trans('messages.save') }}
+                    </v-btn>
 
                                     </v-layout>
                                 </v-form>
@@ -275,6 +277,7 @@ export default {
             filterMedia: [],
             can_file_upload: true,
             type: null,
+            project: null,
             currentSrc: null,
             myPdfComponentPrint: null,
             dropzoneOptions: {
@@ -290,6 +293,42 @@ export default {
         };
     },
     methods: {
+         store() {
+
+            const self = this;
+            let data = {
+                id: self.project.id,
+                medias: self.tempMedia
+            };
+           
+            this.loading = true;
+            axios
+                .post('/media-project', data)
+                .then(function (response) {
+                    self.loading = false;
+                    self.$store.commit('showSnackbar', {
+                        message: response.data.msg,
+                        color: response.data.success,
+                    });
+                    self.$router.push({ path: '/project' });
+                    if (response.data.success) {
+                        // self.loading=false;
+                        //   self.dialog = false;
+                        self.$eventBus.$emit('updateTicketsTable');
+
+                        //   self.goBack();
+                    }
+                })
+                .catch(function (error) {
+                    self.loading = false;
+                      self.$store.commit('showSnackbar', {
+                  //  message: 'املئ الحقول الضرورية',
+                    color: 'error',
+                 //   duration: 3000,
+                });
+                    console.log(error);
+                });
+        },
         getMedia(type) {
             this.currentSrc = null;
             this.filterMedia = this.tempMedia;
@@ -329,8 +368,10 @@ this.$emit('next', this.tempMedia);
 },
         fillEditData(data, isEdit) {
             const self = this;
-            (self.tempMedia = data), (self.isEdit = isEdit);
-if(isEdit)
+            self.project= data;
+            (self.tempMedia = data.media), (self.isEdit = isEdit);
+            console.log(self.tempMedia)
+//if(isEdit)
         self.tempMedia.forEach(val =>{
 self.$refs.myVueDropzone.manuallyAddFile({ size: val.size?val.size:val.size1, name: val.file_name, type: val.mime_type }, val.full_url ? val.full_url : val.original_url)
         })

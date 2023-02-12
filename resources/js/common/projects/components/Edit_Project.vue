@@ -147,7 +147,7 @@ export default {
                     );
                     self.$refs.projectInfo.fillEditData(response.data.data.project, false);
 
-                    self.$refs.documentInfo.fillEditData(response.data.data.project.media, true);
+                    self.$refs.documentInfo.fillEditData(response.data.data.project, true);
                 } else {
                     self.$store.commit('hideLoader');
                     self.$store.commit('showSnackbar', {
