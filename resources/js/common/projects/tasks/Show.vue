@@ -39,7 +39,7 @@
                                 <v-icon small>dehaze</v-icon>
                                 {{ trans('messages.description') }}
                                 <v-btn
-                                    v-if="$can('project.' + project.id + '.task.edit')"
+                                  
                                     flat
                                     icon
                                 >
@@ -65,7 +65,7 @@
                     </v-layout>
                     <v-divider></v-divider>
                     <!-- task comment -->
-                    <v-container grid-list-md>
+                   <!-- <v-container grid-list-md>
                         <v-layout row wrap>
                             <v-flex xs12 md12>
                                 <h3>
@@ -86,7 +86,7 @@
                                     ></v-textarea>
                                 </v-flex>
                             </v-flex>
-                            <!-- <v-flex xs12 md12 v-show="can_file_upload">
+                         <v-flex xs12 md12 v-show="can_file_upload">
                                 <h3>
                                     <v-icon small>attachment</v-icon>
                                     {{ trans('messages.file_upload') }}
@@ -100,13 +100,13 @@
                                 @click="toggleUploadDocumenet"
                             >
                                 {{ trans('messages.upload_doc') }}
-                            </v-btn> -->
+                            </v-btn> 
                             <v-btn color="success" @click="saveComment">
                                 {{ trans('messages.save') }}
-                            </v-btn>
+                            </v-btn> 
                         </v-layout>
                     </v-container>
-                    <v-divider></v-divider>
+                    <v-divider></v-divider>-->
                     <!-- activity list -->
                     <h3>
                         <v-icon small>notes</v-icon>
