@@ -178,7 +178,7 @@
                          <Document ref="documentsInfo" v-show="currentCard === 'document'"> </Document>
                     </v-card-text>
                          <v-card-actions jusi>
-                <v-btn class="mx-auto" style="color: #06706d" @click="$router.go(-1)">
+                <v-btn class="mx-auto" style="background-color: #06706d; color: white" @click="$router.go(-1)">
                     {{ trans('messages.back') }}
                 </v-btn>
             </v-card-actions>
@@ -238,6 +238,8 @@ import store from '../../../store'
         created() {
         const self = this;
         self.projectId = self.$route.params.id;
+        if(self.$route.params.currentCard)
+        self.currentCard = self.$route.params.currentCard;
         self.loadProject();
         self.$store.commit('drawer', {
             drawer: false,

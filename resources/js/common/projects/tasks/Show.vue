@@ -64,50 +64,7 @@
                         </v-flex>
                     </v-layout>
                     <v-divider></v-divider>
-                    <!-- task comment -->
-                   <!-- <v-container grid-list-md>
-                        <v-layout row wrap>
-                            <v-flex xs12 md12>
-                                <h3>
-                                    <v-icon small>comment</v-icon>
-                                    {{ trans('messages.add_comment') }}
-                                </h3>
-                                <v-flex xs12 md12>
-                                    <v-textarea
-                                        :label="trans('messages.comment')"
-                                        v-model="note.description"
-                                        auto-grow
-                                        rows="5"
-                                        v-validate="'required'"
-                                        data-vv-name="comment"
-                                        :data-vv-as="trans('messages.comment')"
-                                        :error-messages="errors.collect('comment')"
-                                        required
-                                    ></v-textarea>
-                                </v-flex>
-                            </v-flex>
-                         <v-flex xs12 md12 v-show="can_file_upload">
-                                <h3>
-                                    <v-icon small>attachment</v-icon>
-                                    {{ trans('messages.file_upload') }}
-                                </h3>
-                                <v-flex xs12 md12>
-                                    <div class="dropzone" id="fileupload"></div>
-                                </v-flex>
-                            </v-flex> -->
-                            <!-- <v-btn
-                                color="blue lighten-1 white--text"
-                                @click="toggleUploadDocumenet"
-                            >
-                                {{ trans('messages.upload_doc') }}
-                            </v-btn> 
-                            <v-btn color="success" @click="saveComment">
-                                {{ trans('messages.save') }}
-                            </v-btn> 
-                        </v-layout>
-                    </v-container>
-                    <v-divider></v-divider>-->
-                    <!-- activity list -->
+                
                     <h3>
                         <v-icon small>notes</v-icon>
                         {{ trans('messages.activity') }}

@@ -24,7 +24,7 @@
             >
                 <template slot="items" slot-scope="props">
                     <td align="center">
-                        <v-menu>
+                        <v-menu v-if="$can('report.edit') || $can('report.delete')">
                             <v-btn icon slot="activator"> <v-icon>more_vert</v-icon> </v-btn>
                             <v-list>
 

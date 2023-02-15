@@ -21,17 +21,21 @@
       >
   <v-card flat class="elevation-2 pt-1 pb-3 my-2" :class="$vuetify.breakpoint.xsOnly?'mx-auto':'px-5 mx-5'" style="min-width:70%;flex:4">
   <ProjectFilters  :projects="true" :reports="false"/>
-  <v-btn class="mx-auto" style="color: #06706d" @click="$router.go(-1)">
+  <div class="flex justify-center">
+  <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                         {{ trans('messages.back') }}
                     </v-btn>
+                    </div>
   </v-card>
   </v-tab-item>
       <v-tab-item>
   <v-card flat class="elevation-2 pt-1 pb-3 my-2" :class="$vuetify.breakpoint.xsOnly?'mx-auto':'px-5 mx-5'" style="min-width:70%;flex:4">
    <ProjectFilters :reports="true" :projects="false" />
-   <v-btn class="mx-auto" style="color: #06706d" @click="$router.go(-1)">
+   <div class="flex justify-center">
+   <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                         {{ trans('messages.back') }}
                     </v-btn>
+                    </div>
   </v-card>
 
   </v-tab-item>

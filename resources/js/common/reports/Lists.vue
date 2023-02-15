@@ -19,19 +19,23 @@
      <v-tabs-items v-model="tab">
       <v-tab-item
       >
-  <div flat :class="$vuetify.breakpoint.xsOnly?'mx-auto':'px-5 mx-5'"  class="elevation-2 pt-1 pb-3 my-2 report" style="min-width:70%;flex:4">
+  <div flat :class="$vuetify.breakpoint.xsOnly?'':'px-5'"  class="mx-auto elevation-2 pt-1 pb-3 my-2 report" style="min-width:70%;flex:4">
   <Report  />
-  <v-btn class="mx-auto" style="color: #06706d" @click="$router.go(-1)">
+  <div class="mx-auto">
+  <v-btn  style="background-color: #06706d; color: white" @click="$router.go(-1)">
                         {{ trans('messages.back') }}
                     </v-btn>
+                    </div>
   </div>
   </v-tab-item>
       <v-tab-item>
-  <div flat class="elevation-2 pt-1 pb-3 my-2" :class="$vuetify.breakpoint.xsOnly?'mx-auto':'px-5 mx-5'"  style="min-width:70%;flex:4">
+  <div flat class="elevation-2 pt-1 pb-3 my-2" :class="$vuetify.breakpoint.xsOnly?'':'px-5'"  style="mx-auto min-width:70%;flex:4">
    <ReportTypes  />
-   <v-btn class="mx-auto" style="color: #06706d" @click="$router.go(-1)">
+   <div class="flex justify-center">
+   <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                         {{ trans('messages.back') }}
                     </v-btn>
+                    </div>
   </div>
 
   </v-tab-item>

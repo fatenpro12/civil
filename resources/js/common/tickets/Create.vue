@@ -118,7 +118,7 @@
                         <v-btn :disabled="!valid" color="success" class="mr-4" @click="store(1)">
                             {{ trans('data.send') }}
                         </v-btn>
-                        <v-btn style="color: #06706d" @click="$router.go(-1)">
+                        <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                             {{ trans('data.back') }}
                         </v-btn>
                         <v-btn :disabled="!valid" color="success" class="mr-4" @click="store(0)">

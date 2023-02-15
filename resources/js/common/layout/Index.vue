@@ -33,13 +33,13 @@
         </v-snackbar>
 
         <!-- dialog confirm -->
-        <!--<v-dialog v-show="showDialog" v-model="showDialog" lazy absolute max-width="450px">
+        <v-dialog v-show="showDialog" v-model="showDialog" lazy absolute max-width="450px">
             <v-btn color="primary" slot="activator">Open Dialog</v-btn>
             <v-card>
                 <v-card-title>
-                    <div class="headline"><v-icon v-if="dialogIcon" medium>@{{dialogIcon}}</v-icon> @{{ dialogTitle }}</div>
+                    <div class="headline"><v-icon v-if="dialogIcon" medium>{{dialogIcon}}</v-icon>{{ dialogTitle }}</div>
                 </v-card-title>
-                <v-card-text>@{{ dialogMessage }}</v-card-text>
+                <v-card-text>{{ dialogMessage }}</v-card-text>
                 <v-card-actions v-if="dialogType=='confirm'">
                     <v-spacer></v-spacer>
                     <v-btn color="green darken-1" flat="flat" @click.native="dialogCancel">
@@ -50,7 +50,7 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>-->
+        </v-dialog>
   </v-app>
 </template>
 
@@ -102,7 +102,7 @@ computed:{
             // dialog
         showDialog: {
             get() {
-           //     return store.getters['showDialog'];
+              return store.getters['showDialog'];
             },
             set(val) {
                 if (!val) store.commit('hideDialog');

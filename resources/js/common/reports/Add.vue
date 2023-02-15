@@ -3,7 +3,7 @@
     <v-container justify-center :class="$vuetify.breakpoint.xsOnly?'pt-5':''">
         <v-form>
         <v-card-actions justify-left class="flex-wrap">
-            <v-btn style="color: #06706d" @click="$router.go(-1)">
+            <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                 {{ trans('messages.back') }}
             </v-btn>
              <v-btn style="color: #06706d" @click="externalDialog = true">

@@ -463,7 +463,7 @@
                 {{trans('data.personal_image')}}
              </v-btn>
              <slot name="login" class="my-1">
-                        <v-btn style="color: #06706d" class="my-1" @click="$router.go(-1)">
+                        <v-btn style="background-color: #06706d; color: white" class="my-1" @click="$router.go(-1)">
                             {{ trans('messages.back') }}
                         </v-btn>
                         </slot>

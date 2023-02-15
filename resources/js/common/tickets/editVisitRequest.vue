@@ -135,7 +135,7 @@
                         <v-btn :disabled="!valid" color="success" class="mr-4" @click="update">
                             {{ trans('messages.update') }}
                         </v-btn>
-                        <v-btn style="color: #06706d" @click="$router.go(-1)">
+                        <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">
                             {{ trans('messages.back') }}
                         </v-btn>
                     </v-card-actions>

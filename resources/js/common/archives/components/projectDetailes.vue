@@ -1,7 +1,7 @@
 <template>
   <v-layout row>
     <v-flex xs12 sm12>
-      <v-card class="pa-2 container-list">
+      <v-card class="pa-2 container-list w-full">
            <v-card :key="index" v-for="(item, index) in projectData" flat>
                <div class="btn-bar">
                     <v-btn outline color="indigo" @click="view(item.id)"

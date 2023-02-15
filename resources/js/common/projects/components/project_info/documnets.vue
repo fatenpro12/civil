@@ -292,8 +292,9 @@ export default {
             },
         };
     },
-    mounted(){
-
+     mounted(){
+        if(this.$route.params&& this.$route.params.media)
+        this.fillEditData(this.$route.params.media, false)
     },
     methods: {
          store() {
@@ -375,8 +376,7 @@ this.$emit('next', this.tempMedia);
             self.project= data;
             (self.tempMedia = data.media), (self.isEdit = isEdit);
            
-//if(isEdit)
-console.log(self.tempMedia)
+
         self.tempMedia.forEach(val =>{
 self.$refs.myVueDropzone.manuallyAddFile({ size: val.size?val.size:val.size1, name: val.file_name, type: val.mime_type }, val.full_url ? val.full_url : val.original_url)
         })

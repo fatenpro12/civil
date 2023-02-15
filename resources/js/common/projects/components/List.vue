@@ -4,7 +4,7 @@
         <!--<ProjectFormAdd ref="projectAdd"></ProjectFormAdd>-->
         <!-- Edit project -->
         <!--<ProjectFormEdit ref="projectEdit"></ProjectFormEdit>-->
-        <TaskFormAdd ref="taskAdd"></TaskFormAdd>
+        <!--<TaskFormAdd ref="taskAdd"></TaskFormAdd>-->
         <v-container grid-list-md>
             <v-layout row pt-3>
                 <v-flex xs12 sm12>
@@ -87,7 +87,17 @@
                                                                    <v-list-tile
                                                                   
                                                                     :disabled="!checkActive()"
-                                                                    @click="createTask(props.item.id)"
+                                                                        @click="
+                                                                        $router.push({
+                                                                            name: 'view_project',
+                                                                           // name: 'create_visit_request_list',
+                                                                            params: {
+                                                                                id: props.item.id,
+                                                                                currentCard : 'taskLists',
+                                                                              
+                                                                            },
+                                                                        })
+                                                                    "
                                                                 >
                                                                     <v-list-tile-title>
                                                                         {{
@@ -102,9 +112,11 @@
                                                                     :disabled="!checkActive()"
                                                                     @click="
                                                                         $router.push({
-                                                                            name: 'create_visit_request_list',
+                                                                            name: 'view_project',
+                                                                           // name: 'create_visit_request_list',
                                                                             params: {
-                                                                                project_id: props.item.id,
+                                                                                id: props.item.id,
+                                                                                currentCard : 'visitRequests',
                                                                                 customer_id: props.item.customer_id,
                                                                                 request_type:
                                                                                     'visit_request',
@@ -208,10 +220,12 @@
                                                                     :disabled="!checkActive()"
                                                                     @click="
                                                                         $router.push({
-                                                                            name: 'project.attachments',
+                                                                            name: 'view_project',
+                                                                           // name: 'project.attachments',
                                                                             params: {
-                                                                                //project_id: props.item.id,
-                                                                                media: props.item.media
+                                                                                id: props.item.id,
+                                                                                currentCard: 'document',
+                                                                                 media: props.item
                                                                             },
                                                                         })
                                                                     "
@@ -227,12 +241,17 @@
 
                                                                 <v-list-tile
                                                                     :disabled="!checkActive()"
-                                                                    @click="$router.push({
-                                                                        name: 'invoices.list',
-                                                                        params: {
-                                                                        project_id: props.item.id
-                                                                        }
-                                                                    })"
+                                                                     @click="
+                                                                        $router.push({
+                                                                            name: 'view_project',
+                                                                           // name: 'create_visit_request_list',
+                                                                            params: {
+                                                                                id: props.item.id,
+                                                                                currentCard : 'visitInvoices',
+                                                                              
+                                                                            },
+                                                                        })
+                                                                    "
                                                                 >
                                                                     <v-list-tile-title>
                                                                         {{
@@ -437,9 +456,7 @@ export default {
         self.$eventBus.$off('updateProjectTable');
     },
     methods: {
-            createTask(projectId) {
-            this.$refs.taskAdd.create(projectId);
-        },
+    
         acceptProject(id){
         axios.post('accept-project',{project_id: id})
         .then((response=>{  

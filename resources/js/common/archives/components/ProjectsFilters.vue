@@ -94,8 +94,8 @@
       </v-flex>
    
       </v-layout>
-   <project-detailes v-if="projects" :projectData="projectData" class="mt-5 mx-auto" style="max-width:80%" />
-   <report-detailes v-if="reports" :reportData="reportData" class="mt-5 mx-auto" style="max-width:80%" />                               
+   <project-detailes v-if="projects" :projectData="projectData" class="mt-5 mx-auto w-full" style="max-width:80%" />
+   <report-detailes v-if="reports" :reportData="reportData" class="mt-5 mx-auto w-full" style="max-width:80%" />                               
     
 </div>
 

@@ -274,6 +274,7 @@ backBtn: true
     created() {
         const self = this;
         self.filters.status = '';
+       self.projectId = self.$route.params.id;
       //  self.url = 'project-tasks';
         self.getProjects();
         self.$eventBus.$on('updateTaskTable', (data) => {
@@ -291,13 +292,14 @@ backBtn: true
     methods: {
    createTask() {
             this.$refs.taskAdd.create(this.projectId);
+            
         },
    editTask(task) {
             this.$refs.taskEdit.edit({project_id:this.projectId,task_id:task.id});
         },
            deleteTask(id) {
             const self = this;
-
+           
             self.$store.commit('showDialog', {
                 type: 'confirm',
                 icon: 'warning',
