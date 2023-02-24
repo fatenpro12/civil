@@ -59,8 +59,10 @@ class ProjectController extends Controller
         $user = $request->user();
 
 
-        $projects = Project::with('categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type'); 
+        $projects = Project::with('categories','Agency', 'members','media','owners', 'members.media','location','location.municipalitey','creator','report','report.media','report.reportCreator','report.type')
+        ->where('status', $request->input('status')); 
         $childrens=$user->childrenIds($user->id);
+        
         array_push($childrens,$user->id);
         
         if(Auth::user()->user_type_log=='ENGINEERING_OFFICE_MANAGER') {
@@ -90,10 +92,10 @@ class ProjectController extends Controller
                         }]);
 
         if (!empty($request->input('status'))) {
-            $projects->where('status', $request->input('status'));
+            $projects = $projects->where('status', $request->input('status'));
         }
         else{
-            $projects->where('status','!=', 'completed');
+            $projects = $projects->where('status','!=', 'completed');
         }
         if (!empty($request->input('category_id'))) {
             $category_id = $request->input('category_id');

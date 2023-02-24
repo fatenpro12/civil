@@ -231,7 +231,7 @@ Route::post('logout', 'Auth\AuthController@logout');
 
 Route::get('user', 'Auth\AuthController@user');
 });
-Route::post('refreshtoken', 'Auth\AuthController@refresh');
+Route::get('refreshtoken', 'Auth\AuthController@refresh');
 // Employees & Estate Owner
 Route::prefix('estate_owner')
     ->namespace('EstateOwner')

@@ -349,7 +349,18 @@
                 </div>
             </v-flex>
         </v-layout>
+             <div align="center" v-if="projectId===null">
+            <v-btn
+                style="background-color: #06706d; color: white"
+                v-if="backBtn"
+                @click="$router.go(-1)"
+           
+            >
+                {{ trans('messages.back') }}
+            </v-btn>
+        </div>
     </div>
+    
 </template>
 
 <script>

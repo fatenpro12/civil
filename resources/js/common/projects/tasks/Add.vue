@@ -238,13 +238,14 @@ export default {
         create(project_id) {
             const self = this;
             self.projectId = project_id;
-            if (project_id === null) {
+            
+            if (!project_id) {
+                
                 self.create_task_from_dashboard = true;
             }
             axios
                 .get('project-tasks/create', { params: { project_id: self.projectId } })
                 .then(function(response) {
-                    console.log(response.data.project.members)
                     self.task = [];
                     self.start_date = null;
                     self.category_id = null;

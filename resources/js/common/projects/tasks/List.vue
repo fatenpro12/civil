@@ -137,14 +137,11 @@
                 </template>
             </v-data-table>
         </v-card>
-        <br />
-        <div align="center" v-if="projectId===null">
+        <div align="center">
             <v-btn
                 style="background-color: #06706d; color: white"
                 v-if="backBtn"
                 @click="$router.go(-1)"
-                :loading="loading"
-                :disabled="loading"
             >
                 {{ trans('messages.back') }}
             </v-btn>
@@ -248,7 +245,6 @@ backBtn: true
                 project_id: '',
                 status: '',
             },
-            tabs: 'tab-1',
             statistics: [],
         };
     },
@@ -280,7 +276,7 @@ backBtn: true
         self.$eventBus.$on('updateTaskTable', (data) => {
            // self.url = 'project-tasks';
             self.taskLists = [];
-             self.projects=self.projects.filter(x=>x.id==data);
+            self.projects=self.projects.filter(x=>x.id==data);
             self.getTaskList(self.projectId);
         });
     },

@@ -6,7 +6,7 @@
                         <v-card-title primary-title xs8 sm8>
                             <div>
                                 <div class="headline">
-                                    {{ trans('data.current_projects') }}
+                                    {{ trans('data.finished_projects') }}
                                 </div>
                             </div>
                         </v-card-title>
@@ -269,14 +269,11 @@
 
 
 <script>
-//import ProjectFormAdd from '../components/Add';
-//import ProjectFormEdit from '../components/Edit';
+
 import avatar from '../components/Avatar';
 
 export default {
     components: {
-      //  ProjectFormAdd,
-      //  ProjectFormEdit,
         avatar,
     },
     data() {
