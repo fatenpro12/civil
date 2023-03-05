@@ -76,7 +76,7 @@ return [
     'documents' => 'Documents',
     'upload' => 'Upload',
     'project' => 'Project',
-    'file_upload' => 'Upload file',
+    'file_upload' => 'Click Here For Upload',
     'comments' => 'Comments',
     'comment' => 'Comment',
     'view' => 'View',

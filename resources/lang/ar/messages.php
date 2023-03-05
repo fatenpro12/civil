@@ -75,7 +75,7 @@ return [
     "documents" => "مستندات",
     "upload" => "رفع",
     "project" => "مشروع",
-    "file_upload" => "رفع ملف",
+    "file_upload" => "اضغط هنا لرفع الملفات",
     "comments" => "تعليقات",
     "comment" => "تعليق",
     "view" => "عرض",

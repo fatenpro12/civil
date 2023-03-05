@@ -425,4 +425,7 @@ self.$refs.myVueDropzone.manuallyAddFile({ size: val.size?val.size:val.size1, na
 .v-card{
     @apply w-full;
 }
+>>> .dropzone.dz-started .dz-message {
+    display: block;
+}
 </style>
