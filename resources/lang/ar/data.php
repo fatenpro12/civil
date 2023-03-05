@@ -60,6 +60,8 @@ return [
     'review_the_engineering_office_data'=>'مراجعة بيانات المكتب الهندسي',
     'notifications'=>'الاشعارات',
     'warnings'=>'التنبيهات',
+    'no_customers'=>'لا يوجد عملاء',
+    'no_offices'=>'لا يوجد مكاتب  هندسبة تابعة للمشروع',
     'warning_message'=>'رسالة تنبيه',
     'warrning_date'=>'تاريخ التنبيه',
     'current_projects'=>'المشاريع الحالية',

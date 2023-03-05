@@ -374,6 +374,9 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
+                    <v-btn  class="mx-1 back"  @click="$router.go(-1)">
+                        {{ trans('messages.back') }}
+                    </v-btn>
                 <v-btn color="success" @click="store" :loading="loading" :disabled="loading">
                     {{ trans('messages.update') }}
                 </v-btn>
@@ -638,3 +641,8 @@ export default {
     },
 };
 </script>
+<style scoped>
+.back{
+    @apply text-green-600
+}
+</style>

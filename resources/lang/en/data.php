@@ -9,6 +9,8 @@ return [
     'work_to_check'=>'Work to be checked',
     'delivery_request_num' => 'Receipt order number',
     'day' => 'Day',
+    'no_customers'=>'No Customers Found',
+    'no_offices'=> 'No Offices For Project',
     'add' =>'Add',
     'create new project' => 'Create New Project',
     'mobile'=>'Mobile',

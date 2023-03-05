@@ -218,14 +218,25 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
-           
+            self.design.customer_id = null
 
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.design.customer_id = response.data[0].id;
-                        self.getProject(value)
+                    self.customers.forEach((val)=>{
+    if(response.data.find(x=> val.id === x.id)){
+        self.design.customer_id = response.data.find(x=> val.id === x.id).id;
+        self.getProject(value)
                                 self.getContractors();
+    }
+})
+if(!self.design.customer_id){
+                              self.$store.commit('showSnackbar', {
+                        message: self.trans('data.no_customers'),
+                        color: response.data.error,
+                    });
+                    }
+                 
                 })
                   .catch((err)=>{
                 console.log(err.response.status)
@@ -265,11 +276,18 @@ if(event.find(val => val === 'all_offices')){
         },
         getContractors() {
             const self = this;
+            self.contractors = []
             axios
                 .get('/get-contractors')
                 .then(function (response) {
                     self.contractors = response.data.filter(val => val.id =='all_offices' || val.location_data == self.project?.location?.province_municipality);
-                })
+              if(self.contractors.length<=1){
+                              self.$store.commit('showSnackbar', {
+                        message: self.trans('data.no_offices'),
+                        color: response.data.error,
+                    });
+                    }
+              })
                   .catch((err)=>{
                 console.log(err.response.status)
                 if (err.response.status === 401) {

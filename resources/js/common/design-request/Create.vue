@@ -228,15 +228,27 @@ if(event.find(val => val === 'all_offices')){
         //////get data/////
         updateEmployee(value) {
             const self = this;
+            self.design.customer_id = null
             axios
                 .get('get-customer-project/' + value)
                 .then(function (response) {
-                    self.design.customer_id = response.data[0].id;
-                    self.getProject(value)
+self.customers.forEach((val)=>{
+    if(response.data.find(x=> val.id === x.id)){
+        self.design.customer_id = response.data.find(x=> val.id === x.id).id;
+    self.getProject(value)
                     self.getOffices();
+    }
+})
+if(!self.design.customer_id){
+                              self.$store.commit('showSnackbar', {
+                        message: self.trans('data.no_customers'),
+                        color: response.data.error,
+                    });
+                    }
+    
                 })
                .catch((err)=>{
-                console.log(err.response.status)
+                console.log(err)
                 if (err.response.status === 401) {
             store.dispatch('auth/handleResponse',err.response)
                 } 
@@ -272,12 +284,18 @@ if(event.find(val => val === 'all_offices')){
         },
         getOffices() {
             const self = this;
+            self.engennering_offices = []
             axios
                 .get('/get-offices')
                 .then(function (response) {
              
-                    self.engennering_offices=response.data.filter(val => val.id==='all_offices' ||val.location_data == self.project?.location?.province_municipality);
-
+                    self.engennering_offices=response.data.filter(val => val.id==='all_offices' || val.location_data == self.project?.location?.province_municipality);
+if(self.engennering_offices.length<=1){
+                              self.$store.commit('showSnackbar', {
+                        message: self.trans('data.no_offices'),
+                        color: response.data.error,
+                    });
+                    }
               })
                .catch((err)=>{
                 console.log(err.response.status)
