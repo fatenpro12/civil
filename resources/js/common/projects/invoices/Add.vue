@@ -430,16 +430,18 @@ export default {
     mounted() {
         const self = this;
         self.projectId = Number(self.$route.params.id);
+        console.log(self.$route.params)
         self.getProjects();
         self.getInvoicedataFromApi(self.projectId);
     },
     methods: {
         getInvoicedataFromApi(projectId) {
             const self = this;
+            let params = { project_id: projectId }
             axios
-                .get('/invoices/create', { params: { project_id: projectId } })
+                .get('/invoices/create', {params: params})
                 .then(function(response) {
-                
+                   console.log(response.data)
                     self.customers = response.data.customers;
                     self.discountType = response.data.discount_type;
                     self.invoice_types = response.data.invoice_type;
@@ -634,9 +636,11 @@ export default {
         getCustomerId() {
             const self = this;
             axios
-                .get('projects/' + self.projectId + '/customer')
+                .get('get-customer-project/' + self.projectId)
                 .then(function(response) {
-                    self.customer_id = response.data.customer_id;
+                    
+                    self.customers = response.data;
+                    self.customer_id = response.data[0].id;
                     self.getContact();
                 })
                 .catch(function(error) {

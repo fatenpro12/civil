@@ -150,7 +150,7 @@
   <br/><br/>
 
   @php
-    $currency = $customer_currency->currency->symbol;
+    $currency = $customer_currency?->currency?->symbol;
 
     $invoice_total = $currency.' '.(number_format($invoice->total, 2));
 
@@ -241,7 +241,7 @@
         @php
             $line_tax += $line->tax;
             $line_total += $line->total;
-            $currency = $customer_currency->currency->symbol;
+            $currency = $customer_currency?->currency?->symbol;
 
             $subtotal = $currency.' '.(number_format($line_total, 2));
 

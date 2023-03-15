@@ -105,12 +105,12 @@ class InvoiceController extends Controller
     {
         $project_id = request()->get('project_id');
 
-        if (!request()->user()->can('project.'.$project_id.'.invoice.create')) {
+       if (!request()->user()->can('invoices.create')) {
             abort(403, 'Unauthorized action.');
-        }
+        } 
 
         $project = Project::find($project_id);
-        $customers = User::getCustomers();//Customer::getCustomersForDropDown();
+        $customers = $project->owners; //User::getCustomers();//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
         $invoice_schemes = InvoiceScheme::forDropDown();
@@ -139,7 +139,7 @@ class InvoiceController extends Controller
     {
         $project_id = $request->input('project_id');
 
-        if (!request()->user()->can('project.'.$project_id.'.invoice.create')) {
+        if (!request()->user()->can('invoices.create')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -240,7 +240,7 @@ class InvoiceController extends Controller
     {
         $project_id = request()->get('project_id');
 
-        if (!request()->user()->can('project.'.$project_id.'.invoice.edit')) {
+        if (!request()->user()->can('invoices.edit')) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -248,8 +248,8 @@ class InvoiceController extends Controller
                                 ->OfTransaction('invoice')
                                 ->where('type', 'invoice')
                                 ->find($id);
-
-        $customers = Customer::getCustomersForDropDown();
+$project=Project::find($project_id);
+        $customers = $project->owners;//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
         $invoice_schemes = InvoiceScheme::forDropDown();
@@ -288,7 +288,7 @@ class InvoiceController extends Controller
     {
         $project_id = $request->input('project_id');
 
-        if (!request()->user()->can('project.'.$project_id.'.invoice.edit')) {
+        if (!request()->user()->can('invoices.edit')) {
             abort(403, 'Unauthorized action.');
         }
 

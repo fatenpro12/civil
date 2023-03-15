@@ -105,7 +105,7 @@
                 <v-spacer></v-spacer>
                 <!--v-if="$can('project.' + projectId + '.invoice.create')" -->
                 <v-btn
-                    
+                    v-if="$can('invoices.create')"
                     class="primary lighten-1"
                     dark
                     @click="$router.push({ name: 'sales.invoices.create', params: { id: projectId } })"
@@ -150,7 +150,7 @@
                             <v-btn icon slot="activator"> <v-icon>more_vert</v-icon> </v-btn>
                             <v-list>
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.view')"
+                                    v-if="$can('invoices.view')"
                                     @click="view(props.item.id)"
                                 >
                                     <v-list-tile-title>
@@ -160,7 +160,7 @@
                                 </v-list-tile>
 
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.edit')"
+                                    v-if="$can('invoices.edit')"
                                     @click="edit(props.item.id)"
                                 >
                                     <v-list-tile-title>
@@ -169,7 +169,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile :href="props.item.download_url">
+                                <v-list-tile  @click="downloadPdf(props.item.download_url)">
                                     <v-list-tile-title>
                                         <v-icon small class="mr-2"> save_alt </v-icon>
                                         {{ trans('messages.download_invoice') }}
@@ -177,7 +177,7 @@
                                 </v-list-tile>
 
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.delete')"
+                                    v-if="$can('invoices.delete')"
                                     @click="deleteInvoice(props.item)"
                                 >
                                     <v-list-tile-title>
@@ -371,6 +371,14 @@ backBtn: true
         },
     },
     methods: {
+        downloadPdf(link){
+          axios.get(link)
+          .then(response => console.log(response))
+           .catch((error) => {
+                         console.log(error);
+                         self.loading = false;
+                    });
+        },
         getInvoiceFromApi(data=null) {
             const self = this;
             if(data)

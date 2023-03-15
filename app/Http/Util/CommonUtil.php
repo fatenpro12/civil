@@ -247,11 +247,11 @@ class CommonUtil
     {
         $invoice = Transaction::with('invoiceLines', 'customer')
                     ->find($id);
-
+                    
         $customer_currency = Customer::with('currency')->find($invoice->customer_id);
 
         $keys = ['tax_number', 'email', 'mobile', 'city', 'state', 'zip_code', 'country', 'logo', 'alternate_contact_no', 'address_line_1', 'address_line_2'];
-
+        
         $system = System::getSystemSettings($keys);
 
         $invoice_pdf = PDF::setPaper('a4')->setOptions(['enable-javascript' => true])->loadView('invoices.template', compact('invoice', 'system', 'customer_currency'));

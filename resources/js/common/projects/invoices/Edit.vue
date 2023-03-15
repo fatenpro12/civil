@@ -38,7 +38,7 @@
                         </v-flex>
                         <v-flex xs12 md4>
                             <v-autocomplete
-                                item-text="company"
+                                item-text="name"
                                 item-value="id"
                                 :items="customers"
                                 v-model="invoice.customer_id"
@@ -430,6 +430,7 @@ export default {
                     params: { project_id: projectId },
                 })
                 .then(function(response) {
+                  
                     self.invoice = response.data.invoice;
                     self.invoice_schemes = response.data.invoice_schemes;
                     self.customers = response.data.customers;
@@ -626,12 +627,14 @@ export default {
                     console.log(error);
                 });
         },
-        getCustomerId() {
+      getCustomerId() {
             const self = this;
             axios
-                .get('projects/' + self.projectId + '/customer')
+                .get('get-customer-project/' + self.projectId)
                 .then(function(response) {
-                    self.invoice.customer_id = response.data.customer_id;
+                    
+                    self.customers = response.data;
+                    self.invoice.customer_id = response.data[0].id;
                     self.getContact();
                 })
                 .catch(function(error) {

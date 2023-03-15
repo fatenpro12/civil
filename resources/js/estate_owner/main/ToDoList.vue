@@ -261,7 +261,7 @@
                                         close-delay="100"
                                     >
                                         <v-card
-                                            @click="$router.push({})"
+                                            @click="$router.push({name: 'invoices.list'})"
                                             :elevation="hover ? 16 : 2"
                                         >
                                             <v-card-text>

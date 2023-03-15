@@ -727,6 +727,52 @@
                             >
                             </v-checkbox>
                         </v-flex>
+                     
+                    </v-layout>
+                    <v-layout row wrap class="mt-2">
+                             <v-flex
+                            xs12
+                            sm3
+                            md3
+                          
+                        >
+                        <h4>{{ trans('data.invoices_list') }}</h4>
+                        </v-flex>
+                                 <v-flex
+                            xs12
+                            sm3
+                            md3
+                          
+                        >
+                            <v-checkbox
+                    
+                                v-model="permissions"
+                                :label="trans('data.add_invoice')"
+                                value="invoices.create"
+                            >
+                            </v-checkbox>
+                            <v-checkbox
+                         
+                                v-model="permissions"
+                                :label="trans('data.view_invoice')"
+                                value="invoices.view"
+                            >
+                            </v-checkbox>
+                            <v-checkbox
+                         
+                                v-model="permissions"
+                                :label="trans('data.edit_invoice')"
+                                value="invoices.edit"
+                            >
+                            </v-checkbox>
+                            <v-checkbox
+                     
+                                v-model="permissions"
+                                :label="trans('data.delete_invoice')"
+                                value="invoices.delete"
+                            >
+                            </v-checkbox>
+                        </v-flex>
                     </v-layout>
                      <v-layout row wrap class="mt-2">
                         <v-flex
