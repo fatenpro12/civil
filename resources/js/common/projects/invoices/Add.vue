@@ -112,7 +112,21 @@
                                 required
                             ></v-autocomplete>
                         </v-flex>
-                        <v-flex xs12 md4>
+                         <v-flex xs12 md4>
+                            <v-autocomplete
+                             item-text="value"
+                                        item-value="key"
+                                :items="currencies"
+                                v-model="invoice.currency"
+                                :label="trans('messages.currency')"
+                                v-validate="'required'"
+                                 data-vv-name="messages.currency"
+                                :data-vv-as="trans('messages.currency')"
+                                :error-messages="errors.collect('currency')"
+                                required
+                            ></v-autocomplete>
+                        </v-flex>
+                        <!--<v-flex xs12 md4>
                             <v-autocomplete
                                 item-text="name"
                                 item-value="id"
@@ -131,7 +145,7 @@
                                 >
                                 </Popover>
                             </v-autocomplete>
-                        </v-flex>
+                        </v-flex>-->
                     </v-layout>
                 </v-container>
             </v-card-text>
@@ -397,7 +411,8 @@ export default {
             invoice: [],
             projectId: null,
             customers: [],
-            invoice_schemes: [],
+            currencies:[],
+         //   invoice_schemes: [],
             project: {},
             transaction_date: '',
             due_date: '',
@@ -441,13 +456,14 @@ export default {
             axios
                 .get('/invoices/create', {params: params})
                 .then(function(response) {
-                   console.log(response.data)
+                   
                     self.customers = response.data.customers;
                     self.discountType = response.data.discount_type;
                     self.invoice_types = response.data.invoice_type;
                     self.project = response.data.project;
-                    self.invoice_schemes = response.data.invoice_schemes;
+                 //   self.invoice_schemes = response.data.invoice_schemes;
                     self.customer_id = response.data.project
+                    self.currencies = response.data.currencies
                         ? response.data.project.customer_id
                         : null;
                     self.invoice_scheme_id = response.data.default_invoice_scheme;
@@ -542,6 +558,7 @@ export default {
             let invoice = {
                 project_id: self.projectId,
                 title: self.invoice.title,
+                currency: self.invoice.currency,
                 customer_id: self.customer_id,
                 contact_id: self.invoice.contact_id ? self.invoice.contact_id : null,
                 transaction_date: self.transaction_date,

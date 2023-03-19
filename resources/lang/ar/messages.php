@@ -489,7 +489,7 @@ return [
     'all_backups' => 'All Backups',
     'sticky_notes' => 'Sticky Notes (Private)',
     'invoice_total' => 'Invoice Total',
-    'billed_to' => 'Billed To',
+    'billed_to' => 'بيانات مالك الفاتورة',
     'date_of_issue' => 'Date Of Issue',
     'amount_due' => 'Amount Due',
     'invoice_terms' => 'Invoice Terms',

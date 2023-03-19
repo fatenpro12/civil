@@ -98,6 +98,21 @@ class Transaction extends Model
 
         return $invoice_name;
     }
+    public static function getCurrencies()
+    {
+        $location_status = [
+            [
+                'key' => 'usd',
+                'value' => 'USD'
+            ],
+            [
+                'key' => 'euro',
+                'value' => 'Euro'
+            ],
+        ];
+        return  $location_status;
+ 
+    }
 
     /**
      * Return the discount_type for the invoice.

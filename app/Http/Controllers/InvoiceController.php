@@ -113,16 +113,18 @@ class InvoiceController extends Controller
         $customers = $project->owners; //User::getCustomers();//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
-        $invoice_schemes = InvoiceScheme::forDropDown();
+      //  $invoice_schemes = InvoiceScheme::forDropDown();
         $default_invoice_scheme = InvoiceScheme::getDefault();
-
+      //  dd(Transaction::getCurrencies());
+        $currencies= Transaction::getCurrencies();
         $data = [
                     'project' => $project,
                     'customers' => $customers,
                     'discount_type' => $discount_type,
                     'invoice_type' => $invoice_type,
-                    'invoice_schemes' => $invoice_schemes,
-                    'default_invoice_scheme' => !empty($default_invoice_scheme) ? $default_invoice_scheme->id : null
+                  //  'invoice_schemes' => $invoice_schemes,
+                    'default_invoice_scheme' => !empty($default_invoice_scheme) ? $default_invoice_scheme->id : null,
+                    'currencies' => $currencies
                 ];
 
         return $this->respond($data);
@@ -159,7 +161,8 @@ class InvoiceController extends Controller
                 'terms',
                 'notes',
                 'status',
-                'invoice_scheme_id'
+                'invoice_scheme_id',
+                'currency'
             );
             $input['created_by'] = $request->user()->id;
             $input['payment_status'] = 'due';
@@ -252,7 +255,7 @@ $project=Project::find($project_id);
         $customers = $project->owners;//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
-        $invoice_schemes = InvoiceScheme::forDropDown();
+      //  $invoice_schemes = InvoiceScheme::forDropDown();
 
         $invoice_line = [];
         foreach ($invoice->invoiceLines as $line) {
@@ -263,14 +266,15 @@ $project=Project::find($project_id);
             }
             $invoice_line[] = $line;
         }
-
+        $currencies= Transaction::getCurrencies();
         $data = [
                     'invoice' => $invoice,
                     'customers' => $customers,
                     'discount_type' => $discount_type,
                     'invoice_line' => $invoice_line,
                     'invoice_type' => $invoice_type,
-                    'invoice_schemes' => $invoice_schemes,
+                   // 'invoice_schemes' => $invoice_schemes,
+                    'currencies' => $currencies
                 ];
 
         return $this->respond($data);
@@ -308,7 +312,8 @@ $project=Project::find($project_id);
                 'terms',
                 'notes',
                 'status',
-                'invoice_scheme_id'
+                'invoice_scheme_id',
+                'currency'
             );
 
             $transaction = Transaction::where('project_id', $input['project_id'])
@@ -427,12 +432,44 @@ $project=Project::find($project_id);
      */
     public function download($id)
     {
-        $pdf = $this->CommonUtil->generateInvoicePdf($id);
 
-        $transaction = Transaction::find($id);
-        $transaction->append('invoice_name');
-        
-        return $pdf->download($transaction->invoice_name);
+        $invoice = Transaction::with('invoiceLines', 'customer')
+        ->find($id);
+
+$keys = ['tax_number', 'email', 'mobile', 'city', 'state', 'zip_code', 'country', 'logo', 'alternate_contact_no', 'address_line_1', 'address_line_2'];
+$system = System::getSystemSettings($keys);
+
+        $line_tax = 0;
+        $line_total =0;
+        foreach($invoice->invoiceLines as $line){
+        $line_tax += $line->tax;
+        $line_total += $line->total;
+        $currency = $invoice->currency;
+
+        $subtotal = $currency.' '.(number_format($line_total, 2));
+
+        $total_tax = $currency.' '.(number_format($line_tax, 2));
+
+        $rate = number_format($line->rate, 2);
+        $tax = number_format($line->tax, 2);
+        $total = number_format($line->total, 2);
+        $quantity = number_format($line->quantity, 2) .' '. $line->unit;
+        }
+        return response()->json([
+            'invoice' => $invoice,
+            'line_tax' => $line_tax,
+            'line_total' => $line_total,
+            'subtotal' => $subtotal,
+            'total_tax' => $total_tax,
+            'rate' => $rate,
+            'tax' => $tax,
+            'total' => $total,
+            'quantity' => $quantity,
+            'invoice_total' => $invoice->currency.' '.(number_format($invoice->total, 2)),
+            'discount_amount' => $invoice->currency.' '.(number_format($invoice->discount_amount, 2)),
+            'system' =>$system
+        ]);
+     //   return $pdf->download($transaction->invoice_name);
     }
 
     /**

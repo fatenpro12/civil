@@ -111,7 +111,21 @@
                                 required
                             ></v-autocomplete>
                         </v-flex>
-                        <v-flex xs12 md4>
+                           <v-flex xs12 md4>
+                            <v-autocomplete
+                             item-text="value"
+                                        item-value="key"
+                                :items="currencies"
+                                v-model="invoice.currency"
+                                :label="trans('messages.currency')"
+                                v-validate="'required'"
+                                 data-vv-name="messages.currency"
+                                :data-vv-as="trans('messages.currency')"
+                                :error-messages="errors.collect('currency')"
+                                required
+                            ></v-autocomplete>
+                        </v-flex>
+                       <!-- <v-flex xs12 md4>
                             <v-autocomplete
                                 item-text="name"
                                 item-value="id"
@@ -130,7 +144,7 @@
                                 >
                                 </Popover>
                             </v-autocomplete>
-                        </v-flex>
+                        </v-flex>-->
                     </v-layout>
                 </v-container>
             </v-card-text>
@@ -412,7 +426,8 @@ export default {
             customer_id: null,
             loading: false,
             invoice_types: [],
-            invoice_schemes: [],
+          //  invoice_schemes: [],
+            currencies:[]
         };
     },
     created() {
@@ -432,13 +447,14 @@ export default {
                 .then(function(response) {
                   
                     self.invoice = response.data.invoice;
-                    self.invoice_schemes = response.data.invoice_schemes;
+                 //   self.invoice_schemes = response.data.invoice_schemes;
                     self.customers = response.data.customers;
                     self.rows = response.data.invoice_line;
                     self.discountType = response.data.discount_type;
                     self.transaction_date = response.data.invoice.transaction_date;
                     self.due_date = response.data.invoice.due_date;
                     self.invoice_types = response.data.invoice_type;
+                    self.currencies = response.data.currencies
                     self.calculateTaxAndSubtotal();
                     self.getContact();
                     self.contact_id = response.data.invoice.contact_id;
@@ -571,6 +587,7 @@ export default {
                 invoice_lines: self.rows,
                 do_mail: self.mailToCustomer,
                 invoice_scheme_id: self.invoice.invoice_scheme_id,
+                currency: self.invoice.currency,
             };
             self.$validator.validateAll().then(result => {
                 if (result == true) {

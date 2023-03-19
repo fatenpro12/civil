@@ -9,6 +9,7 @@
         <!-- view payment -->
         <ViewPayment ref="viewPayment"></ViewPayment>
         <!-- filters -->
+        <InvoicePdf ref="invoicePdf"></InvoicePdf>
         <v-tabs v-model="tabs" fixed-tabs height="47" class="elevation-3">
             <v-tab :href="'#tab-1'" @click="getStatistics" v-if="$can('superadmin')">
                 <v-icon>bar_chart</v-icon>
@@ -169,7 +170,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile  @click="downloadPdf(props.item.download_url)">
+                                <v-list-tile  @click="downloadPdf(props.item)">
                                     <v-list-tile-title>
                                         <v-icon small class="mr-2"> save_alt </v-icon>
                                         {{ trans('messages.download_invoice') }}
@@ -266,8 +267,10 @@ import InvoicePayment from './payment/InvoicePayment';
 import InvoiceReminder from '../../../admin/invoices/InvoiceReminder';
 import ViewPayment from './payment/ViewPayment';
 import StatusLabel from '../../../admin/status/StatusLabel';
+import InvoicePdf from './invoicePdf.vue'
 export default {
     components: {
+        InvoicePdf,
         InvoiceShow,
         InvoicePayment,
         InvoiceReminder,
@@ -371,13 +374,8 @@ backBtn: true
         },
     },
     methods: {
-        downloadPdf(link){
-          axios.get(link)
-          .then(response => console.log(response))
-           .catch((error) => {
-                         console.log(error);
-                         self.loading = false;
-                    });
+        downloadPdf(data){
+     this.$refs.invoicePdf.create(data)
         },
         getInvoiceFromApi(data=null) {
             const self = this;

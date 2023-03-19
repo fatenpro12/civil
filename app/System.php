@@ -28,7 +28,7 @@ class System extends Model
     public static function getValue($key, $json_decode = null)
     {
         $value = System::where('key', $key)->value('value');
-
+        
         if (!empty($json_decode)) {
             $value = json_decode($value, true);
         }
@@ -46,6 +46,7 @@ class System extends Model
         $system = System::whereIn('key', $keys)
                     ->pluck('value', 'key');
 
+        $system['app_name'] = config('app.name'); 
         return $system;
     }
     /**

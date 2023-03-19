@@ -1,93 +1,49 @@
 <template>
-   <table width="100%" class="information">
-    <tr>
-      <td align="left" style="width: 50%;">
-          <img v-if="system['logo']" src="uploads/{{system['logo']}}" alt="logo" width="150" class="logo"/>
+<div ref="pdfHtml">
+<p style="text-align:center">
+    <img v-if="system['logo']" :src="'uploads/'+system['logo']" alt="logo" width="150" class="logo"/>
             <span v-else class="invoice_text">
                 {{trans('messages.invoice')}}
             </span>
-      </td>
-      <td align="center" style="width: 20%;">
-            {{ config('app.name') }} <br>
-            {{system['email']?system['email']:''}} <br>
-            {{system['mobile']?system['mobile']:''}} <br>
-            {{system['alternate_contact_no']?system['alternate_contact_no']:''}} <br>
+            </p>
 
-      </td>
-      <td align="right" class="company_address" style="width: 30%;">
-                {{system['address_line_1']}} <br>
 
-                {{system['address_line_2']}} <br>
-
-                {{system['city']}} <br>
-
-                {{system['state']}} <br>
-
-                {{system['country']}} <br>
-
-                {{system['zip_code']}} <br>
-
-      </td>
-    </tr>
-  </table>
-
-  <br/><br/>
-
-  @php
-    $currency = $customer_currency?->currency?->symbol;
-
-    $invoice_total = $currency.' '.(number_format($invoice->total, 2));
-
-    $discount_amount = $currency.' '.(number_format($invoice->discount_amount, 2));
-  @endphp
   <!-- Customer Address -->
   <div class="row">
     <div class="column" style="margin-left: 22px;">
-      <span class="grey">
-          {{trans('messages.billed_to')}} <br>
-      </span>
-        {{$invoice.customer?.company}} <br>
-
-            {{$invoice.customer.billing_address}} <br>
-
-            {{$invoice.customer.tax_number}} <br>
-
-            {{$invoice.customer.mobile}} <br>
-
-            {{$invoice.customer.city}}
-
-            , {{$invoice.customer.state}}
-
-            , {{$invoice.customer.country}} <br>
-
-          {{$invoice.customer.zip_code}} <br>
+      <h4 class="lightgray">
+          {{trans('messages.billed_to')}}: <br>
+      </h4>
+      <p>{{trans('data.name')}}: {{invoice.customer.name}}</p>
+      <p>{{trans('data.mobile')}}: {{invoice.customer.mobile}}</p>
+      <p>{{trans('messages.email')}}: {{invoice.customer.email}}</p>
+      <p>{{trans('messages.current_address')}}: {{invoice.customer.current_address}}</p>
+ 
 
     </div>
 
-    <div class="column">
-      <span class="grey">
-        {{trans('messages.invoice_number')}} <br>
-      </span>
-      {{$invoice->ref_no}}<br><br>
-      <span class="grey">
-        {{trans('messages.date_of_issue')}}
-      </span><br>
-      {{$invoice->transaction_date}}
-    </div>
 
-    <div class="column">
+
+    <div class="column text-left">
       <span class="grey" style="margin-right: 22px;">
-          {{trans('messages.invoice_total')}} <br>
+          {{trans('messages.invoice_total')}}:
       </span>
         <span class="currency invoice_total">
-            {{$invoice_total}}
-        </span>
+            {{invoice_total}}
+        </span><br>
+         <span class="grey ml-5">
+        {{trans('messages.invoice_number')}}:  
+      </span>
+     <span>{{invoice.ref_no}}</span><br>
+      <span class="grey ml-5">
+        {{trans('messages.date_of_issue')}}: 
+      </span>
+       <span>{{invoice.transaction_date}}</span>
     </div>
-  </div>
   <br><br>
   <hr class="divider">
   <!-- invoice description -->
-  <table width="100%" id="invoice">
+ <table width="100%" id="invoice">
     <thead class="blue">
       <tr>
         <th> # </th>
@@ -95,73 +51,41 @@
         <th> 
           {{trans('messages.rate')}} 
           <span class="currency">
-          ({{$currency}})
+          ({{invoice.currency}})
           </span>
         </th>
         <th> {{trans('messages.quantity')}} </th>
         <th> {{trans('messages.tax')}} (%) </th>
         <th> {{trans('messages.total')}}
           <span class="currency">
-            ({{$currency}})
+            ({{invoice.currency}})
           </span>
         </th>
       </tr>
     </thead>
 
     <tbody>
-      @php
-        $total_tax = 0;
-        $subtotal = 0;
-        $line_total = 0;
-        $line_tax = 0;
-      @endphp
-      @foreach($invoice->invoiceLines as $line)
-        @php
-            $line_tax += $line->tax;
-            $line_total += $line->total;
-            $currency = $customer_currency?->currency?->symbol;
-
-            $subtotal = $currency.' '.(number_format($line_total, 2));
-
-            $total_tax = $currency.' '.(number_format($line_tax, 2));
-
-            $rate = number_format($line->rate, 2);
-            $tax = number_format($line->tax, 2);
-            $total = number_format($line->total, 2);
-            $quantity = number_format($line->quantity, 2) .' '. $line->unit;
-
-        @endphp
         <tr>
-          <th class="tr_border v_align"> {{$loop->iteration}} </th>
-          <td class="tr_border"> 
-              {{$line->short_description}} 
-              @if($line->long_description)
-                <br>
-                <span class="grey">
-                    <small>{{$line->long_description}}</small>
-                </span>
-              @endif
-          </td>
           <td class="tr_border">
             <span class="currency">
-              {{$rate}}
+              {{rate}}
             </span>
           </td>
           <td class="tr_border">
-            {{$quantity}}
+            {{quantity}}
           </td>
           <td class="tr_border">
             <span class="currency">
-              {{$tax}}
+              {{tax}}
             </span>
           </td>
           <td class="tr_border"> 
             <span class="currency">
-              {{$total}}
+              {{total}}
             </span>
           </td>
         </tr>
-      @endforeach
+
     </tbody>
     <tfoot>
         <tr>
@@ -169,10 +93,11 @@
             <th class="invoice_footer"> 
                 <span class="blue">
                     {{trans('messages.subtotal')}}
+                    </span>
             </th>
             <td class="invoice_footer"> 
               <span class="currency">
-                {{$subtotal}}
+                {{subtotal}}
               </span>
             </td>
         </tr>
@@ -185,7 +110,7 @@
             </th>
             <td> 
               <span class="currency">
-                {{$discount_amount}}
+                {{discount_amount}}
               </span>
             </td>
         </tr>
@@ -198,7 +123,7 @@
             </th>
             <td> 
               <span class="currency">
-                {{$total_tax}}
+                {{total_tax}}
               </span>
             </td>
         </tr>
@@ -211,7 +136,7 @@
             </th>
             <td> 
               <span class="currency">
-                {{$invoice_total}}
+                {{invoice_total}}
               </span>
             </td>
         </tr>
@@ -219,18 +144,76 @@
   </table>
 
   <div class="row">
-    <div class="terms" v-if="$invoice.terms">
+    <div class="terms" v-if="invoice.terms">
         <span class="grey">
             {{trans('messages.invoice_terms')}} <br>
           </span>
-          {{$invoice.terms}}
+          {{invoice.terms}}
     </div>
   </div>
+  </div>
+</div>
 </template>
 
 <script>
+import jsPDF from 'jspdf';
+import html2canvas from "html2canvas"
 export default {
+    data(){
+return{
+  pdfBlob: null,
+  invoice: null,
+ system: null,
+ invoice_total: null,
+ total_tax: null,
+ discount_amount: null,
+rate:null,
+tax: null,
+quantity: null,
+total: null,
+subtotal: null
+}
+  },
+        components:{
+jsPDF
+  },
 
+methods:{
+  create(data){
+    axios.get('invoices/'+data.id+'/download')
+    .then(response => {
+console.log(response)
+this.discount_amount = response.data.discount_amount
+this.total_tax = response.data.discount_amount
+this.rate= response.data.rate
+this.tax= response.data.tax
+this.invoice = response.data.invoice
+this.system = response.data.system
+this.invoice_total = response.data.invoice_total
+this.subtotal = response.data.subtotal
+this.quantity = response.data.quantity
+this.total = response.data.total
+this.printPdf()
+    })
+  },
+   printPdf() {
+    //  const doc = new jsPDF("p", "pt", "a4", true, { compress: true });
+      const Html = this.$refs.pdfHtml;
+      
+          const pdf = new jsPDF("", "", "a4", true, { compress: true });
+          
+      html2canvas(Html,{
+        scale: 0.66,
+        height: 3000
+      })
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG',2,2)
+        this.pdfBlob = pdf.output('blob');//205,285 mm
+        window.open(pdf.output("bloburl"), "_blank")
+  });
+    },
+}
 }
 </script>
 

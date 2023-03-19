@@ -41,12 +41,12 @@ class TransactionPaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         $transaction_id = request()->get('transaction_id');
         $transaction_type = request()->get('type');
         $transaction = Transaction::OfTransaction($transaction_type)
-                        ->with('customer.currency')
                         ->find($transaction_id);
 
         $transaction_total = $transaction->total;
@@ -81,7 +81,7 @@ class TransactionPaymentController extends Controller
     public function store(Request $request)
     {
         try {
-            $input = $request->only('transaction_id', 'amount', 'paid_on', 'payment_details', 'conversion_rate');
+            $input = $request->only('transaction_id', 'amount', 'paid_on', 'payment_details', 'conversion_rate','currency');
             $input['created_by'] = $request->user()->id;
 
             if (empty($input['conversion_rate'])) {
