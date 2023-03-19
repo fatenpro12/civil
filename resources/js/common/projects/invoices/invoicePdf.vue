@@ -1,12 +1,19 @@
 <template>
+<v-layout row justify-center>
+  <v-dialog v-model="dialog" persistent max-width="600px">
+            <v-card class="p-5">
 <div ref="pdfHtml">
-<p style="text-align:center">
+<h3 style="text-align:center">
     <img v-if="system['logo']" :src="'uploads/'+system['logo']" alt="logo" width="150" class="logo"/>
             <span v-else class="invoice_text">
                 {{trans('messages.invoice')}}
             </span>
-            </p>
-
+            </h3>
+            <v-divider />
+<p> <span class="grey text-center">
+        {{trans('messages.invoice_number')}}:  
+      </span>
+     <span>{{invoice.ref_no}}</span></p>
 
   <!-- Customer Address -->
   <div class="row">
@@ -24,18 +31,15 @@
 
 
 
-    <div class="column text-left">
-      <span class="grey" style="margin-right: 22px;">
+    <div class="column">
+      <span class="grey">
           {{trans('messages.invoice_total')}}:
       </span>
         <span class="currency invoice_total">
             {{invoice_total}}
         </span><br>
-         <span class="grey ml-5">
-        {{trans('messages.invoice_number')}}:  
-      </span>
-     <span>{{invoice.ref_no}}</span><br>
-      <span class="grey ml-5">
+
+      <span class="grey">
         {{trans('messages.date_of_issue')}}: 
       </span>
        <span>{{invoice.transaction_date}}</span>
@@ -153,6 +157,20 @@
   </div>
   </div>
 </div>
+  <v-card-actions class="flex-wrap">
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat @click="dialog=false">
+                        {{ trans('data.cancel') }}
+                    </v-btn>
+                   
+                    
+                    <v-btn color="success" @click="printPdf">
+                        {{ trans('data.print') }}
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+</v-layout>
 </template>
 
 <script>
@@ -163,6 +181,7 @@ export default {
 return{
   pdfBlob: null,
   invoice: null,
+  dialog :false,
  system: null,
  invoice_total: null,
  total_tax: null,
@@ -183,6 +202,7 @@ methods:{
     axios.get('invoices/'+data.id+'/download')
     .then(response => {
 console.log(response)
+this.dialog=true;
 this.discount_amount = response.data.discount_amount
 this.total_tax = response.data.discount_amount
 this.rate= response.data.rate
@@ -193,7 +213,7 @@ this.invoice_total = response.data.invoice_total
 this.subtotal = response.data.subtotal
 this.quantity = response.data.quantity
 this.total = response.data.total
-this.printPdf()
+
     })
   },
    printPdf() {
@@ -201,7 +221,7 @@ this.printPdf()
       const Html = this.$refs.pdfHtml;
       
           const pdf = new jsPDF("", "", "a4", true, { compress: true });
-          
+          console.log(this.$refs,Html,pdf)
       html2canvas(Html,{
         scale: 0.66,
         height: 3000
