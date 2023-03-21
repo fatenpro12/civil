@@ -108,8 +108,9 @@ class InvoiceController extends Controller
        if (!request()->user()->can('invoices.create')) {
             abort(403, 'Unauthorized action.');
         } 
-
+        $customers=[];
         $project = Project::find($project_id);
+        if($project)
         $customers = $project->owners; //User::getCustomers();//Customer::getCustomersForDropDown();
         $discount_type = Transaction::getDiscountType();
         $invoice_type = Transaction::getInvoiceType();
@@ -213,20 +214,20 @@ class InvoiceController extends Controller
     {
         $project_id = request()->get('project_id');
 
-        if (!request()->user()->can('project.'.$project_id.'.invoice.view')) {
+        if (!request()->user()->can('invoices.view')) {
             abort(403, 'Unauthorized action.');
         }
 
         $transaction = Transaction::OfTransaction('invoice')
                         ->where('project_id', $project_id)
-                        ->with('invoiceLines', 'payments')
+                        ->with('invoiceLines', 'payments','customer')
                         ->find($id);
-
-        $customer = Customer::with('currency')->find($transaction->customer_id);
+                        
+       // $customer = Customer::with('currency')->find($transaction->customer_id);
 
         $data = [
                 'transaction' => $transaction,
-                'customer' => $customer,
+              //  'customer' => $customer,
             ];
 
         return $this->respond($data);

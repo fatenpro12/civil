@@ -445,7 +445,6 @@ export default {
     mounted() {
         const self = this;
         self.projectId = Number(self.$route.params.id);
-        console.log(self.$route.params)
         self.getProjects();
         self.getInvoicedataFromApi(self.projectId);
     },
@@ -464,8 +463,6 @@ export default {
                  //   self.invoice_schemes = response.data.invoice_schemes;
                     self.customer_id = response.data.project
                     self.currencies = response.data.currencies
-                        ? response.data.project.customer_id
-                        : null;
                     self.invoice_scheme_id = response.data.default_invoice_scheme;
                 })
                 .catch(function(error) {

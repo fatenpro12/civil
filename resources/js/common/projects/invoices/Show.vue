@@ -28,48 +28,58 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <v-flex xs12 sm6 md6>
-                                    {{ trans('messages.customer') }} : <br />
-                                    <strong> {{ customer.company }} </strong> <br />
-
+                                <v-flex xs12 sm8 md8 v-if="customer" class="justify-around">
+                                    <div>
+                                    {{ trans('messages.customer') }} : 
+                                    <strong> {{ customer.name }} </strong> 
+</div>
+<div>
                                     {{ trans('messages.tax_number') }} :
-                                    <span>{{ customer.tax_number }} </span><br />
-
+                                    <span>{{ customer.tax_number }} </span>
+</div>
+<div>
                                     {{ trans('messages.mobile') }} :
-                                    <span>{{ customer.mobile }} </span><br />
+                                    <span>{{ customer.mobile }} </span>
+                                    </div>
                                 </v-flex>
-                                <v-flex xs12 sm6 md6>
-                                    <strong> {{ trans('messages.title') }} : </strong>
-                                    <span>{{ invoice.title }} </span><br />
-
+                                 <v-flex xs12 sm12 md12 class="justify-around">
+                                       <div>
+                                    <span class="font-bold"> {{ trans('messages.title') }} : </span>
+                                    <span>{{ invoice.title }} </span>
+</div>
                                     <div v-if="invoice.status == 'estimate'">
-                                        <strong> {{ trans('messages.estimate_number') }} : </strong>
-                                        <span> {{ invoice.ref_no }}</span> <br />
+                                        <span class="font-bold"> {{ trans('messages.estimate_number') }} : </span>
+                                        <span> {{ invoice.ref_no }}</span> 
                                     </div>
                                     <div v-else>
-                                        <strong> {{ trans('messages.invoice_number') }} : </strong>
-                                        <span> {{ invoice.ref_no }}</span> <br />
+                                        <span class="font-bold"> {{ trans('messages.invoice_number') }} : </span>
+                                        <span> {{ invoice.ref_no }}</span> 
                                     </div>
+                                    <div>
+                                    <span class="font-bold"> {{ trans('messages.payment_status') }} : </span>
+                                    {{ trans('messages.' + invoice.payment_status) }}
+</div>
+                                    </v-flex>
+                                <v-flex xs12 sm12 md12 class="justify-around">
+                                 
 
-                                    <strong> {{ trans('messages.payment_status') }} : </strong>
-                                    {{ trans('messages.' + invoice.payment_status) }} <br />
-
-                                    <strong> {{ trans('messages.date') }} : </strong>
+<div>
+                                    <span class="font-bold"> {{ trans('messages.date') }} : </span>
                                     <span>
                                         {{ invoice.transaction_date | formatDate }}
                                     </span>
-                                    <br />
+                                 </div>
 
                                     <div v-if="!_.isNull(invoice.due_date)">
-                                        <strong> {{ trans('messages.due_date') }} : </strong>
+                                        <span class="font-bold"> {{ trans('messages.due_date') }} : </span>
                                         <span>
                                             {{ invoice.due_date | formatDate }}
                                         </span>
-                                        <br />
+                           
                                     </div>
-
-                                    <strong> {{ trans('messages.discount_type') }} : </strong>
-                                    {{ trans('messages.' + invoice.discount_type) }} <br />
+<div>
+                                    <span class="font-bold">  {{ trans('messages.discount_type') }} : </span>
+                                    {{ trans('messages.' + invoice.discount_type) }} </div>
                                 </v-flex>
                             </v-layout>
                             <v-layout wrap>
@@ -86,7 +96,7 @@
                                                 <th>{{ trans('messages.tax') }} (%)</th>
                                                 <th>
                                                     {{ trans('messages.total') }}
-                                                    ({{ currency.symbol }})
+                                                    ({{ currency }})
                                                 </th>
                                             </tr>
                                         </thead>
@@ -108,7 +118,7 @@
                                                 <td>
                                                     {{
                                                         invoice_line.total
-                                                            | formatMoney(currency.symbol)
+                                                            | formatMoney(currency)
                                                     }}
                                                 </td>
                                             </tr>
@@ -135,7 +145,7 @@
                                                 <td>
                                                     {{
                                                         payment.amount
-                                                            | formatMoney(currency.symbol)
+                                                            | formatMoney(currency)
                                                     }}
                                                 </td>
                                                 <td>
@@ -152,7 +162,7 @@
                                                 <th>{{ trans('messages.sub_total') }} :</th>
                                                 <td></td>
                                                 <td>
-                                                    {{ sub_total | formatMoney(currency.symbol) }}
+                                                    {{ sub_total | formatMoney(currency) }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -166,7 +176,7 @@
                                                 <td>
                                                     {{
                                                         invoice.discount_amount
-                                                            | formatMoney(currency.symbol)
+                                                            | formatMoney(currency)
                                                     }}
                                                 </td>
                                             </tr>
@@ -175,7 +185,7 @@
                                                 <td></td>
                                                 <td>
                                                     {{
-                                                        invoice.total | formatMoney(currency.symbol)
+                                                        invoice.total | formatMoney(currency)
                                                     }}
                                                 </td>
                                             </tr>
@@ -229,8 +239,8 @@ export default {
                 })
                 .then(function(response) {
                     self.invoice = response.data.transaction;
-                    self.customer = response.data.customer;
-                    self.currency = response.data.customer.currency;
+                    self.customer = response.data.transaction.customer;
+                    self.currency = response.data.currency;
                     self.invoice_lines = response.data.transaction.invoice_lines;
                     self.calculateSubtotalAndTax(self.invoice_lines);
                     self.invoice_payments = response.data.transaction.payments;

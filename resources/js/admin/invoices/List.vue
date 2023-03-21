@@ -8,8 +8,10 @@
         <InvoiceReminder ref="invoiceReminder"></InvoiceReminder>
         <!-- view payment -->
         <ViewPayment ref="viewPayment"></ViewPayment>
+
+         <InvoicePdf ref="invoicePdf"></InvoicePdf>
         <v-tabs v-model="tabs" fixed-tabs height="47" class="elevation-3">
-            <v-tab :href="'#tab-1'" @click="getStatistics" v-if="$can('superadmin')">
+            <v-tab :href="'#tab-1'" @click="getStatistics">
                 <v-icon>bar_chart</v-icon>
                 {{ trans('messages.statistics') }}
             </v-tab>
@@ -20,7 +22,7 @@
         </v-tabs>
         <v-tabs-items v-model="tabs">
             <v-divider></v-divider>
-            <v-tab-item :value="'tab-1'" v-if="$can('superadmin')">
+            <v-tab-item :value="'tab-1'">
                 <v-card flat class="elevation-2">
                     <v-card-text>
                         <v-container grid-list-md>
@@ -124,7 +126,7 @@
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn
-                    v-if="$can('project.' + projectId + '.invoice.create')"
+                    v-if="$can('invoices.create')"
                     class="primary lighten-1"
                     @click="$router.push({ name: 'sales.invoices.create' })"
                 >
@@ -163,7 +165,7 @@
                             <v-btn icon slot="activator"> <v-icon>more_vert</v-icon> </v-btn>
                             <v-list>
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.view')"
+                                    v-if="$can('invoices.view')"
                                     @click="view(props.item)"
                                 >
                                     <v-list-tile-title>
@@ -173,7 +175,7 @@
                                 </v-list-tile>
 
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.edit')"
+                                    v-if="$can('invoices.edit')"
                                     @click="edit(props.item)"
                                 >
                                     <v-list-tile-title>
@@ -182,7 +184,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile :href="props.item.download_url">
+                                <v-list-tile @click="downloadPdf(props.item)">
                                     <v-list-tile-title>
                                         <v-icon small class="mr-2"> save_alt </v-icon>
                                         {{ trans('messages.download_invoice') }}
@@ -190,7 +192,7 @@
                                 </v-list-tile>
 
                                 <v-list-tile
-                                    v-if="$can('project.' + projectId + '.invoice.delete')"
+                                    v-if="$can('invoices.delete')"
                                     @click="deleteInvoice(props.item)"
                                 >
                                     <v-list-tile-title>
@@ -277,8 +279,11 @@ import InvoiceReminder from '../invoices/InvoiceReminder';
 import ViewPayment from '../../common/projects/invoices/payment/ViewPayment';
 import StatusLabel from '../status/StatusLabel';
 import store from '../../store'
+import InvoicePdf from '../../common/projects/invoices/invoicePdf.vue'
+
 export default {
     components: {
+        InvoicePdf,
         InvoiceShow,
         InvoicePayment,
         InvoiceReminder,
@@ -375,6 +380,9 @@ export default {
         },
     },
     methods: {
+          downloadPdf(data){
+     this.$refs.invoicePdf.create(data)
+        },
         getInvoiceFromApi() {
             const self = this;
             self.loading = true;
