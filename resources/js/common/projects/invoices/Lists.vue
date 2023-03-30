@@ -102,7 +102,7 @@
                 <div>
                         {{ trans('messages.all_invoices') }}
                 </div>
-             
+
                 <v-spacer></v-spacer>
                 <!--v-if="$can('project.' + projectId + '.invoice.create')" -->
                 <v-btn
@@ -187,7 +187,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile
+                                <!--<v-list-tile
                                     v-if="
                                         props.item.payment_status !== 'paid' &&
                                             props.item.type === 'final' &&
@@ -239,7 +239,7 @@
                                         <v-icon small class="mr-2"> redo </v-icon>
                                         {{ trans('messages.convert_to_invoice') }}
                                     </v-list-tile-title>
-                                </v-list-tile>
+                                </v-list-tile>-->
                             </v-list>
                         </v-menu>
                     </td>
@@ -400,7 +400,7 @@ backBtn: true
                         params: params,
                     })
                     .then((response) => {
-                       
+
                         self.total_items = response.data.transactions.total;
                         self.items = response.data.transactions.data;
                         self.currency = response.data.currency;
@@ -452,7 +452,7 @@ backBtn: true
                 console.log(err.response.status)
                 if (err.response.status === 401) {
             store.dispatch('auth/handleResponse',err.response)
-                } 
+                }
             });
                 },
                 cancelCb: () => {

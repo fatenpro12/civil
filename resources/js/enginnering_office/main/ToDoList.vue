@@ -12,7 +12,7 @@
                 <v-card-text>
                     <v-container grid-list-lg>
                         <v-layout wrap>
-                            
+
                             <v-flex xs12 sm12 md4 v-if="$can('project.list')">
                                     <v-hover
                                         v-slot:default="{ hover }"
@@ -45,7 +45,7 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card 
+                                        <v-card
                                          @click="$router.push({name: 'design_request_enginnering_office_list'})"
                                          :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -94,9 +94,9 @@
                                         </v-card>
                                     </v-hover>
                                 </v-flex>
-       
 
-                    
+
+
 
                             <v-flex xs12 sm12 md4 v-if="$can('tickets.view')">
                                     <v-hover
@@ -150,7 +150,7 @@
                                         </v-card>
                                     </v-hover>
                                 </v-flex>
-                                
+
                             <v-flex xs12 sm12 md4 v-if="$can('report.view')">
                                     <v-hover
                                         v-slot:default="{ hover }"
@@ -182,7 +182,7 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card class="not_working" 
+                                        <v-card class="not_working"
                                          @click="$router.push({ name: 'archives' })"
                                         :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -250,7 +250,7 @@
                                     </v-hover>
                                 </v-flex>
 
-                        
+
 
 
                             <v-flex xs12 sm12 md4>
@@ -260,7 +260,7 @@
                                         close-delay="100"
                                     >
                                         <v-card
-                                            @click="$router.push({})"
+                                            @click="$router.push({name: 'invoices.list'})"
                                             :elevation="hover ? 16 : 2"
                                         >
                                             <v-card-text>
@@ -349,7 +349,7 @@
                                                         style="font-size: 18px; color: #06706d"
                                                     >
                                                         {{
-                                                            trans('messages.manage_roles') 
+                                                            trans('messages.manage_roles')
                                                         }}&nbsp;&nbsp;
                                                         <v-icon :color="'#06706d'">settings</v-icon>
                                                     </p>
@@ -358,7 +358,7 @@
                                         </v-card>
                                     </v-hover>
                                 </v-flex>
-                   
+
 
                             <v-flex xs12 sm12 md4>
                                     <v-hover
@@ -387,7 +387,7 @@
                                         </v-card>
                                     </v-hover>
                                 </v-flex>
-                       
+
 
      <v-flex xs12 sm12 md4 v-if="$can('specialty.view')">
                                     <v-hover
@@ -418,7 +418,7 @@
                                     </v-hover>
                                 </v-flex>
 
-                            
+
                         </v-layout>
                     </v-container>
                 </v-card-text>

@@ -20,7 +20,7 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card class="not_working" 
+                                        <v-card class="not_working"
                                          @click="$router.push({ name: 'archives' })"
                                         :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -176,7 +176,7 @@
                                                 </div>
                                             </v-card-text>
                                         </v-card>
-                                        
+
                                     </v-hover>
                                 </v-flex>
                             </v-flex>
@@ -217,7 +217,7 @@
                                         close-delay="100"
                                     >
                                         <v-card
-                                            @click="$router.push({})"
+                                            @click="$router.push({name: 'invoices.list'})"
                                             :elevation="hover ? 16 : 2"
                                         >
                                             <v-card-text>

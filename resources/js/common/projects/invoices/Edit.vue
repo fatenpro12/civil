@@ -119,7 +119,7 @@
                                 v-model="invoice.currency"
                                 :label="trans('messages.currency')"
                                 v-validate="'required'"
-                                 data-vv-name="messages.currency"
+                                 data-vv-name="currency"
                                 :data-vv-as="trans('messages.currency')"
                                 :error-messages="errors.collect('currency')"
                                 required

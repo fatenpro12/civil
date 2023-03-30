@@ -30,7 +30,10 @@ Route::get('cache', function () {
 Route::get('link', function () {
     $exitCode = Artisan::call('storage:link');
 });
-
+Route::get('route-cache', function(){
+    $exitCode = Artisan::call('route:clear');
+    $exitCode = Artisan::call('route:cache');
+});
 //Auth::routes(['register' => true]);
 Route::get('get-genders', 'CommonController@getGenders');
 

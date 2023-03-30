@@ -12,7 +12,7 @@
                 <v-card-text>
                     <v-container grid-list-lg>
                         <v-layout wrap>
-                        
+
                             <v-flex xs12 sm12 md4>
                                     <v-hover
                                         v-slot:default="{ hover }"
@@ -39,9 +39,9 @@
                                         </v-card>
                                     </v-hover>
                                 </v-flex>
-                      
+
       <v-flex xs12 sm12 md4 v-if="$can('tickets.view')">
-                               
+
                                     <v-hover
                                         v-slot:default="{ hover }"
                                         open-delay="100"
@@ -65,7 +65,7 @@
                                     </v-hover>
                             </v-flex>
                             <v-flex xs12 sm12 md4 v-if="$can('tickets.view')">
-                   
+
                                     <v-hover
                                         v-slot:default="{ hover }"
                                         open-delay="100"
@@ -90,12 +90,12 @@
                                             </v-card-text>
                                         </v-card>
                                     </v-hover>
-                          
+
                             </v-flex>
 
                             <!--add after edititng -->
                             <!-- @click="$router.push({name: 'visit_request_list'})" -->
-                      
+
 
                             <v-flex xs12 sm12 md4 v-if="$can('tickets.view')">
                                 <v-flex xs12 sm12 md12>
@@ -155,7 +155,7 @@
                                                 </div>
                                             </v-card-text>
                                         </v-card>
-                                        
+
                                     </v-hover>
                                 </v-flex>
                             </v-flex>
@@ -194,7 +194,7 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card class="not_working" 
+                                        <v-card class="not_working"
                                         @click="$router.push({ name: 'archives' })"
                                         :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -237,7 +237,7 @@
                                 </v-flex>
                             </v-flex>
 
-                      
+
                             <v-flex xs12 sm12 md4 v-if="$can('customer.create')">
                                 <v-flex xs12 sm12 md12>
                                     <v-hover
@@ -265,7 +265,7 @@
                                 </v-flex>
                             </v-flex>
 
-                        
+
 
                             <v-flex xs12 sm12 md4>
                                 <v-flex xs12 sm12 md12>
@@ -275,7 +275,7 @@
                                         close-delay="100"
                                     >
                                         <v-card
-                                            @click="$router.push({})"
+                                            @click="$router.push({name: 'invoices.list'})"
                                             :elevation="hover ? 16 : 2"
                                         >
                                             <v-card-text>
@@ -293,7 +293,7 @@
                                     </v-hover>
                                 </v-flex>
                             </v-flex>
-                    
+
                             <v-flex xs12 sm12 md4>
                                 <v-flex xs12 sm12 md12>
                                     <v-hover
@@ -375,7 +375,7 @@
                                                 </div>
                                             </v-card-text>
                                         </v-card>
-                                        
+
                                     </v-hover>
                             </v-flex>
                             <v-flex xs12 sm12 md4 v-if="$can('role.view')">
@@ -459,12 +459,12 @@
                                     </v-hover>
                                 </v-flex>
                             </v-flex>
-                  
+
                         </v-layout>
                     </v-container>
                 </v-card-text>
             </v-card>
-           
+
             <br />
             <div align="center">
                 <v-btn style="background-color: #06706d; color: white" @click="$router.go(-1)">

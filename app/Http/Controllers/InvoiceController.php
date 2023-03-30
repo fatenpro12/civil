@@ -59,8 +59,8 @@ class InvoiceController extends Controller
             $sort_by = 'id';
         }
 
-        $transactions = Transaction::where('transactions.type', 'invoice')
-            ->leftjoin('users', 'transactions.customer_id', '=', 'users.id')
+        $transactions = Transaction:://where('transactions.type', 'invoice')
+            leftjoin('users', 'transactions.customer_id', '=', 'users.id')
             ->leftjoin('projects', 'transactions.project_id', '=', 'projects.id')
           ->select('ref_no as invoice_number', 'transactions.title', 'transaction_date as invoice_date', 'due_date', 'total', 'transactions.id as id', 'payment_status','users.name as customer', 'project_id', 'projects.name as project', 'transactions.status as type');
 
@@ -91,7 +91,7 @@ class InvoiceController extends Controller
 
         $data = ['transactions' => $transactions];
 
-     
+
 
         return $this->respond($data);
     }
@@ -107,7 +107,7 @@ class InvoiceController extends Controller
 
        if (!request()->user()->can('invoices.create')) {
             abort(403, 'Unauthorized action.');
-        } 
+        }
         $customers=[];
         $project = Project::find($project_id);
         if($project)
@@ -168,13 +168,13 @@ class InvoiceController extends Controller
             $input['created_by'] = $request->user()->id;
             $input['payment_status'] = 'due';
             $input['type'] = 'invoice';
-
+$input['ref_no'] = $input['status'].rand();
             //autogenerate invoice no.
-            if ('final' == $input['status']) {
+           /* if ('final' == $input['status']) {
                 $input['ref_no'] = $this->CommonUtil->generateInvoiceNo($input['invoice_scheme_id']);
             } else {
                 $input['ref_no'] = $input['status'].rand();
-            }
+            }*/
 
             $invoice_lines = $request->only('invoice_lines');
             $invoice_line = [];
@@ -222,7 +222,7 @@ class InvoiceController extends Controller
                         ->where('project_id', $project_id)
                         ->with('invoiceLines', 'payments','customer')
                         ->find($id);
-                        
+
        // $customer = Customer::with('currency')->find($transaction->customer_id);
 
         $data = [
@@ -321,9 +321,9 @@ $project=Project::find($project_id);
                     ->find($id);
 
             //autogenerate invoice no.
-            if ('final' !== $transaction['status'] && $input['status'] == 'final') {
+          /*  if ('final' !== $transaction['status'] && $input['status'] == 'final') {
                 $input['ref_no'] = $this->CommonUtil->generateInvoiceNo($input['invoice_scheme_id']);
-            }
+            }*/
 
             $transaction->update($input);
 
@@ -442,6 +442,14 @@ $system = System::getSystemSettings($keys);
 
         $line_tax = 0;
         $line_total =0;
+        $subtotal = 0;
+
+        $total_tax = 0;
+
+        $rate = 0;
+        $tax = 0;
+        $total = 0;
+        $quantity = 0;
         foreach($invoice->invoiceLines as $line){
         $line_tax += $line->tax;
         $line_total += $line->total;
@@ -509,7 +517,7 @@ $system = System::getSystemSettings($keys);
                         ->find($id);
 
             //autogenerate invoice number
-            $invoice_number = $this->CommonUtil->generateInvoiceNo($transaction->invoice_scheme_id);
+          //  $invoice_number = $this->CommonUtil->generateInvoiceNo($transaction->invoice_scheme_id);
 
             $transaction->ref_no = $invoice_number;
             $transaction->status = 'final';
@@ -563,12 +571,12 @@ $system = System::getSystemSettings($keys);
             if ($this->isDemo()) {
                 return $this->respondDemo();
             }
-            
+
             $transaction_id = $request->input('transaction_id');
             $transaction = Transaction::OfTransaction('invoice')
                                 ->with('customer')
                                 ->find($transaction_id);
-                                
+
             $data = $request->only('email', 'subject', 'body');
             if (!empty($request->input('attachment'))) {
                 $pdf = $this->CommonUtil->generateInvoicePdf($transaction_id);
@@ -576,11 +584,11 @@ $system = System::getSystemSettings($keys);
                 $data['name'] = $transaction->invoice_name;
                 $data['pdf'] = $pdf;
             }
-            
+
             $customer = $transaction->customer;
             $customer['email'] = $data['email'];
             $customer->notify(new InvoiceReminder($data));
-            
+
             $output = $this->respondSuccess(__('messages.success'));
         } catch (Exception $e) {
             $output = $this->respondWentWrong($e);
@@ -598,7 +606,7 @@ $system = System::getSystemSettings($keys);
         if (!request()->user()->hasRole('superadmin')) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $currency = System::getBusinessCurrency('currency_id');
 
         //payment status
@@ -629,7 +637,7 @@ $system = System::getSystemSettings($keys);
         ->first();
 
         $data = ['payment_stats' => $payment_stats, 'currency' => $currency, 'paid_amount' => $paid_amount];
-        
+
         return $this->respond($data);
     }
 }

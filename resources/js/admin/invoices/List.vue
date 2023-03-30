@@ -201,7 +201,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-list-tile
+                                <!--<v-list-tile
                                     v-if="
                                         props.item.payment_status !== 'paid' &&
                                             props.item.type === 'final'
@@ -251,7 +251,7 @@
                                         <v-icon small class="mr-2"> send </v-icon>
                                         {{ trans('messages.send_reminder') }}
                                     </v-list-tile-title>
-                                </v-list-tile>
+                                </v-list-tile>-->
                             </v-list>
                         </v-menu>
                     </td>

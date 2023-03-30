@@ -19,8 +19,8 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card 
-                                        class="not_working" 
+                                        <v-card
+                                        class="not_working"
                                          @click="$router.push({ name: 'contractor_request_list' })"
                                         :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -48,7 +48,7 @@
                                         open-delay="100"
                                         close-delay="100"
                                     >
-                                        <v-card class="not_working" 
+                                        <v-card class="not_working"
                                          @click="$router.push({ name: 'archives' })"
                                         :elevation="hover ? 16 : 2">
                                             <v-card-text>
@@ -220,7 +220,7 @@
                                         close-delay="100"
                                     >
                                         <v-card
-                                            @click="$router.push({})"
+                                            @click="$router.push({name: 'invoices.list'})"
                                             :elevation="hover ? 16 : 2"
                                         >
                                             <v-card-text>
